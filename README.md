@@ -4,6 +4,7 @@ This repo has material for the *Finance 1* class, taught during the first quarte
 You can use any of the material above free of charge (and at your own risk!), as long as you provide proper credit and citation whenever needed.
 
 ## Class Topics (*highly volatile*)
+See [Topics.md](./Topics.md) for a tentative detailed list of topics to be covered in class. The progression of topics will depend on class size and interest.
 
 ## Evaluation
 No, we will have no exams. Student evaluation will be based on performance related to three activities:
