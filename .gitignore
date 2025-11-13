@@ -1,3 +1,6 @@
+## Added by Raul
+*.docx
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
