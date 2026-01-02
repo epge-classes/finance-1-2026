@@ -1,5 +1,7 @@
 ## Added by Raul
 *.docx
+.DS_Store
+Topics.pdf
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
