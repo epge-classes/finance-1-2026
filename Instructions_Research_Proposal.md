@@ -1,6 +1,6 @@
 # Instructions for the Research Proposal
 
-Generating research ideas is the hardest part of this job. Hence, the earlier we start, the better. For this class, 60% of your grade will be based on a research proposal that will submit at the end of the class. This is an individual assignment, i.e., I expect each student to submit their own proposal. 
+Generating research ideas is the hardest part of this job. Hence, the earlier we start, the better. For this class, 50% of your grade will be based on a research proposal that will submit at the end of the class. This is an individual assignment, i.e., I expect each student to submit their own proposal. 
 
 The precise due date will be discussed in class, and updated below:
 
@@ -48,3 +48,13 @@ Example 3: some of you might be an Econometrician in disguise (sounds familiar?)
 ## Check-in
 
 **Very important**: you need to email me, by the end of the week containing lecture 10, a two-paragraph summary of your idea. This is to make sure you are on the right track and not trying to do something too crazy or something that has already been done to death. After I give you the green light, you can proceed with writing the full proposal.
+
+## Peer-Review
+
+You will be randomly assigned to review one of your classmates' proposals. You will have to provide detailed comments on how to improve the proposal. Essentially, you need to answer:
+
+- What are the strengths of the proposal?
+- What are the weaknesses of the proposal?
+- What specific suggestions do you have to improve the proposal? It's really easy to just find flaws. But fixing flaws is the hard part. So please be constructive.
+
+You will be graded on the quality of your review. Your review is due one week after the proposal submission deadline. It should have no more than two pages. Please email it to me as a PDF file. This will contribute 15% of your overall grade.
