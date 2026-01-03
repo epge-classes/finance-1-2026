@@ -15,14 +15,14 @@ You can use any of the material above free of charge (and at your own risk!), as
 ---
 
 ## Class Topics (*highly volatile*)
-See [Topics.md](./Topics.md) for a tentative detailed list of topics to be covered in class. The progression of topics will depend on class size and interest.
+See [Topics.md](./Topics.md) for a tentative detailed list of topics to be covered in class. The progression of topics will depend on class size and student interest.
 
 ## Evaluation
 No, we will have no exams. Student evaluation will be based on performance related to three activities:
   
-  1. Referee reports about papers I will choose as we progress (30%);
-  2. One paper presentation at the end of the class (20%);
-  3. One research proposal (50%);
+  1. One research proposal (50%). See [`Instructions_Research_Proposal.md`](./Instructions_Research_Proposal.md) for details.
+  2. One peer-review of a classmate's research proposal (15%). See [`Instructions_Research_Proposal.md`](./Instructions_Research_Proposal.md) for details.
+  3. One in-class presentation (35%). See [`Instructions_Paper_Presentation.md`](./Instructions_Paper_Presentation.md) for details.
 
 ## Continuous Feedback
 You can and should provide feedback about the course material as we move along. If something is interesting and we do not plan on covering it, please tell me and I'll see if it is a feasible addition to the class. On the other hand, if we plan covering something that does not interest anyone in the class, tell me and I'll happily take it out. This is the first iteration of this class and list of covered topics is expected to change with time.
