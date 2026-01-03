@@ -43,7 +43,7 @@ This is a very tentative schedule. I will add more references below as the class
 - Barro (2006) and Wachter (2013);
 - How would you calibrate that?
 
-### Production-Based Asset Pricing
+### Production-Based Asset Pricing (maybe)
 - What happens when we make consumption endogenous?
 - The role of technology shocks;
 
