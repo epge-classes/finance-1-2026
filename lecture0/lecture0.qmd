@@ -1,0 +1,111 @@
+---
+title: "Lecture 0: Class Setup"
+author: "Raul Riva"
+institute: "FGV EPGE"
+date: "2026-01-01"
+date-format: "MMMM, YYYY"
+format: 
+    beamer:
+        aspectratio: 169
+        include-in-header: ../beamer_template.tex
+        slide-level: 2
+jupyter: python3
+highlight-style: github
+urlcolor: FGVBlue
+---
+
+## Intro
+
+- Welcome to Finance 1!
+- Classes: Mondays and Wednesdays, 15:30 - 17:30;
+- Office hours: Fridays, 9:00 - 10:00, or by appointment;
+- Class github repository: [https://github.com/epge-classes/finance-1-2026](https://github.com/epge-classes/finance-1-2026);
+- This is the first class of a _sequence_;
+- Finance 2 next quarter, from Felipe Iachan;
+- If you ever want to be advised by me, you _have_ to take both classes;
+
+## What I _think_ we will cover
+This is a **foundational** course in Asset Pricing. Topics include:
+
+- No-arbitrage and the stochastic discount factor;
+- Linear factor models and beta-representation of asset returns;
+- Consumption-based asset pricing and the Equity Premium Puzzle;
+- Habit models, long-runs risk models, and rare disasters;
+- A bit of option pricing and non-parametric recovery of the SDF;
+- Interest rate models and their term structure;
+- A bit of Machine Learning in Asset Pricing;
+
+## You are pioneers!
+
+::: {.columns align=center}
+
+::: {.column width="40%"}
+![](Buzz_student.png){width=80% fig-align="center"}
+:::
+
+::: {.column width="60%"}
+- This is my first time teaching this class;
+- I have no idea of our own pace;
+- I have no idea of what you like and what you don't;
+- You **need** to give me **ongoing feedback**;
+- We will adapt pace and the content as we go;
+:::
+:::
+
+## Useful info
+
+- Attendance is not mandatory, but highly recommended;
+- Slides will be available before class on Github;
+- The material will be scattered across books and papers -- I will cite everything;
+- I will **not** teach on Jan 21st and on Jan 26th (away for a conference). Good dates for make-up classes?
+- There are no exams, and no problem sets -- more on evaluation later;
+
+## Evaluation
+
+::: {.columns}
+
+::: {.column width="48%"}
+**[Research Proposal (50%)](https://github.com/epge-classes/finance-1-2026/blob/main/Instructions_Research_Proposal.md)**
+
+- Individual assignment;
+- 5-10 pages;
+- Research question + motivation + contribution + feasibility;
+- Check-in: two-paragraph summary by end of week with lecture 10;
+- You should start reading what's published in top journals _now_;
+- Due date: TBD
+
+:::
+
+::: {.column width="50%"}
+**[Paper Presentation (35%)](https://github.com/epge-classes/finance-1-2026/blob/main/Instructions_Paper_Presentation.md)**
+
+- Present one paper related to your proposal;
+- Graded on delivery (50%), slides (35%), Q&A (15%);
+- Goal: make everyone understand why your proposal matters;
+- Check-in: propose paper by end of week with lecture 10;
+
+\vspace{0.6em}
+
+**[Peer Review (15%)](https://github.com/epge-classes/finance-1-2026/blob/main/Instructions_Research_Proposal.md#peer-review)**
+
+- Review one classmate's proposal, 2 pages maximum;
+- Due one week after proposal deadline
+:::
+:::
+
+## Useful books
+**Books**: (in no particular order)
+\footnotesize
+
+- Cochrane, J. H. (2005). [*Asset Pricing*](https://www.johnhcochrane.com/asset-pricing) (Revised Edition). Princeton University Press.
+- Campbell, J. Y. (2017). [*A Course in Asset Pricing*](https://press.princeton.edu/books/hardcover/9780691160801/financial-decisions-and-markets). Princeton University Press.
+- Campbell, J. Y., Lo, A. W., & MacKinlay, A. C. (1997). [*The Econometrics of Financial Markets*](https://press.princeton.edu/books/hardcover/9780691043012/the-econometrics-of-financial-markets). Princeton University Press.
+- Back, K. (2017). [*Asset Pricing and Portfolio Choice Theory*](https://www.amazon.com/Portfolio-Financial-Management-Association-Synthesis/dp/0190241144). Oxford University Press.
+- Duffie, D. (2001). [*Dynamic Asset Pricing Theory*](https://www.amazon.com.br/Dynamic-Asset-Pricing-Theory-Third/dp/069109022X). Princeton University Press.
+- Tuckman, B., & Serrat, A. (2022). [*Fixed Income Securities: Tools for Today's Markets*](https://www.amazon.com.br/Fixed-Income-Securities-Todays-Markets/dp/1119835550). Wiley.
+- Singleton, K. J. (2006). [*Empirical Dynamic Asset Pricing: Model Specification and Econometric Assessment*](https://press.princeton.edu/books/hardcover/9780691122977/empirical-dynamic-asset-pricing). Princeton University Press.
+- Veronesi, P. (2010). [*Fixed Income Securities*](https://www.wiley.com/en-us/Fixed+Income+Securities%3A+Valuation%2C+Risk%2C+and+Risk+Management%2C+1st+Edition-p-9780470586891). Wiley.
+- Hull, J. C. (2021). [*Options, Futures, and Other Derivatives*](https://www.amazon.com/Options-Futures-Other-Derivatives-Global/dp/1292410655). Pearson.
+
+## {.standout}
+Questions?
