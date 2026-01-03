@@ -58,6 +58,9 @@ This is a **foundational** course in Asset Pricing. Topics include:
 - Slides will be available before class on Github;
 - The material will be scattered across books and papers -- I will cite everything;
 - I will **not** teach on Jan 21st and on Jan 26th (away for a conference). Good dates for make-up classes?
+- If you decide to work in Asset Pricing, taking a class on Stochastic Calculus is highly recommended;
+- This class _can_ feel like a first-year class: we will use a lot of Micro and Macro tools;
+- _My own view_: data with no theory is a collection of fancy plots; theory with no data has no discipline.
 - There are no exams, and no problem sets -- more on evaluation later;
 
 ## Evaluation
@@ -93,7 +96,8 @@ This is a **foundational** course in Asset Pricing. Topics include:
 :::
 :::
 
-## Useful books
+## Useful Books
+
 **Books**: (in no particular order)
 \footnotesize
 
