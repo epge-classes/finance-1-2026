@@ -122,7 +122,7 @@ def main():
         return
 
     fx.index = pd.to_datetime(fx.index.date)
-    output_file = "usd_fx_data.csv"
+    output_file = "lecture01/data/usd_fx_data.csv"
     fx.to_csv(output_file)
 
     print(f"\n✓ Saved FX data to {output_file}")
