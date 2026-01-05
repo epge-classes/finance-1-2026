@@ -119,18 +119,14 @@ def download_bcb_series(series_id, series_name):
 def download_brazil_interest_rates():
     """
     Download Brazilian interest rates from BCB.
-    Returns: DataFrame with SELIC, realized daily DI, and 360-day DI rate
+    Returns: DataFrame with realized daily DI rate
     """
     print("Downloading Brazilian interest rates from BCB...")
     
     # BCB series codes:
-    # 432 = SELIC target rate (policy rate)
     # 4389 = CDI (Taxa DI - Over/Selic) - realized daily DI rate
-    # 1178 = Swap DI Pre 360 days (1-year forward rate)
     bcb_series = {
-        '432': 'SELIC',           # SELIC target rate
-        '4389': 'DI_DAILY',       # Realized daily DI rate
-        '1178': 'DI_360D'         # 360-day DI rate
+        '4389': 'DI_DAILY'       # Realized daily DI rate
     }
     
     dataframes = []
@@ -182,7 +178,7 @@ def main():
     if not equity.empty:
         # Convert index to date only (remove time component)
         equity.index = pd.to_datetime(equity.index.date)
-        output_file = 'brazil_equity_data.csv'
+        output_file = 'lecture01/data/brazil_equity_data.csv'
         equity.to_csv(output_file)
         print(f"\n✓ Saved equity data to {output_file}")
         print(f"  Columns: {', '.join(equity.columns)}")
@@ -199,7 +195,7 @@ def main():
     if not interest_rates.empty:
         # Convert index to date only (remove time component)
         interest_rates.index = pd.to_datetime(interest_rates.index.date)
-        output_file = 'brazil_interest_rates.csv'
+        output_file = 'lecture01/data/brazil_interest_rates.csv'
         interest_rates.to_csv(output_file)
         print(f"\n✓ Saved interest rate data to {output_file}")
         print(f"  Columns: {', '.join(interest_rates.columns)}")

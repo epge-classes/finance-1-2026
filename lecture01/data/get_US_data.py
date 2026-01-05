@@ -49,42 +49,13 @@ def download_us_equity_fx():
     except Exception as e:
         print(f"  ✗ Error downloading SP500: {e}")
     
-    # Download FX data from FRED using pandas-datareader
-    fx_series = {
-        'DEXUSEU': 'USD_EUR',
-        'DEXUSUK': 'USD_GBP'
-    }
-    
-    for series_id, series_name in fx_series.items():
-        try:
-            print(f"  Downloading {series_name} ({series_id})...")
-            data = pdr.DataReader(series_id, 'fred', start='1970-01-01')
-            data.columns = [series_name]
-            dataframes.append(data)
-            print(f"  ✓ {series_name}: {len(data)} rows from {data.index.min().date()} to {data.index.max().date()}")
-        except Exception as e:
-            print(f"  ✗ Error downloading {series_name}: {e}")
-    
-    # If pandas-datareader failed for FX, fall back to direct FRED API
-    if len(dataframes) < 3:
-        print("  Falling back to direct FRED API for missing data...")
-        fred_series = {
-        'DEXUSEU': 'USD_EUR',
-        'DEXUSUK': 'USD_GBP'
-    }
-        for series_id, series_name in fred_series.items():
-            if not any(series_name in df.columns for df in dataframes if not df.empty):
-                df = download_fred_series(series_id, series_name)
-                if not df.empty:
-                    dataframes.append(df)
-    
     if not dataframes:
-        print("✗ No equity/FX data downloaded")
+        print("✗ No equity data downloaded")
         return pd.DataFrame()
     
     # Combine all series
     df = pd.concat(dataframes, axis=1)
-    print(f"✓ Downloaded US equity/FX data: {len(df)} rows")
+    print(f"✓ Downloaded US equity data: {len(df)} rows")
     
     return df
 
@@ -141,14 +112,12 @@ def download_fred_series(series_id, series_name):
 def download_us_interest_rates():
     """
     Download US interest rates from FRED.
-    Returns: DataFrame with Fed Funds, 1Y Treasury, 10Y Treasury
+    Returns: DataFrame with Fed Funds rate
     """
     print("Downloading US interest rates from FRED...")
     
     fred_series = {
-        'DFF': 'FED_FUNDS',
-        'DGS1': 'US_1Y',
-        'DGS10': 'US_10Y'
+        'DFF': 'FED_FUNDS'
     }
     
     dataframes = []
@@ -202,7 +171,7 @@ def main():
         equity_fx.index = pd.to_datetime(equity_fx.index.date)
         # Filter to dates >= 1996-01-01
         equity_fx = equity_fx[equity_fx.index >= '1996-01-01']
-        output_file = 'us_equity_data.csv'
+        output_file = 'lecture01/data/us_equity_data.csv'
         equity_fx.to_csv(output_file)
         print(f"\n✓ Saved equity/FX data to {output_file}")
         print(f"  Columns: {', '.join(equity_fx.columns)}")
@@ -219,7 +188,7 @@ def main():
     if not interest_rates.empty:
         # Convert index to date only (remove time component)
         interest_rates.index = pd.to_datetime(interest_rates.index.date)
-        output_file = 'us_interest_rates.csv'
+        output_file = 'lecture01/data/us_interest_rates.csv'
         interest_rates.to_csv(output_file)
         print(f"\n✓ Saved interest rate data to {output_file}")
         print(f"  Columns: {', '.join(interest_rates.columns)}")
