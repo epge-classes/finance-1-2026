@@ -3,6 +3,7 @@
 .DS_Store
 Topics.pdf
 AGENTS.md
+*_files/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
