@@ -9,6 +9,7 @@ This is a collection of recommended readings and references.
 - [Cont, 2001](http://rama.cont.perso.math.cnrs.fr/pdf/empirical.pdf)
 - [Campbell, 2001](https://www.jstor.org/stable/222372)
 - [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x)
+- [New Frontiers in Asset Pricing](https://www.youtube.com/watch?v=JzdZmvH8kpA)
 
 ### Lecture 2: No-Arbitrage and The Existence of an SDF
 - Fundamental Theorem of Asset Pricing;
