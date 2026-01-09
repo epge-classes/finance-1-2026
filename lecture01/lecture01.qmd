@@ -208,6 +208,40 @@ plt.xlabel('Lags (Months)')
 plt.tight_layout()
 ```
 
+## But long-horizon returns have some predictability
+:::: {.columns}
+
+::: {.column width="55%"}
+\vfill
+\begin{table}[!htbp]
+\centering
+\caption{\small $R_{t+h|t} = \alpha + \beta\cdot CAPE_t + u_t$, 1982-2023}
+\small
+\begin{tabular}{lcccc}
+\toprule
+ & $R_6$ & $R_{12}$ & $R_{36}$ & $R_{60}$ \\
+\midrule
+$CAPE_t$
+    & -0.25$^{*}$ & -0.36$^{*}$ & -0.56$^{***}$ & -0.68$^{***}$ \\
+    & (-1.88)     & (-1.78)     & (-2.65)       & (-5.69)       \\
+\midrule
+$N$ & 487 & 481 & 457 & 433 \\
+$R^2$  & 0.061 & 0.127 & 0.290 & 0.422 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+- Still: predicting short-term returns is very hard;
+:::
+
+::: {.column width="45%"}
+![](DP_Returns.png)
+\centering
+DP Ratio vs 7-year SP500 Returns
+:::
+
+::::
+
 ## Interest Rates and Equity Risk Premium
 ```{python}
 # Load interest rates
