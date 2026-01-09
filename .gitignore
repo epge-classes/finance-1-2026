@@ -4,6 +4,7 @@
 Topics.pdf
 AGENTS.md
 *_files/
+.vscode/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
