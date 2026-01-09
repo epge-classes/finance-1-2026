@@ -1,0 +1,25 @@
+---
+title: "Lecture 2: Welcome to Class, Mr. SDF"
+citecolor: FGVBlue
+linkcolor: FGVBlue
+bibliography: ../asset_pricing_references.bib
+link-citations: true
+---
+
+# Intro
+
+- Where do prices come from?
+- If you ask your friend at an asset management company:
+
+$$
+P_t = \sum\limits_{i=1}^{\infty} \frac{\mathbb{E}[D_{t+i}| \mathcal{F}_t]}{(1+r_t)^i}
+$$
+
+- Key question: what's the right $r_t$?
+- @cochrane_presidential_2011: the central question of asset pricing is what drives $r_t$;
+- A theory about $P_t$ is a theory about $r_t$, given cash-flow expectations;
+
+## {.standout}
+Questions?
+
+## References

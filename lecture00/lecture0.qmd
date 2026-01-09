@@ -1,17 +1,5 @@
 ---
 title: "Lecture 0: Class Setup"
-author: "Raul Riva"
-institute: "FGV EPGE"
-date: "2026-01-01"
-date-format: "MMMM, YYYY"
-format: 
-    beamer:
-        aspectratio: 169
-        include-in-header: ../beamer_template.tex
-        slide-level: 2
-jupyter: python3
-highlight-style: github
-urlcolor: FGVBlue
 ---
 
 ## Intro
