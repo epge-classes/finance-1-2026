@@ -19,7 +19,194 @@ $$
 - @cochrane_presidential_2011: the central question of asset pricing is what drives $r_t$;
 - A theory about $P_t$ is a theory about $r_t$, given cash-flow expectations;
 
+## Our agenda
+
+- Let's do this in proper EPGE style: microfounded first principles;
+- First: a two-period model to help us think about $P_t, r_t$;
+- Second: let's study a contingent claims economy to understand prices better;
+- Third: do we actually need all this to price an asset? Functional Analysis to the rescue!
+
+. . .
+
+\vspace{1em}
+
+**Food for thought**:
+
+- Why would you ever hold an asset that pays off in the future?;
+- Why do you care about returns?
+- Why do you care about uncertainty?
+
+# A Two-Period Model
+
+- A consumer lives for two periods and has an exogenous endowment process $e_t$;
+- Preferences captured by expected utility, with Bernoulli utility $u(c)$ and discount factor $\beta$;
+
+. . .
+
+- She chooses how much to consumer at $t$ and $t+1$;
+- There is a single risky asset that pays a random payoff $x_{t+1}$;
+- At $t$: choose a savings (in $\xi$ units of the asset) and a consumption plan;
+- At $t+1$: consume endowment + asset payoff;
+
+## The Consumer Problem
+```{=latex}
+\vspace{-1em}
+\begin{gather*}
+    \max_{c_t, c_{t+1}, \xi} u(c_t) + \beta \mathbb{E}_t[u(c_{t+1})] \\
+    \text{s.t.} \\
+    c_t + P_t \xi = e_t \\
+    c_{t+1} = e_{t+1} + x_{t+1} \xi
+\end{gather*}
+```
+
+. . .
+
+- The expectation is over the distribution of $e_{t+1}, x_{t+1}$ given information at $t$;
+
+. . .
+
+The FOC are:
+```{=latex}
+\vspace{-1em}
+\begin{gather*}
+    u'(c_t)\cdot P_t = \beta \mathbb{E}_t[u'(c_{t+1})x_{t+1}] = \beta \mathbb{E}_t[u'(e_{t+1} + x_{t+1}\xi)x_{t+1}] \\
+    \downarrow \\
+    P_t = \mathbb{E}_t\left[\beta \frac{u'(c_{t+1})}{u'(c_t)}\cdot x_{t+1}\right]
+\end{gather*}
+```
+
+## The Fundamental Equation
+
+- A consumer will pick savings to equate marginal cost and marginal benefit;
+- In a full-blown model, aggregate demand, impose market clearing, find prices;
+
+. . .
+
+- Let $m_{t+1} \equiv \beta \frac{u'(c_{t+1})}{u'(c_t)}$.  We call this guy the Stochastic Discount Factor (SDF);
+- This notation implies the most important equation in Asset Pricing:
+
+```{=latex}
+\vspace{-1em}
+\begin{equation*}
+    \boxed{P_t = \mathbb{E}_t[m_{t+1} x_{t+1}]}
+\end{equation*}
+``` 
+
+. . .
+
+- Important: $m_{t+1}$ is random. It varies with $c_{t+1}$;
+- Important: $m_{t+1}$ is *not* asset-specific. 
+- Corollary: all payoffs are priced the same way!
+
+. . .
+
+\begin{center}
+\alert{\textbf{This class is about $m_{t+1}$. Anything else is a sideshow.}}
+\end{center}
+
 ## {.standout}
 Questions?
 
-## References
+# Pricing Returns
+
+## Another Version of the Fundamental Equation
+- Define the gross return on the asset as $R_{t+1} \equiv \frac{x_{t+1}}{P_t}$;
+- Example in the of a stock: $x_{t+1} = D_{t+1} + P_{t+1}$;
+- Rearranging the fundamental equation:
+```{=latex}
+\vspace{-1em}
+\begin{equation*}
+    \mathbb{E}_t[m_{t+1} R_{t+1}] = 1
+\end{equation*}
+```
+
+. . .
+
+- Now consider an asset with a _certain_ return
+ $R_f \implies$ a "risk-free" asset;
+- It also holds that $\mathbb{E}[m_{t+1} R^f_t] = 1$;
+
+. . .
+
+ - For any asset, $R_{t+1} - R^f_{t}$ is its _risk premium_;
+ - Rearranging the fundamental equation:
+$$
+\mathbb{E}[m_{t+1}(R_{t+1} - R^f_t)] = 0
+$$
+
+## The Risk-Free Rate and the SDF
+- From $\mathbb{E}[m_{t+1} R^f_t] = 1$, we have:
+$$
+R^f_t = \frac{1}{\mathbb{E}_t[m_{t+1}]}
+$$
+- In *any economy*, the risk-free rate is tightly connected to $\mathbb{E}_t[m_{t+1}]$;
+- Importance for the literature: models for the risk-free interest rates are super important!
+
+. . .
+
+- Challenge: what happens to the price $P_t$ of the single risky asset if our consumer is risk-neutral?
+- Tip: what would happen to his Bernoulli utility function?
+
+## When Do Assets Have High Returns?
+
+- Recall: $\mathbb{E}_t[m_{t+1}(R_{t+1} - R^f_t)] = 0$ for any asset;
+- Rearranging:
+$$
+\mathbb{E}_t[R_{t+1} - R^f_t] = -\frac{\text{Cov}_t(m_{t+1}, R_{t+1})}{\mathbb{E}_t[m_{t+1}]} = - \text{Cov}_t(m_{t+1}, R_{t+1}) \cdot R^f_t
+$$
+
+. . .
+
+- The most important object here: $\text{Cov}_t(m_{t+1}, R_{t+1})$;
+- Recall: $m_{t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)}$;
+- When is $m_{t+1}$ high? When $c_{t+1}$ is low (why?);
+
+. . .
+
+- If $\text{Cov}_t(m_{t+1}, R_{t+1}) < 0 \implies \mathbb{E}[R_{t+1} - R^f_t] > 0$. Why? Can you give an example?
+- If $\text{Cov}_t(m_{t+1}, R_{t+1}) > 0 \implies \mathbb{E}[R_{t+1} - R^f_t] < 0$. Why? Can you give an example?
+
+## When Do Assets Have High Prices?
+
+- Recall: $P_t = \mathbb{E}_t[m_{t+1} x_{t+1}]$ for any asset;
+- Rearranging:
+$$
+P_t = \frac{\mathbb{E}_t[x_{t+1}]}{R^f_t} + \text{Cov}_t(m_{t+1}, x_{t+1})
+$$
+
+- Given cash-flow expectations, assets have high prices when they have lower risk premium;
+- This happens when $\text{Cov}_t(m_{t+1}, x_{t+1}) > 0$;
+- How is this related to what your friend at the asset management company does?
+
+## A Quick Look Into Infinite Periods
+- Assume that the asset pays a stream of dividends $d_{t}$ for $t=0, 1, 2, \ldots$;
+- The consumer seeks to maximize $\mathbb{E}_{t}\left[\sum\limits_{j=0}^\infty u(c_{t+j})\right]$;
+- The payoff at $t+1$ is now $x_{t+1} = d_{t+1} + P_{t+1}$;
+- Your job: show at home that
+$$
+P_t = \mathbb{E}_t\left[m_{t+1}\left(P_{t+1} + d_{t+1}\right)\right] = \mathbb{E}_t\left[\sum\limits_{j=1}^\infty \left(\underbrace{\prod\limits_{k=1}^{j} m_{t+k}}_{m_{t, t+j}}\right) d_{t+j}\right] = \mathbb{E}_t\left[\sum\limits_{j=1}^\infty m_{t, t+j} d_{t+j}\right]
+$$
+
+. . .
+
+- Exercise: show that, under a certain limiting condition, we have $P_t = \sum\limits_{j=1}^{\infty}\frac{\mathbb{E}[d_{t+j}]}{R^f_{t, t+j}} + \sum\limits_{j=1}^{\infty}\text{Cov}\left(d_{t+j}, m_{t, t+j}\right)$
+
+## Real Returns vs Nominal Returns
+- The basic equation $\mathbb{E}[m_{t+1}R_{t+1} = 1]$ holds for both real and nominal returns;
+- The main difference is the definition of $m_{t+1}$;
+- There is a _real_ SDF (denominated in goods) and a _nominal_ SDF (denominated in dollars);
+- They differ due to inflation!
+- If you assumed that $P_t$ and $x_{t+1}$ were nominal variables, you can write
+$$
+\frac{P_t}{\Pi_t} = \mathbb{E}_t\left[m_{t+1} \frac{x_{t+1}}{\Pi_{t+1}}\right] \implies P_t = \mathbb{E}_t\left[m_{t+1} \frac{\Pi_t}{\Pi_{t+1}} x_{t+1}\right]
+$$
+where $\Pi_t$ is the price level and $m_{t+1}\frac{\Pi_t}{\Pi_{t+1}}$ is the nominal SDF;
+
+## {.standout}
+Questions?
+
+# A Contingent Claims Economy
+
+
+## Readings and References
+(C): Chapters 1 and 3;
