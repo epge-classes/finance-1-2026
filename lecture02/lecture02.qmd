@@ -207,6 +207,132 @@ Questions?
 
 # A Contingent Claims Economy
 
+## Intro
+- We don't actually need utility functions to have an SDF;
+- We don't need an equilibrium notion either;
+- Next lecture: what are the minimal conditions for an SDF to exist?
+- For now: what is the SDF with contingent claims?
 
-## Readings and References
+## Primitives
+- There are only two dates $S$ states of nature;
+- Each state $s$ occurs with probability $\pi_s > 0$;
+
+. . .
+
+- There are $S$ Arrow-Debreu securities, or contingent claims;
+- Security $j$ pays 1 unit of account if state $j$ occurs, 0 otherwise;
+
+. . .
+
+- Let $q_j$ be the price of security $j$;
+- We assume these prices exist and they clear markets;
+- Crucial assumption: the Law of One Price holds;
+
+## Pricing Any Asset
+- Let's price an arbitrary asset that pays $x_s$ units of account in state $s$;
+- By the Law of One Price, we can replicate this asset with Arrow-Debreu securities;
+- The price of the asset is:
+$$
+P = \sum\limits_{s=1}^S q_s x_s
+$$
+
+. . .
+
+- We can rewrite this as:
+$$
+P = \sum\limits_{s=1}^S \underbrace{\frac{q_s}{\pi_s}}_{\equiv m_s}\cdot \pi_s \cdot x_s = \sum\limits_{s=1}^S \pi_s \cdot m_s \cdot x_s = \mathbb{E}[m x]
+$$
+- We have found an SDF: $m_s = \frac{q_s}{\pi_s}$;
+- Exercise: show at home that this SDF is unique, given prices $q_s$ and probabilities $\pi_s$.
+
+## A Synthetic Risk-Free Asset
+- Imagine an asset whose payoff is 1 in all states: $x_s = 1, \forall s$;
+- How much would it cost?
+  
+. . .
+
+- Let its price be denoted by $P^*$. By the Law of One Price:
+$$
+P^* = \sum\limits_{s=1}^S q_s = \sum\limits_{s=1}^S \pi_s m_s = \mathbb{E}[m]
+$$
+
+. . .
+
+- What's the return of this asset?
+$$
+R^* \equiv \frac{1}{P^*} = \frac{1}{\mathbb{E}[m]} > 0
+$$
+- This asset is risk-free by construction! So let's write $R^* = R^f$;
+
+## Risk-Neutral Measure
+- Consider another probability distribution $\{\pi_1^*, \ldots, \pi_S^*\}$ such that:
+$$\pi^*_s \equiv R^f \cdot m_s \cdot \pi_s = R^f q_s = \frac{q_s}{\sum\limits_{j=1}^S q_j}
+$$
+- Notice that $\pi_s^* > 0$ and $\sum\limits_{s=1}^S \pi_s^* = 1$;
+
+. . .
+
+- Importantly, this probability measure prices assets _as if_ everyone were risk-neutral:
+$$
+P = \sum\limits_{s=1}^S q_s x_s = \sum\limits_{s=1}^S \pi_s^* \cdot \frac{x_s}{R^f} = \mathbb{E}^*\left[\frac{x}{R^f}\right]
+$$
+where $\mathbb{E}^*$ is the expectation under the risk-neutral measure;
+
+## Intuition for the Risk-Neutral Measure
+- Important: this is a _made up_ measure! _We_ created it;
+- It depends on two things: 
+    1. The _physical_ probabilities $\pi_s$;
+    2. Attitude towards risk/marginal utility encoded by either $q$ or $m$;
+
+. . .
+
+- From the definition:
+$$
+\frac{\pi^*_s}{\pi_s} = R^f \cdot m_s
+$$
+
+- If $m_s$ is high (bad states), then $\pi^*_s > \pi_s$. If $m_s$ is low (good states), then $\pi^*_s < \pi_s$;
+
+. . .
+
+- Exercise: show that $\mathbb{E}^*[R] = R^f$ for any asset. Also show that $\mathbb{E}\left[\frac{\pi^*_s}{\pi_s}\right] = 1$;
+
+. . .
+
+- The risk-neutral measure shifts mass from good states to bad states;
+- Pay a lot of attention to states that either very likely (high $\pi_s$) _or_ really bad (high $m_s$);
+
+## {.standout}
+Questions?
+
+# Bringing Investors Back
+
+- Go back to the two-period model but allow for $S$ contigent securities;
+- The consumer chooses consumption $c$ today _and_ consumption $c(s)$ tomorrow;
+
+. . .
+
+```{=latex}
+\vspace{-1em}
+\begin{gather*}
+    \max_{c_t, c_{t+1}(s), \xi_j} u(c_t) + \beta \mathbb{E}_t[u(c_{t+1}(s))] \\
+    \text{s.t.} \begin{cases}
+    c_t + \sum\limits_{j=1}^S q_j \xi_j = e_t \\
+    c_{t+1}(s) = e_{t+1}(s) + \xi_j \quad \text{if state } s \text{ occurs}
+\end{cases}
+\end{gather*}
+```
+
+. . .
+
+- Exercise: show that $q_s = \beta \pi_s\frac{u'(c_{t+1}(s))}{u'(c_t)}$;
+
+. . .
+
+- Using our definitions: $m(s) = \beta \frac{u'(c_{t+1}(s))}{u'(c_t)} \implies \frac{m(s_1)}{m(s_2)} = \frac{u'(c_{t+1}(s_1))}{u'(c_{t+1}(s_2))}$. Intuition?
+
+## {.standout}
+Questions?
+
+## Readings and References {.noframenumbering}
 (C): Chapters 1 and 3;
