@@ -11,9 +11,10 @@ This is a collection of recommended readings and references.
 - [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x) and/or (C) - Chap 20
 - [New Frontiers in Asset Pricing](https://www.youtube.com/watch?v=JzdZmvH8kpA) and [Some Open Questions](https://www.youtube.com/watch?v=9JwliAf-Ulc)
 
-### Lecture 2: No-Arbitrage and The Existence of an SDF
-- Fundamental Theorem of Asset Pricing;
-- Complete vs incomplete markets;
+### Lecture 2: Welcome to Class, Mr. SDF
+- (C) - Chap 1 and 3
+- [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x)
+
 
 ### SDFs and Beta-Representation of Returns
 - The equivalence of representations;
