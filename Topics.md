@@ -16,9 +16,11 @@ This is a collection of recommended readings and references.
 - [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x)
 
 
-### SDFs and Beta-Representation of Returns
-- The equivalence of representations;
-- The mean-variance frontier;
+### Lecture 3: The Geometry of No-Arbitrage
+- (C) Chapters 1, 4, and 5
+- (D) Chapter 1
+- [Hansen and Richard, 1987](https://www.jstor.org/stable/1913601?seq=1)
+- [Hansen and Jagannathan, 1991](https://larspeterhansen.org/wp-content/uploads/2016/11/ImplicationsofSecurityMarketData.pdf)
 
 ### The SDF as a Change of Measure
 - Basics of Measure Theory and change of measure;
