@@ -12,12 +12,17 @@ bibliography: ../asset_pricing_references.bib
 
 . . .
 
-- The answer is a sharp **No**
+- The answer is a sharp **No**;
 - The cornerstone assumption is **No Arbitrage**;
 - This will guarantee the existence of *one* SDF that prices all assets correctly;
 - Uniqueness will be more subtle;
 
 ## Our Agenda
+
+- **No-Arbitrage implies state prices exist**: very weak assumptions guarantee SDF existence;
+- **Uniqueness of SDFs depends on market completeness**;
+- **Hansen-Jagannathan bound**: observable Sharpe ratios constrain SDF volatility;
+- **Minimum-variance SDF** and its role in asset pricing;
 
 # Setup
 
