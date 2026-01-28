@@ -1,0 +1,249 @@
+---
+title: "Lecture 4: Beta-Represenation of Returns and Factor Models"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+- All that matters for pricing is $\text{Proj}(m|\mathcal{R}) \implies$ many SDFs may have the same pricing implications
+- @Hansen1991 explored one SDF that is affine in returns, but it has lots of parameters
+- Is there a more parsimonious representation for the SDF?
+
+. . .
+
+- In industry and MBA classes, people talk a lot about the CAPM
+- How is that related to all this SDF stuff we are talking?
+- What about Fama-French factors? Factor investing? Are these just buzzwords?
+
+# All Models Are Single-Factor Models
+
+- No arbitrage implies: $\mathbb{E}[mR] = 1$ for any traded asset
+- Recall: $\mathbb{E}[m(R-R_f)] = 0$. What's the intuition here?
+
+. . .
+
+This further implies
+
+$$
+\mathbb{E}[R - R_f] = -\frac{\text{Cov}(m, R)}{\mathbb{E}[m]} = \frac{\text{Cov}(m, R)}{\sigma^2(m)} \cdot \left( - \frac{\sigma^2(m)}{\mathbb{E}[m]}\right)
+$$
+
+. . .
+
+Let $\beta_R \equiv \frac{\text{Cov}(m, R)}{\sigma^2(m)}$ and $\lambda \equiv - \frac{\sigma^2(m)}{\mathbb{E}[m]}$
+
+$$
+\mathbb{E}[R - R_f] = \beta_R \cdot \lambda
+$$
+
+## Important Comments
+- $\beta_R$ is a characteristic of asset $R$ only, while $\lambda$ is a characteristic of the economy only
+- This is a completely general result that holds for any SDF $m$
+
+. . .
+
+- $\beta_R$ is typically called a "risk-loading" or "factor loading"
+- $\lambda$ is typically called a "market price of risk" or "factor risk premium"
+- What's the value for $\lambda$ if investors are risk-neutral?
+
+. . .
+
+- Why do assets have different risk premia? Because they have different betas with respect to the SDF
+
+. . .
+
+- If you use the conditional pricing equation, a conditional version holds:
+$$
+\mathbb{E}_t[R_{t+1} - R_{f,t}] = \beta_{R,t} \cdot \lambda_t
+$$
+
+## The CAPM as a Special Case
+- The CAPM is a special case of this general result
+- In that case, the SDF $m$ is affine in the return on the market portfolio $R_m$:
+$$
+m = a - b R_m
+$$
+
+. . .
+
+Since $m$ must price $R_m$ and $R_f$, we have two equations in two unknowns $(a,b)$:
+```{=latex}
+\begin{equation*}
+\begin{cases}
+\mathbb{E}[m R_f] = 1 \\
+\mathbb{E}[m R_m] = 1
+\end{cases}
+\implies \begin{cases}
+a = \frac{1}{R_f} + b \mathbb{E}[R_m] \\
+b = \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m) R_f}
+\end{cases} 
+\end{equation*}
+```
+Exercise: verify this!
+
+## The CAPM As A Special Case
+Plugging back in, we have
+$$
+m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (\mathbb{E}[R_m] - R_m) \right)
+$$
+
+. . .
+
+Calculating the beta, we have
+$$
+\beta_R \equiv \frac{\text{Cov}(a - bR_m, R)}{\sigma^2(a - bR_m)} = - \frac{\text{Cov}(R_m, R)}{b \cdot \sigma^2(R_m)} \equiv -\frac{1}{b} \cdot \beta_{R}^{Market}
+$$
+
+. . .
+
+and now the $\lambda$:
+$$
+\lambda \equiv - \frac{\sigma^2(m)}{\mathbb{E}[m]} = b^2 \cdot \frac{\sigma^2(R_m)}{\mathbb{E}[m]} = - b \cdot \mathbb{E}[R_m - R_f]
+$$
+
+. . .
+
+Then:
+$$
+\mathbb{E}[R - R_f] = -\frac{1}{b}\cdot \beta_R \cdot \left(- b \cdot \mathbb{E}[R_m - R_f]\right) = \beta_R \cdot \mathbb{E}[R_m - R_f]
+$$
+
+## SDFs and Return Representation
+- Last slide: all we need to justify the CAPM is a way to justify $m = a - b R_m$
+- Many ways to do this:
+  - Quadratic utility in two periods
+  - Exponential utility in two periods and log-normally distributed returns
+  - Infinite horizon, quadratic utility, and i.i.d. returns...
+- Most importantly: a theory about where returns come from implies a theory about the SDF
+- The converse is obviously also true
+
+# The Beta-Representation of Returns
+
+- The CAPM implies that firms will have different returns because of different betas
+- This idea actually generalized to more sources of risk
+
+```{=latex}
+\begin{mydef}
+Returns follow a \textit{beta-representation} if there is $\gamma \in \mathbb{R}$ and $\lambda \in \mathbb{R}^K$ such that, for any return $R_i$, we can find $\beta_i \in \mathbb{R}^K$ ensuring that
+\begin{equation*}
+\mathbb{E}[R_i] = \gamma + \beta_i' \lambda
+\end{equation*}
+\end{mydef}
+```
+
+. . .
+
+- Very important: only $\beta_i$ depends on the asset $i$
+- $\gamma$ and $\lambda$ are economy-wide parameters
+- If the returns are excess returns, then $\gamma = 0$. Why?
+
+## Why Should We Care About Beta-Representations?
+- Because they are very general: @Roll1977
+- If there exists a mean-variance frontier of returns, there is a beta-representation
+
+. . .
+
+- All returns are of the form $R_i = R^* + w_i R^{*e} + n_i$, with $\mathbb{E}[n_i] = 0$
+  - $R^*$ is related to the Hansen-Jagannathan SDF
+  - $R^{*e} = \text{Proj}(1 | \mathcal{R}^e)$, where $\mathcal{R}^e \equiv$ the space of excess returns
+  - $w_i$ is a scalar, and $n_i$ is some excess return
+  - All three elements are orthogonal
+- Mean-variance efficient returns are given by $R_i = R^* + w_i R^{*e}$
+
+. . .
+
+- Upside: we don't lose much thinking about beta-representation of returns
+- Downside: using a beta representation imposes almost no structure on returns, no discipline
+
+## Beta-Representation and Factor Models
+- Beta-representations are closely related to factor models of returns
+- A $K$-factor model of returns is given by
+$$
+R_{i, t} = \alpha_i + \beta_i' F_{t} + \epsilon_{i, t}
+$$
+where $F_t = (f_{1, t}, \ldots, f_{K, t})^\top$ and $\epsilon_{i,t}$ is uncorrelated with $F_t$.
+
+. . .
+
+- If we take the expectation: $\mathbb{E}[R_{i}] = \alpha_i + \beta_i' \mathbb{E}[F]$
+- A beta-representation would also require $\alpha_i = \alpha$ for all $i$;
+- Factor models are everywhere in Macro and Finance: common movements are driven by few factors still allowing for idiosyncratic stuff
+
+## {.standout}
+Questions?
+
+# Towards an Equivalence Result
+
+- Question: is there a connection between potential factors driving returns and the SDF?
+- Answer: Yes! Beta-representations derived from a factor model imply the existence of an affine SDF!
+
+```{=latex}
+\begin{theorem}
+Given the model
+\begin{equation}
+m = a + b'F, \qquad \mathbb{E}[mR_i] = 1, \forall i
+\label{SDF}
+\end{equation}
+one can find $\gamma \in \mathbb{R}$ and $\lambda \in \mathbb{R}^K$ such that
+\begin{equation*}
+\mathbb{E}[R_i] = \gamma + \beta_i' \lambda
+\end{equation*}
+where $\beta_i$ are the regression coefficients of $R_i$ on $F$ (and a constant). Conversely, given $\gamma$ and $\lambda$ satisfying the beta-representation, one can find $a \in \mathbb{R}$ and $b \in \mathbb{R}^K$ such that the SDF in \eqref{SDF} prices all assets.
+\end{theorem}
+```
+
+## Proof - Part 1
+We can assume without any loss of generality that $\mathbb{E}[F] = 0$ (otherwise redefine $a$ accordingly).
+
+Let's use the pricing equation in the following form:
+$$
+\mathbb{E}[R_i] = \frac{1}{\mathbb{E}[m]} - \frac{\text{Cov}(m, R_i)}{\mathbb{E}[m]}
+$$
+
+. . .
+
+Notice that $\mathbb{E}[m] = a$. Also,
+$$
+\text{Cov}(m, R_i) = \text{Cov}(a + b'F, R_i) = b' \text{Cov}(F, R_i) = b' \text{Cov}[F, F]\text{Cov}[F, F]^{-1}\text{Cov}(F, R_i)
+$$
+
+. . . 
+
+If we define $\beta_i \equiv \text{Cov}[F, F]^{-1}\text{Cov}(F, R_i)$, we have
+$$
+\mathbb{E}[R_i] = \frac{1}{a} - \frac{b' \text{Cov}[F, F] \beta_i}{a} = \gamma + \beta_i' \lambda
+$$
+with $\gamma \equiv \frac{1}{a}$ and $\lambda \equiv - \frac{\text{Cov}[F, F] b}{a}$.
+
+## Proof - Part 2
+Conversely, assume a beta-representation. Then, we can just define 
+
+$$
+a \equiv \frac{1}{\gamma}, \qquad b \equiv - \text{Cov}[F, F]^{-1} \frac{\lambda}{\gamma}
+$$
+which concludes the proof.
+
+\vspace{0.5cm}
+\hrule
+\vspace{0.5cm}
+
+Important:
+\begin{itemize}
+    \item We said nothing about uniqueness. This is not the unique SDF if markets aren't complete.
+    \item The beta-representation is not necessarily unique either.
+\end{itemize}
+
+\pause
+
+Even more important:
+$$
+\lambda = -\gamma \cdot \mathbb{E}[mF]
+$$
+What's the intuition? $\lambda$ is usually called the "factor risk premium".
+
+
+## AI-Generated Summary
+
+## Readings and Rereferences {.noframenumbering}
+- (C): Chapters 6, 7, and 9
