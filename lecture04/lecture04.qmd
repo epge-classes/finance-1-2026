@@ -18,7 +18,7 @@ bibliography: ../asset_pricing_references.bib
 
 # All Models Are Single-Factor Models
 
-- No arbitrage implies: $\mathbb{E}[mR] = 1$ for any traded asset
+- No arbitrage implies: $\mathbb{E}[mR] = 1$ for any traded return
 - Recall: $\mathbb{E}[m(R-R_f)] = 0$. What's the intuition here?
 
 . . .
@@ -85,7 +85,7 @@ Exercise: verify this!
 ## The CAPM As A Special Case
 Plugging back in, we have
 $$
-m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (\mathbb{E}[R_m] - R_m) \right)
+m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (\mathbb{E}[R_m] - R_f) \right)
 $$
 
 . . .
@@ -106,7 +106,7 @@ $$
 
 Then:
 $$
-\mathbb{E}[R - R_f] = -\frac{1}{b}\cdot \beta_R \cdot \left(- b \cdot \mathbb{E}[R_m - R_f]\right) = \beta_R \cdot \mathbb{E}[R_m - R_f]
+\mathbb{E}[R - R_f] = -\frac{1}{b}\cdot \beta_R^{Market} \cdot \left(- b \cdot \mathbb{E}[R_m - R_f]\right) = \beta_R^{Market} \cdot \mathbb{E}[R_m - R_f]
 $$
 
 ## SDFs and Return Representation
