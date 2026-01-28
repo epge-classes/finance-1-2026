@@ -4,7 +4,10 @@ Generating research ideas is the hardest part of this job. Hence, the earlier we
 
 The precise due date will be discussed in class, and updated below:
 
-**Due date**: TDB
+**Due dates**:
+
+- Submit your proposal by April 15th, 2026.
+- Submit your peer-review by April 25th, 2026.
 
 Here, you will find precise guidelines on how to tackle this assignment.
 
