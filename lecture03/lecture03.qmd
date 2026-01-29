@@ -280,7 +280,7 @@ $$
 - The maximum Sharpe Ratio attained by a portfolio is bounded the volatility of the SDF;
 - This is very general: we only assumed No-Arbitrage!
 - Important: to mimick the high Sharpe Ratios observed in the data, the SDF must be very volatile;
-- The return process with the highest (absolute) Sharpe Ratio is such that $\rho(m, R - R_f) = \pm 1 \implies R - R_f = a + b \cdot m + \text{noise}$;
+- The return process with the highest (absolute) Sharpe Ratio is such that $\rho(m, R - R_f) = \pm 1 \implies R - R_f = a + b \cdot m$;
 - What's the intuition?
 
 ## {.standout}
@@ -313,7 +313,7 @@ where $e$ is orthogonal to $\mathcal{R}$;
 
 - Any element of $\mathcal{R}$ can be written as:
 $$
-m(a,b) \equiv a + b^\top \left(R - R_f \mathbf{1}\right)
+m(a,b) \equiv a + b^\top \left(R - R_f \mathbf{1} - \mu\right), \quad \mu \equiv \mathbb{E}[R - R_f \mathbf{1}]
 $$
 
 . . .
@@ -336,7 +336,7 @@ and $\mathbb{E}[m(a,b)] = 1/R_f$
 a^* = \frac{1}{R_f}, \qquad b^* = - \frac{1}{R_f} \cdot \mu^\top \Sigma^{-1}
 \end{equation*}
 ```
-where $\mu \equiv \mathbb{E}[R - \mathbb{E}[R]]$ and $\Sigma \equiv \mathbb{E}\left[(R - \mathbb{E}[R])(R - \mathbb{E}[R])^\top\right]$.
+where $\Sigma \equiv \mathbb{E}\left[(R - R_f\mathbf{1} - \mu)(R - R_f\mathbf{1} - \mu)^\top\right]$ is the covariance matrix of excess returns.
 
 
 ## The Hansen-Jagannathan SDF
@@ -344,7 +344,7 @@ where $\mu \equiv \mathbb{E}[R - \mathbb{E}[R]]$ and $\Sigma \equiv \mathbb{E}\l
 - The SDF with the smallest variance that prices the $N$ risky assets and the risk-free rate correctly is given by:
 ```{=latex}
 \begin{equation*}
-m^* = \frac{1}{R_f} - \frac{1}{R_f} \cdot \mu^\top \Sigma^{-1} \left(R - R_f \mathbf{1}\right)
+m^* = \frac{1}{R_f} - \frac{1}{R_f} \cdot \mu^\top \Sigma^{-1} \left(R - R_f \mathbf{1} - \mu\right)
 \end{equation*}
 ```
 
