@@ -22,6 +22,15 @@ This is a collection of recommended readings and references.
 - [Hansen and Richard, 1987](https://www.jstor.org/stable/1913601?seq=1)
 - [Hansen and Jagannathan, 1991](https://larspeterhansen.org/wp-content/uploads/2016/11/ImplicationsofSecurityMarketData.pdf)
 
+### Lecture 4: Beta-Representation of Returns and Factor Models
+- (C) Chapters 6, 7, and 9
+- [Ross, 1976](http://dx.doi.org/10.1016/0022-0531(76)90046-6)
+- [Huberman, 1982](http://dx.doi.org/10.1016/0022-0531(82)90098-9)
+- [Chamberlain and Rothschild, 1983](http://dx.doi.org/10.2307/1912275)
+- [Connor and Korajczyk, 1993](http://dx.doi.org/10.1111/j.1540-6261.1993.tb04754.x)
+- [Connor and Korajczyk, 1995](http://dx.doi.org/10.1016/S0927-0507(05)80048-9)
+- [Bai and Ng, 2002](http://dx.doi.org/10.1111/1468-0262.00273)
+
 ### The SDF as a Change of Measure
 - Basics of Measure Theory and change of measure;
 - The Radon-Nikodym derivative and the SDF;
