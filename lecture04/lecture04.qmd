@@ -200,7 +200,7 @@ Consider a sequence of economies in which $n$ returns $\left\{R_i\right\}_{i=1}^
 \begin{theorem}[Arbitrage Pricing Theory]
 Assume returns follow a K-factor model, there is no arbitrage in large markets, and $\exists M$ such that $\mathbb{E}[\epsilon_{i,t}^2] \leq M$ for all $i$ and $t$. Then, we can find $\gamma \in \mathbb{R}$ and $\lambda \in \mathbb{R}^K$ such that
 \begin{equation*}
-\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n}\left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 \leq \infty
+\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n}\left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 < \infty
 \end{equation*}
 \end{theorem}
 ```
@@ -248,7 +248,7 @@ which implies we have an arbitrage in large markets.
 Hence, we must have $\lim\limits_{n \to \infty} \lVert c \rVert^2 < \infty$, which is equivalent to
 
 $$
-\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} c_i^2 =  \lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} \left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 \leq \infty
+\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} c_i^2 =  \lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} \left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 < \infty
 $$
 concluding the proof.
 
