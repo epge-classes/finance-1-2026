@@ -85,7 +85,7 @@ Exercise: verify this!
 ## The CAPM As A Special Case
 Plugging back in, we have
 $$
-m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (R_m - R_f) \right)
+m = \frac{1}{R_f} \left( 1 - \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (R_m - \mathbb{E}[R_m]) \right)
 $$
 
 . . .
@@ -99,7 +99,7 @@ $$
 
 and now the $\lambda$:
 $$
-\lambda \equiv - \frac{\sigma^2(m)}{\mathbb{E}[m]} = b^2 \cdot \frac{\sigma^2(R_m)}{\mathbb{E}[m]} = - b \cdot \mathbb{E}[R_m - R_f]
+\lambda \equiv - \frac{\sigma^2(m)}{\mathbb{E}[m]} = - b^2 \cdot \frac{\sigma^2(R_m)}{\mathbb{E}[m]} = - b \cdot \mathbb{E}[R_m - R_f]
 $$
 
 . . .
@@ -356,6 +356,9 @@ where $B$ is an $n \times K$ matrix and $D$ is a matrix whose largest eigenvalue
 - *You should only pay your manager if she generates $\alpha$*! If APT holds, you should pay no one.
 - Veeeery long literature on this. "Consensus": some skill exists, but it's small, hard to find, and may not survive trading costs. See @Fama2010.
 - Super cool recent paper about it: @DeMiguel2023
+
+## {.standout}
+Questions?
 
 # Towards an Equivalence Result
 
