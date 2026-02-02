@@ -85,7 +85,7 @@ Exercise: verify this!
 ## The CAPM As A Special Case
 Plugging back in, we have
 $$
-m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (\mathbb{E}[R_m] - R_f) \right)
+m = \frac{1}{R_f} \left( 1 + \frac{\mathbb{E}[R_m] - R_f}{\sigma^2(R_m)} (R_m - R_f) \right)
 $$
 
 . . .
@@ -118,13 +118,34 @@ $$
 - Most importantly: a theory about where returns come from implies a theory about the SDF
 - The converse is obviously also true
 
-# The Beta-Representation of Returns
+# The Arbitrage Pricing Theory from Ross (1976)
+
+## A bit of history:
+
+- Early 1950s: Markowitz's seminar paper + early CAPM ideas
+- 1960s: Sharpe, Lintner, Treynor formalize the CAPM using equilibrium arguments and strong assumptions
+- Unpleasant stuff: tough conditions are needed to justify the CAPM in their framework (example: quadratic utility)
+- 1970s: APT from @Ross1976 provides a more general way of thinking about expected returns;
+- 1980s and later: very serious data work on returns and factor models
+
+## The Main Insight
+
+- In the 1970s, the SDF-heavy approach to asset pricing was not yet mainstream
+- Question 1: how can we justify several factors?
+- Question 2: when can we write "expected returns $=$ something affine"?
+- @Ross1976 provided an answer to both questions!
+- @Huberman1982 provided a much nicer proof (which we will follow)
+- Insight: if returns come from a factor model, there is no arbitrage, and there are many assets $\implies$ only systematic risk matters
+- Great stuff: no utility functions, no equilibrium notion -- lightweight environment
+
+
+## The Beta-Representation of Returns
 
 - The CAPM implies that firms will have different returns because of different betas
 - This idea actually generalized to more sources of risk
 
 ```{=latex}
-\begin{mydef}
+\begin{mydef}[Beta-Representation of Returns]
 Returns follow a \textit{beta-representation} if there is $\gamma \in \mathbb{R}$ and $\lambda \in \mathbb{R}^K$ such that, for any return $R_i$, we can find $\beta_i \in \mathbb{R}^K$ ensuring that
 \begin{equation*}
 \mathbb{E}[R_i] = \gamma + \beta_i' \lambda
@@ -138,40 +159,203 @@ Returns follow a \textit{beta-representation} if there is $\gamma \in \mathbb{R}
 - $\gamma$ and $\lambda$ are economy-wide parameters
 - If the returns are excess returns, then $\gamma = 0$. Why?
 
-## Why Should We Care About Beta-Representations?
-- Because they are very general: @Roll1977
-- If there exists a mean-variance frontier of returns, there is a beta-representation
+## Factor Models
+
+- Main insight of factor models: a whole panel of variables is drive by few systematic sources of variation
+- Very common in Macro: many time-series co-move over time
+- Also true in Finance: many returns co-move over time
 
 . . .
 
-- All returns are of the form $R_i = R^* + w_i R^{*e} + n_i$, with $\mathbb{E}[n_i] = 0$
-  - $R^*$ is related to the Hansen-Jagannathan SDF
-  - $R^{*e} = \text{Proj}(1 | \mathcal{R}^e)$, where $\mathcal{R}^e \equiv$ the space of excess returns
-  - $w_i$ is a scalar, and $n_i$ is some excess return
-  - All three elements are orthogonal
-- Mean-variance efficient returns are given by $R_i = R^* + w_i R^{*e}$
+```{=latex}
+\begin{mydef}[K-Factor Model of Returns]
+Returns follow a \textit{K-factor model} if there are $K$ factors $F_t \in \mathbb{R}^K$ such that, for any return $R_{i,t}$, we can write
+\begin{equation*}
+R_{i,t} = \alpha_i + \beta_i' F_t + \epsilon_{i,t}
+\end{equation*}
+with $\alpha_i \in \mathbb{R}$ and $\beta_i \in \mathbb{R}^K$, where $\epsilon_{i,t}$ is uncorrelated with $F_t$ \textit{and} $\mathbb{E}[\epsilon_{i,t}] = \mathbb{E}[\epsilon_{i, t}\epsilon_{j,t}] = 0$ for all $i \neq j$.
+\end{mydef}
+```
+We can assume that $\mathbb{E}[F] = 0$ without loss of generality (otherwise redefine $\alpha_i$ accordingly).
+
+## Arbitrage in Large Markets
+
+- Since everyone is exposed to $F_t$, there is no way to diversify that risk away
+- The risk imposed by $\epsilon$ is easy to be diversified away since it's $\textit{uncorrelated}$ across assets
+- The number of traded assets will go to $\infty$. We need another notion of "No-Arbitrage".
+
+\vspace{0.3cm}
+```{=latex}
+\begin{mydef}[Arbitrage in Large Markets]
+Consider a sequence of economies in which $n$ returns $\left\{R_i\right\}_{i=1}^{n}$ are traded at the $n$-th economy. There exists an \textit{arbitrage in large markets} if there is a sequence of portfolios $\left\{\theta^{(n)}\right\}_{n=1}^\infty$ with $\sum\limits_{i=1}^{n} \theta_i^{(n)} = 0$, for all $n$, such that 
+\begin{equation*}
+\lim\limits_{n\rightarrow \infty} \mathbb{E}\left[\sum_{i=1}^n \theta_i^{(n)} R_i\right] = \infty, \qquad \lim\limits_{n\rightarrow \infty} \text{Var}\left(\sum_{i=1}^n \theta_i^{(n)} R_i\right) = 0
+\end{equation*}
+\end{mydef}
+```
+
+## The APT Theorem
+
+```{=latex}
+\begin{theorem}[Arbitrage Pricing Theory]
+Assume returns follow a K-factor model, there is no arbitrage in large markets, and $\exists M$ such that $\mathbb{E}[\epsilon_{i,t}^2] \leq M$ for all $i$ and $t$. Then, we can find $\gamma \in \mathbb{R}$ and $\lambda \in \mathbb{R}^K$ such that
+\begin{equation*}
+\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n}\left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 \leq \infty
+\end{equation*}
+\end{theorem}
+```
 
 . . .
 
-- Upside: we don't lose much thinking about beta-representation of returns
-- Downside: using a beta representation imposes almost no structure on returns, no discipline
+- As $n \to \infty$, the expected returns are well-approximated by a beta-representation!
+- In large markets with a factor structure, no arbitrage leads to a beta-representation of returns!
+- Notice that $\gamma$ has no index $i$. Otherwise the result would be trivial.
+- Exercise: show that, if there is a risk-free asset, then $\gamma = R_f$.
 
-## Beta-Representation and Factor Models
-- Beta-representations are closely related to factor models of returns
-- A $K$-factor model of returns is given by
+## Proof Part 1
+
+- Take a fixed $n$. Let $E \equiv [\mathbb{E}[R_1], \ldots, \mathbb{E}[R_n]]^\top$ and $epsilon \equiv [\epsilon_1, \ldots, \epsilon_n]^\top$
+- Let $e \equiv [1, \ldots , 1]^\top$ and $\beta \equiv [\beta_1, \ldots, \beta_n]^\top$
+- Notice that we can write $R = E + \beta F + \epsilon$ where $R \equiv [R_1, \ldots, R_n]^\top$
+- We can always write $E = \gamma e + \beta \lambda + c$ with $c \in \mathbb{R}^n$ such that $e'c = 0$ and $\beta' c = 0$. Why?
+
+. . .
+
+- Let $\delta \in \mathbb{R}$ and consider the portfolio $\theta \equiv \delta \cdot c$
+- The random return of $\theta$ is given by
 $$
-R_{i, t} = \alpha_i + \beta_i' F_{t} + \epsilon_{i, t}
+R_\theta \equiv \sum_{i=1}^n \theta_i R_i = \delta \sum_{i=1}^n c_i R_i = \delta c^\top \left(E + \beta F + \epsilon \right) = \delta c^\top c + \delta c^\top \epsilon
 $$
-where $F_t = (f_{1, t}, \ldots, f_{K, t})^\top$ and $\epsilon_{i,t}$ is uncorrelated with $F_t$.
 
 . . .
 
-- If we take the expectation: $\mathbb{E}[R_{i}] = \alpha_i + \beta_i' \mathbb{E}[F]$
-- A beta-representation would also require $\alpha_i = \alpha$ for all $i$;
-- Factor models are everywhere in Macro and Finance: common movements are driven by few factors still allowing for idiosyncratic stuff
+- The expected return of $\theta$ is given by $\mathbb{E}[R_\theta] = \delta c^\top c = \delta \lVert c \rVert^2$
+- The variance of $\theta$ is given by $\text{Var}(R_\theta) = \delta^2 \mathbb{E}[(c^\top \epsilon)^2] \leq \delta^2 \lVert c \rVert^2 M$ since $\mathbb{E}[\epsilon_i^2] \leq M$ for all $i$.
+
+## Proof Part 2
+Recall that $\lVert c \rVert^2 = \sum_{i=1}^n c_i^2$. Assume, for the sake of a contradiction, that $\lim\limits_{n \to \infty} \lVert c \rVert^2 = \infty$.
+
+. . .
+
+Then, we can choose $\delta \equiv \frac{1}{\lVert c \rVert}^{3/4}$ (exercise: what happens if $\lVert c \rVert = 0$?). This leads to 
+
+$$
+\mathbb{E}[R_\theta] = \lVert c \rVert^{1/4} \to \infty, \qquad \text{Var}(R_\theta) \leq \frac{M}{\lVert c \rVert^{1/2}} \to 0
+$$ 
+
+which implies we have an arbitrage in large markets.
+
+Hence, we must have $\lim\limits_{n \to \infty} \lVert c \rVert^2 < \infty$, which is equivalent to
+
+$$
+\lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} c_i^2 =  \lim\limits_{n\rightarrow \infty} \sum\limits_{i=1}^{n} \left(\mathbb{E}[R_i] - \gamma - \beta_i' \lambda\right)^2 \leq \infty
+$$
+concluding the proof.
+
+## Comments on the APT Theorem
+
+- Light environment: no utility functions, no equilibrium notion, correlation structure for factors is (almost) anything you want
+- Major contribution: in large markets, the beta-representation is very general
+- Super important insight: idiosyncratic risk cannot command a premium
+- "*Oh, this CEO is really, really good. We should pay a premium for this stock*" $\implies$ BS
+- For a given $n$, this can be arbitrarily bad, though
+
+. . .
+
+**Caveats**:
+
+- What are these factors? Are they the same over time?
+- What if the $\beta$'s change over time?
+- What about transaction costs, liquidity, and other market frictions?
 
 ## {.standout}
 Questions?
+
+# Taking the APT to the Data
+
+## Strict Factor Structure
+- Ross considered a *strict* factor structure
+- It imposes structure on the covariance matrix of returns $\Sigma \equiv \mathbb{E}[(R - \mathbb{E}[R])(R - \mathbb{E}[R])^\top]$
+
+$$
+\Sigma = \text{Cov}(\beta F + \epsilon, \beta F + \epsilon) = \beta \text{Cov}(F, F) \beta^\top + \text{Cov}(\epsilon, \epsilon) = \beta \text{Cov}(F, F) \beta^\top + D
+$$
+where $D$ is a *diagonal* matrix with uniformly bounded entries.
+
+. . .
+
+- $\Sigma$ can be decomposed into a low-rank matrix plus a diagonal matrix
+- What real-world situations would violate this?
+
+. . .
+
+- Notice that there is some rotation-invariance here!
+- Bad news: interpreting factors can be super hard!
+
+## Approximate Factor Structure
+
+- @Chamberlain1983 introduced a weaker notion: *approximate factor structure*
+
+```{=latex}
+\begin{mydef}[Approximate Factor Structure]
+Returns follow an \textit{approximate $K$-factor structure} if their covariance matrix $\Sigma$, for all $n$, can be written as
+\begin{equation*}
+\Sigma = BB^\top + D
+\end{equation*}
+where $B$ is an $n \times K$ matrix and $D$ is a matrix whose largest eigenvalue is uniformly bounded.
+\end{mydef}
+```
+
+. . . 
+
+- They showed that the APT theorem still holds under this weaker assumption
+
+. . .
+
+- First cool result: if returns have an approximate factor structure, $\Sigma$ will have $K$ diverging eigenvalues and $n-K$ eigenvalues remain bounded as $n \to \infty$
+
+## Approximate Factor Structure
+- Second cool result: if $\Sigma$ has $K$ diverging eigenvalues and $n-K$ bounded ones, then returns have an approximate factor structure
+- $\beta$'s can be recovered from the eigenvectors and eigenvalues of $\Sigma$!
+- Write $\Sigma = Q \Lambda Q^\top$ with ordered eigenvalues $\lambda_1 \geq \dots \geq \lambda_n$, choose the first $K$ eigenpairs with $\lambda_k \to \infty$ as $n \to \infty$.
+
+. . .
+
+- Set $B \equiv Q_K \Lambda_K^{1/2}$ where $Q_K$ stacks the top $K$ eigenvectors and $\Lambda_K$ is the diagonal matrix of the corresponding eigenvalues
+- Then $D \equiv \Sigma - BB^\top$ has bounded eigenvalues
+
+. . .
+
+- The factor loadings for asset $i$ are the rows of $B$ (i.e., $\beta_i = B_{i\cdot}$)
+-  Factors are defined by projecting returns on the same eigenvectors: $F_t \equiv Q_K^\top (R_t - \mathbb{E}[R_t])$
+
+
+
+
+## Tests for Numbers of Factors
+
+- Given data, how to estimate the number of factors K?
+- No easy answer, it really depends on the context
+- But tests typically rely on the eigenvalues of the sample covariance matrix $\hat{\Sigma}$ and the results above!
+
+. . .
+
+- Directly related to testing the number of factors with an approximate structure: @Connor1993
+- Classic in Macro using large $N$ and large $T$: @Bai2002
+- For factors in continuous time driven by jump-diffusion processes: @Li2019
+- For "weak factors" that are nonetheless pervasive: @Lettau2020
+- Empirical evidence: 1-6 factors for the US equity market.
+
+
+## Applications of APT
+
+- *Many* tests of APT, in different shapes and forms. See @Connor1995
+- One important caveat: it's *impossible* to test the APT directly, since it relies on $n \to \infty$
+- Any test of APT is also a test of *extra assumptions* needed to make $c_i = 0$ for all $i$. See @Chen1983 for an early example.
+- One cool application: performance evaluation of fund managers
+- *You should only pay your manager is she generates $\alpha$*! If APT holds, you should pay no one.
+- Veeeery long literature on this. "Consensus": some skill exists, but it's small, hard to find, and may not survive trading costs. See @Fama2010.
+- Super cool recent paper about it: @DeMiguel2023
 
 # Towards an Equivalence Result
 
@@ -240,10 +424,11 @@ Even more important:
 $$
 \lambda = -\gamma \cdot \mathbb{E}[mF]
 $$
-What's the intuition? $\lambda$ is usually called the "factor risk premium".
+What's the intuition? $\lambda$ is usually called the "price of risk".
 
 
 ## AI-Generated Summary
 
-## Readings and Rereferences {.noframenumbering}
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
 - (C): Chapters 6, 7, and 9
