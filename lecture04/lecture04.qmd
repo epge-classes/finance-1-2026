@@ -1,5 +1,5 @@
 ---
-title: "Lecture 4: Beta-Represenation of Returns and Factor Models"
+title: "Lecture 4: Beta-Representation of Returns and Factor Models"
 bibliography: ../asset_pricing_references.bib
 
 ---
@@ -14,7 +14,7 @@ bibliography: ../asset_pricing_references.bib
 
 - In industry and MBA classes, people talk a lot about the CAPM
 - How is that related to all this SDF stuff we are talking?
-- What about Fama-French factors? Factor investing? Are these just buzzwords?
+- What about multi-factor models?
 
 # All Models Are Single-Factor Models
 
@@ -161,7 +161,7 @@ Returns follow a \textit{beta-representation} if there is $\gamma \in \mathbb{R}
 
 ## Factor Models
 
-- Main insight of factor models: a whole panel of variables is drive by few systematic sources of variation
+- Main insight of factor models: a whole panel of variables is driven by few systematic sources of variation
 - Very common in Macro: many time-series co-move over time
 - Also true in Finance: many returns co-move over time
 
@@ -353,7 +353,7 @@ where $B$ is an $n \times K$ matrix and $D$ is a matrix whose largest eigenvalue
 - One important caveat: it's *impossible* to test the APT directly, since it relies on $n \to \infty$
 - Any test of APT is also a test of *extra assumptions* needed to make $c_i = 0$ for all $i$. See @Chen1983 for an early example.
 - One cool application: performance evaluation of fund managers
-- *You should only pay your manager is she generates $\alpha$*! If APT holds, you should pay no one.
+- *You should only pay your manager if she generates $\alpha$*! If APT holds, you should pay no one.
 - Veeeery long literature on this. "Consensus": some skill exists, but it's small, hard to find, and may not survive trading costs. See @Fama2010.
 - Super cool recent paper about it: @DeMiguel2023
 
@@ -428,6 +428,11 @@ What's the intuition? $\lambda$ is usually called the "price of risk".
 
 
 ## AI-Generated Summary
+- SDFs imply a general beta representation: $\mathbb{E}[R-R_f]=\beta_R\lambda$
+- CAPM is a special case with an affine SDF in $R_m$
+- APT: factor structure + no arbitrage in large markets $\Rightarrow$ approximate beta representation
+- Approximate factor structure links eigenvalues of $\Sigma$ to recover betas/factors
+- Affine SDF $\Longleftrightarrow$ beta representation (non-unique in incomplete markets)
 
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
