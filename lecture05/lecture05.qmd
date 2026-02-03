@@ -1,0 +1,262 @@
+---
+title: "Lecture 5: Three Puzzles in Asset Pricing"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+- The equity premium puzzle
+- The risk-free rate puzzle
+- The volatility puzzle
+
+# The Equity Premium Puzzle
+
+- @Mehra1985 is our reference
+- In a traditional general equilibrium environment, how large can the equity premium be?
+- This is very different from the statistical shenanigans of APT!
+- Here: the SDF will heavily depend on consumption growth
+- Back to "$m$ high $\iff$ low consumption growth"
+
+## Some (Annual) Data for the US
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l cc cc cc cc}
+\toprule
+& \multicolumn{2}{c}{\% growth rate of} 
+& \multicolumn{2}{c}{\% real return on a} 
+& \multicolumn{2}{c}{\% risk premium} 
+& \multicolumn{2}{c}{\% real return on} \\
+Time 
+& \multicolumn{2}{c}{per capita real consumption} 
+& \multicolumn{2}{c}{relatively riskless security} 
+& \multicolumn{2}{c}{} 
+& \multicolumn{2}{c}{S\&P 500} \\
+\cmidrule(lr){2-3}
+\cmidrule(lr){4-5}
+\cmidrule(lr){6-7}
+\cmidrule(lr){8-9}
+periods 
+& Mean & Std. dev. 
+& Mean & Std. dev. 
+& Mean & Std. dev. 
+& Mean & Std. dev. \\
+\midrule
+1889--1978 
+& 1.83 & 3.57 
+& 0.80 & 5.67 
+& 6.18 & 16.67 
+& 6.98 & 16.54 \\
+& \multicolumn{2}{c}{(Std. error = 0.38)}
+& \multicolumn{2}{c}{(Std. error = 0.60)}
+& \multicolumn{2}{c}{(Std. error = 1.76)}
+& \multicolumn{2}{c}{(Std. error = 1.74)} \\
+\addlinespace
+1889--1898 
+& 2.30 & 4.90 
+& 5.80 & 3.23 
+& 1.78 & 11.57 
+& 7.58 & 10.02 \\
+1899--1908 
+& 2.55 & 5.31 
+& 2.62 & 2.59 
+& 5.08 & 16.86 
+& 7.71 & 17.21 \\
+1909--1918 
+& 0.44 & 3.07 
+& $-1.63$ & 9.02 
+& 1.49 & 9.18 
+& $-0.14$ & 12.81 \\
+1919--1928 
+& 3.00 & 3.97 
+& 4.30 & 6.61 
+& 14.64 & 15.94 
+& 18.94 & 16.18 \\
+1929--1938 
+& $-0.25$ & 5.28 
+& 2.39 & 6.50 
+& 0.18 & 31.63 
+& 2.56 & 27.90 \\
+1939--1948 
+& 2.19 & 2.52 
+& $-5.82$ & 4.05 
+& 8.89 & 14.23 
+& 3.07 & 14.67 \\
+1949--1958 
+& 1.48 & 1.00 
+& $-0.81$ & 1.89 
+& 18.30 & 13.20 
+& 17.49 & 13.08 \\
+1959--1968 
+& 2.37 & 1.00 
+& 1.07 & 0.64 
+& 4.50 & 10.17 
+& 5.58 & 10.59 \\
+1969--1978 
+& 2.41 & 1.40 
+& $-0.72$ & 2.06 
+& 0.75 & 11.64 
+& 0.03 & 13.11 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+## SP500 Returns vs Consumption Growth (USA)
+:::: {.columns}
+
+::: {.column width="50%"}
+![](SP500_Returns_Paper.png){fig-align="center" width="95%"}
+:::
+
+::: {.column width="50%"}
+![](C_Growth_Paper.png){fig-align="center" width="95%"}
+:::
+:::: 
+
+## Similar Evidence Across Developed Markets (Quarterly Data)
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l l r r r r r r r r r}
+\toprule
+Country & Sample period & $\bar r_e$ & $\sigma(r_e)$ & $\rho(r_e)$ & $\bar r_f$ & $\sigma(r_f)$ & $\rho(r_f)$ & $\overline{\Delta c}$ & $\sigma(\Delta c)$ & $\rho(\Delta c)$ \\
+\midrule
+USA         & 1947Q2--2011Q2 & 6.85 & 15.98 & 0.10 & 0.72 & 1.78 & 0.36 & 1.74 & 1.64 & 0.04 \\
+Australia   & 1970Q1--2011Q2 & 3.84 & 20.75 & 0.03 & 2.00 & 2.18 & 0.55 & 1.82 & 1.77 & $-0.09$ \\
+Canada      & 1970Q2--2011Q2 & 5.47 & 17.85 & 0.15 & 2.07 & 1.64 & 0.66 & 1.69 & 1.93 & 0.07 \\
+France      & 1973Q2--2011Q2 & 7.06 & 23.10 & 0.08 & 2.08 & 1.53 & 0.74 & 1.38 & 1.80 & $-0.13$ \\
+Germany     & 1978Q4--2011Q2 & 7.54 & 23.85 & 0.04 & 2.38 & 1.09 & 0.40 & 1.74 & 4.19 & $-0.07$ \\
+Italy       & 1971Q2--2011Q2 & 1.51 & 25.74 & 0.07 & 1.86 & 2.06 & 0.77 & 2.18 & 2.23 & 0.47 \\
+Japan       & 1970Q2--2011Q2 & 2.70 & 21.41 & 0.09 & 1.03 & 1.91 & 0.29 & 1.72 & 2.92 & $-0.10$ \\
+Netherlands & 1977Q2--2011Q2 & 8.57 & 19.76 & 0.09 & 2.29 & 1.42 & 0.45 & 1.05 & 2.21 & $-0.11$ \\
+Sweden      & 1970Q1--2011Q2 & 8.93 & 25.16 & 0.12 & 1.68 & 2.23 & 0.40 & 1.23 & 1.81 & $-0.15$ \\
+Switzerland & 1982Q2--2011Q2 & 8.14 & 20.05 & 0.01 & 0.87 & 1.32 & 0.03 & 0.75 & 1.30 & $-0.22$ \\
+UK          & 1970Q1--2011Q2 & 6.33 & 19.85 & 0.10 & 1.34 & 2.60 & 0.46 & 2.14 & 2.68 & $-0.03$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+
+## Takeaways
+
+- Average return on stocks is high compared to consumption growth across markets
+- Consumption growth is _way_ less volatile than stock returns
+- Risk-free rates are low and smooth (for developed markets!)
+- Stock returns have low autocorrelation
+- Consumption growth even has negative autocorrelation sometimes. Italy seems an exception there
+
+## The Mehra-Prescott Economy
+
+- They build upon @Lucas1978 (the Lucas' tree model)
+- There is representative agent, with preference over consumption streams given by
+$$
+  U(c)=\mathbb{E}_0\left[\sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1-\gamma}\right]
+$$
+where $\beta \in (0,1)$ and $\gamma > 0$. If $\gamma = 1$, we have log-utility
+
+. . .
+
+```{=latex}
+\begin{gather*}
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^f\right]=1, \qquad R_{t+1}^f = \frac{1}{q_t} \\
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^e\right]=1, \qquad R_{t+1}^e = \frac{p_{t+1}+y_{t+1}}{p_t}
+\end{gather*}
+```
+
+```{=latex}
+\begin{gather*}
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^f\right]=1, \qquad R_{t+1}^f = \frac{1}{q_t} \\
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^e\right]=1, \qquad R_{t+1}^e = \frac{p_{t+1}+y_{t+1}}{p_t}
+\end{gather*}
+```
+
+- There is one unit of an equity asset that pays perishable dividends $y_t$ every period, evolving according to
+$$
+y_{t+1} = x_{t+1} \cdot y_t
+$$
+
+- The growth rate process $x_t \in \{\lambda_1, \ldots, \lambda_n\}$ follows an ergodic Markov chain
+$$
+\mathbb{P}\left(x_{t+1} = \lambda_j \mid x_t = \lambda_i \right) = \phi_{ij} \in (0,1)
+$$
+
+## Household Problem (Sequential)
+
+- Choose $\{c_t, b_{t+1}, s_{t+1}\}_{t\ge 0} \implies$ consumption, bond holdings, and shares of the tree
+- State variables: $(b_t, s_t, y_t) \implies$ current holdings of bonds, shares, and dividend
+- Prices: $q_t$ (bond), $p_t$ (tree)
+
+```{=latex}
+\begin{gather*}
+\max_{\{c_t, b_{t+1}, s_{t+1}\}_{t \ge 0}} \; \mathbb{E}_0\left[\sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1-\gamma}\right] \\
+c_t + q_t b_{t+1} + p_t s_{t+1}
+\;\le\;
+b_t + (p_t + y_t)s_t
+\end{gather*}
+```
+
+Notice that marginal utility is given by $u'(c_t) = c_t^{-\gamma}$.
+
+## The First Order Conditions
+
+If $\mu_t$ is the Lagrange multiplier on the budget constraint at time $t$, the FOCs are:
+
+```{=latex}
+\begin{gather*}
+c_t^{-\gamma} = \mu_t \\
+q_t \mu_t = \beta \mathbb{E}_t\left[\mu_{t+1}\right] \\
+p_t \mu_t = \beta \mathbb{E}_t\left[\mu_{t+1}(p_{t+1}+y_{t+1})\right]
+\end{gather*}
+```
+
+. . .
+
+Define the SDF:
+$$
+m_{t+1} = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma}
+= \beta \frac{\mu_{t+1}}{\mu_t}
+$$
+
+```{=latex}
+\begin{gather*}
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^f\right]=1, \qquad R_{t+1}^f = \frac{1}{q_t} \\
+\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^e\right]=1, \qquad R_{t+1}^e = \frac{p_{t+1}+y_{t+1}}{p_t}
+\end{gather*}
+```
+
+## Pricing the Tree Recursively
+
+- These equations are not any surprise if you got this far in the class
+- If we iterate the equity pricing equation forward and impose the no-bubble condition, we get
+$$
+p_t = \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{c_{t+j}}{c_t}\right)^{-\gamma} y_{t+j}\right]
+$$
+
+. . .
+
+- Since the dividend if perishable, $c_t = y_t$ for all $t$. Then:
+$$
+p_t = \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{y_{t+j}}{y_t}\right)^{-\gamma}\! y_{t+j}\right] = y_t \cdot \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{y_{t+j}}{y_t}\right)^{1-\gamma}\right]
+$$
+
+. . .
+
+- Since $q_t = \mathbb{E}_t[m_{t+1}]$, then
+$$
+q_t = \beta \mathbb{E}_t\left[\left(\frac{y_{t+1}}{y_t}\right)^{-\gamma}\right] = \beta \mathbb{E}_t\left[x_{t+1}^{-\gamma}\right]
+$$
+
+## AI-Generated Summary
+ \footnotesize
+
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
