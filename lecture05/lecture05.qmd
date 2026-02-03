@@ -1,5 +1,6 @@
 ---
 title: "Lecture 5: Three Puzzles in Asset Pricing"
+date: "2026-02-01"
 bibliography: ../asset_pricing_references.bib
 
 ---
@@ -254,8 +255,270 @@ $$
 q_t = \beta \mathbb{E}_t\left[\left(\frac{y_{t+1}}{y_t}\right)^{-\gamma}\right] = \beta \mathbb{E}_t\left[x_{t+1}^{-\gamma}\right]
 $$
 
+## Solving the Mehra-Prescott Economy
+
+- Guess a solution for the price-dividend ratio:
+$$
+\frac{p_t}{y_t} = f(x_t)
+$$
+
+- Why is this a reasonable guess in this environment?
+
+. . .
+
+- Since we have $n$ states for $x_t$, we have $n$ unknowns: $f(\lambda_1), \ldots, f(\lambda_n)$
+- Let's search for these unknowns using the notation $F \equiv [f_1, \dots, f_n]^\top$
+
+. . .
+
+- To ease computations, define the following matrices/vectors:
+  - $\Phi \equiv [\phi_{ij}]$ (transition matrix)
+  - $D \equiv \text{diag}(\lambda_1^{1-\gamma}, \ldots, \lambda_n^{1-\gamma})$
+  - $\mathbf{1} \equiv [1, \ldots, 1]^\top$ (vector of ones)
+
+
+## Solving a Linear System
+
+- Recal the recursive pricing equation:
+$$
+p_t = \mathbb{E}_t\left[\beta m_{t+1} (p_{t+1} + y_{t+1})\right]
+$$
+
+- This equation can be written as 
+$$
+f(x_t) = \beta \mathbb{E}_t\left[x_{t+1}^{1-\gamma} (f(x_{t+1}) + 1)\right]
+$$
+
+. . .
+
+- Using the notation from before:
+
+$$
+F = \beta \Phi D F + \beta \Phi D \mathbf{1} \implies F[I - \beta \Phi D] = \beta \Phi D \mathbf{1}
+$$
+
+- @Mehra1985 shows an explicit condition on $D$ and $\Phi$ such that $[I - \beta \Phi D]$ is invertible. In that case (show it at home):
+
+$$
+F = \beta [I - \beta \Phi D]^{-1} \Phi D \mathbf{1}
+$$
+
+## Equilibrium Returns
+
+- The price $q_t$ is also a function of the state $x_t$:
+$$
+q(x_t = \lambda_i) \equiv q_i = \beta \sum_{j=1}^n \phi_{ij} \lambda_j^{-\gamma},\quad  \forall i=1,\ldots,n
+$$
+
+- The risk-free rate in state $x_t = \lambda_i$ is given by
+$$
+R_i^f = \frac{1}{q_i} = \frac{1}{\beta \sum_{j=1}^n \phi_{ij} \lambda_j^{-\gamma}}
+$$
+
+. . .
+
+- The (gross) return on equity from state $i$ to state $j$ is:
+$$
+R_{i,j}^e = \frac{p_{t+1} + y_{t+1}}{p_t} = \lambda_j \left(\frac{f_j + 1}{f_i}\right)
+$$
+
+## Unconditional Averages
+- Let $\pi = [\pi_1, \ldots, \pi_n]$ be the stationary distribution of the Markov chain for $x_t$
+- This distribution is characterized as
+$$
+\pi = \Phi^\top \pi, \quad \sum_{i=1}^n \pi_i = 1
+$$
+
+- The unconditional mean risk-free rate is
+$$
+\bar R^f = \sum_{i=1}^n \pi_i R_i^f
+$$
+
+. . .
+
+- The unconditional mean return on equity is
+$$
+\bar R^e = \sum_{i=1}^n \pi_i \left(\sum_{j=1}^n \phi_{ij} R_{i,j}^e\right)
+$$
+
+- The risk premium is then $\overline{RP} = \bar R^e - \bar R^f$
+
+## {.standout}
+Questions?
+
+# Taking this to the Data
+
+- Parameters defining preferences: $\beta$ and $\gamma$
+- Parameters defining the technology: $\{\lambda_i\}_{i=1}^n$ and $\Phi$
+
+. . .
+
+- They assumed two states for consumption growth: $n=2$
+- There are three parameters for technology: $\theta$, $\delta$, and $\phi$:
+```{=latex}
+\vspace{-1em}
+\begin{gather*}
+\lambda_1 = 1 + \theta + \delta, \quad \lambda_2 = 1 + \theta - \delta \\
+\Phi = \begin{bmatrix} \phi & 1 - \phi \\ 1 - \phi & \phi \end{bmatrix}
+\end{gather*} 
+```
+
+. . .
+
+- Parameters were calibrated to match the average, standard deviation, and first autocorrelation of US consumption growth
+$$
+\mu = 0.018, \quad \delta = 0.036, \quad \phi = 0.43
+$$
+
+## Preference Parameters and Feasible Region
+```{=latex}
+\begin{columns}[c]
+\column{0.45\textwidth}
+\begin{itemize}\itemsep1em
+\item Vast literature about $\gamma$, but typical values are less than 10.
+\item Theory implies $\beta \in (0,1)$
+\item Given a pair $(\gamma, \beta) \in [1,10]\times(0,1)$, the model is determined
+\item Why not to try many values and try to match the equity premium and the risk-free rate?
+\item Essentially, no pair is able to match the data!
+\end{itemize}
+\column{0.55\textwidth}
+\centering
+\includegraphics[width=0.9\linewidth]{Admissible_Region.png}
+\end{columns}
+```
+
+# The Risk-Free Rate Puzzle
+
+- The Equity Premium Puzzle has a close cousin: the Risk-Free Rate Puzzle
+- This is due to @Weil1989
+
+. . .
+
+**Main Idea**:
+
+- What if we bump up the risk aversion parameter $\gamma$ to match the equity premium?
+- What happens to the risk-free rate then? Maybe the previous evidence on $\gamma$ is all wrong!
+
+. . .
+
+- We shall prove that, for realistic values of consumption growth volatility, $\uparrow \gamma \implies R_f \uparrow$ 
+
+. . .
+
+- Any intuition why? What would break this result?
+
+## A Quick Math Lemma
+- We need to prove a lemma first. We want to show that, if $X$ has enough moments, then
+$$
+\log(\mathbb{E}\left[e^X\right]) \approx \mathbb{E}[X] + \frac{1}{2} \text{Var}(X)
+$$
+
+- In case $X$ is Gaussian, this is exact!
+
+. . .
+
+- Recall the moment generating function (MGF) of $X$:
+$$
+M_X(t) \equiv \mathbb{E}\left[e^{tX}\right]
+$$
+- Define also the cumulant generating function (CGF):
+$$
+K_X(t) \equiv \log(M_X(t)) = \log\left(\mathbb{E}\left[e^{tX}\right]\right)
+$$
+
+- Notice that we want to approximate $K_X(1)$
+
+## Mr. Taylor To The Rescue
+
+- Let's do a second-order approximation around $t=0$:
+$$
+K_X(1) \approx K_X(0) + K_X'(0)(1-0) + \frac{1}{2} K_X''(0)(1-0)^2
+$$
+
+- Recall that $M_X^{(n)}(0) = \mathbb{E}[X^n]$. Using this, we can compute the derivatives of $K_X(t)$:
+```{=latex}
+\vspace{-2em}
+\begin{gather*}
+K_X(0) = \log\left(\mathbb{E}\left[e^{0}\right]\right) = 0 \\
+K_X'(t) = \frac{M_X'(t)}{M_X(t)} \implies K_X'(0) = \mathbb{E}[X] \\
+K_X''(t) = \frac{M_X''(t) M_X(t) - (M_X'(t))^2}{(M_X(t))^2} \implies K_X''(0) = \text{Var}(X)
+\end{gather*}
+```
+
+. . .
+
+- Then we have that
+$$
+\log(\mathbb{E}\left[e^X\right]) = K_X(1) \approx \mathbb{E}[X] + \frac{1}{2} \text{Var}(X)
+$$
+
+## Applying The Lemma
+
+- Recall that $\mathbb{E}_t[m_{t+1}] = \frac{1}{R^f_t}$ and that
+$$
+m_{t+1} = \beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} = \beta e^{-\gamma \Delta c_{t+1}}, \qquad \Delta c_{t+1} \equiv \log\left(\frac{c_{t+1}}{c_t}\right)
+$$
+
+. . .
+
+- Using the lemma (and using the unconditional version of the pricing equation):
+
+$$
+\log\left(\mathbb{E}[m_{t+1}]\right) \approx \log(\beta) - \gamma \mathbb{E}[\Delta c_{t+1}] + \frac{1}{2} \gamma^2 \text{Var}(\Delta c_{t+1})
+$$
+
+- Let $r^f \equiv \log(R_f)$. Then:
+$$
+r^f \approx -\log(\beta) + \gamma \mathbb{E}[\Delta c_{t+1}] - \frac{1}{2} \gamma^2 \text{Var}(\Delta c_{t+1})
+$$
+
+## Two Economic Forces
+$$
+r^f \approx -\log(\beta) + \gamma \mathbb{E}[\Delta c_{t+1}] - \frac{1}{2} \gamma^2 \text{Var}(\Delta c_{t+1})
+$$
+
+- When $\gamma$ increases, there are two economic forces at play. What's the intuition?
+
+. . .
+
+- In the US data, $\mathbb{E}[\Delta c] \approx 1.75\%$, with $\sigma^2(\Delta c) \approx 0.0165^2 = 0.00027225 \approx 0.027\%$
+- The first term is two orders of magnitude larger than the second
+
+. . .
+
+- Bumping up $\gamma$ to match the equity premium will make $r^f$ explode!
+- The average real risk-free rate in the US for 1947-2011 was 0.72\% per year (see @campbell_financial_2018)
+
+## Risk Aversion and Intertemporal Substitution
+
+- Notice that $\gamma$ controls the Arrow-Pratt measure of relative risk aversion;
+
+```{=latex}
+\begin{gather*}
+u(c)=\frac{c^{1-\gamma}}{1-\gamma} \\
+\text{RRA} \equiv -\frac{c u''(c)}{u'(c)} = \gamma
+\end{gather*}
+```
+
+. . .
+
+- But it also controls the intertemporal substitution:
+```{=latex}
+\begin{gather*}
+1 = \beta R_{t+1} \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma}
+ \;\Rightarrow\;
+\frac{c_{t+1}}{c_t} = (\beta R_{t+1})^{1/\gamma} \\
+\text{EIS} \equiv \frac{\partial \log(c_{t+1}/c_t)}{\partial \log R_{t+1}} = \frac{1}{\gamma}
+\end{gather*}
+```
+
+- Same parameter: $\uparrow \gamma \implies$ more risk averse **and** less willing to shift consumption over time
+
+
+## {.standout}
+Questions?
+
 ## AI-Generated Summary
- \footnotesize
 
 
 ## Readings and References {.noframenumbering .allowframebreaks}
