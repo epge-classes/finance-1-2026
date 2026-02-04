@@ -1,5 +1,5 @@
 ---
-title: "Lecture 5: Three Puzzles in Asset Pricing"
+title: "Lecture 5: The Equity Premium and Risk-Free Rate Puzzles"
 date: "2026-02-01"
 bibliography: ../asset_pricing_references.bib
 
@@ -7,9 +7,38 @@ bibliography: ../asset_pricing_references.bib
 
 # Intro
 
-- The equity premium puzzle
+- @Lucas1978 set the stage for modern comsumption-based asset pricing
+- Lucas changed asset pricing exactly like Jimi Hendrix changed how we play the guitar!
+- Elegant framework, simple elements, but powerful insights with technical precision
+
+. . .
+
+\vspace{1em}
+**Then the 80s:** the Guns n Roses release [Appetite for Destruction](https://open.spotify.com/album/28yHV3Gdg30AiB8h8em1eW)
+
+:::: {.columns}
+
+::: {.column width="70%"}
+- The equity premium puzzle: the Lucas-like economy cannot fit equity data
+- The risk-free rate puzzle: if you torture parameters to fit equity, risk-free rates explode
+- The volatility puzzle: consumption growth is too smooth to explain asset return volatility
+- Where is your Asset Pricing God now, huh?
+:::
+
+::: {.column width="30%"}
+![](Appetite_for_Destruction.png){fig-align="center" width="65%"}
+:::
+::::
+
+## Flight Plan
+
+- Some empirical evidence about equity returns and consumption growth
+- The Mehra-Prescott economy: setup and solution
+- Taking the model to the data: the equity premium puzzle
 - The risk-free rate puzzle
-- The volatility puzzle
+- Next class: the volatility puzzle and the early Campbell-Shiller papers
+- After that: let's try to solve the equity premium puzzle!
+
 
 # The Equity Premium Puzzle
 
@@ -156,21 +185,14 @@ UK          & 1970Q1--2011Q2 & 6.33 & 19.85 & 0.10 & 1.34 & 2.60 & 0.46 & 2.14 &
 
 ## The Mehra-Prescott Economy
 
-- They build upon @Lucas1978 (the Lucas' tree model)
-- There is representative agent, with preference over consumption streams given by
+- They build upon @Lucas1978 (the Lucas tree model)
+- There is a representative agent with preferences over consumption streams given by
 $$
   U(c)=\mathbb{E}_0\left[\sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1-\gamma}\right]
 $$
 where $\beta \in (0,1)$ and $\gamma > 0$. If $\gamma = 1$, we have log-utility
 
 . . .
-
-```{=latex}
-\begin{gather*}
-\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^f\right]=1, \qquad R_{t+1}^f = \frac{1}{q_t} \\
-\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^e\right]=1, \qquad R_{t+1}^e = \frac{p_{t+1}+y_{t+1}}{p_t}
-\end{gather*}
-```
 
 ```{=latex}
 \begin{gather*}
@@ -235,7 +257,7 @@ $$
 
 ## Pricing the Tree Recursively
 
-- These equations are not any surprise if you got this far in the class
+- These equations are no surprise if you got this far in the class
 - If we iterate the equity pricing equation forward and impose the no-bubble condition, we get
 $$
 p_t = \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{c_{t+j}}{c_t}\right)^{-\gamma} y_{t+j}\right]
@@ -243,7 +265,7 @@ $$
 
 . . .
 
-- Since the dividend if perishable, $c_t = y_t$ for all $t$. Then:
+- Since the dividend is perishable, $c_t = y_t$ for all $t$. Then:
 $$
 p_t = \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{y_{t+j}}{y_t}\right)^{-\gamma}\! y_{t+j}\right] = y_t \cdot \mathbb{E}_t\left[\sum_{j=1}^\infty \beta^j \left(\frac{y_{t+j}}{y_t}\right)^{1-\gamma}\right]
 $$
@@ -279,9 +301,9 @@ $$
 
 ## Solving a Linear System
 
-- Recal the recursive pricing equation:
+- Recall the recursive pricing equation:
 $$
-p_t = \mathbb{E}_t\left[\beta m_{t+1} (p_{t+1} + y_{t+1})\right]
+p_t = \mathbb{E}_t\left[m_{t+1} (p_{t+1} + y_{t+1})\right]
 $$
 
 - This equation can be written as 
@@ -294,7 +316,7 @@ $$
 - Using the notation from before:
 
 $$
-F = \beta \Phi D F + \beta \Phi D \mathbf{1} \implies F[I - \beta \Phi D] = \beta \Phi D \mathbf{1}
+F = \beta \Phi D F + \beta \Phi D \mathbf{1} \implies (I - \beta \Phi D) F = \beta \Phi D \mathbf{1}
 $$
 
 - @Mehra1985 shows an explicit condition on $D$ and $\Phi$ such that $[I - \beta \Phi D]$ is invertible. In that case (show it at home):
@@ -367,7 +389,7 @@ Questions?
 
 - Parameters were calibrated to match the average, standard deviation, and first autocorrelation of US consumption growth
 $$
-\mu = 0.018, \quad \delta = 0.036, \quad \phi = 0.43
+\theta = 0.018, \quad \delta = 0.036, \quad \phi = 0.43
 $$
 
 ## Preference Parameters and Feasible Region
@@ -375,10 +397,10 @@ $$
 \begin{columns}[c]
 \column{0.45\textwidth}
 \begin{itemize}\itemsep1em
-\item Vast literature about $\gamma$, but typical values are less than 10.
+\item Vast literature on $\gamma$, but typical values are less than 10.
 \item Theory implies $\beta \in (0,1)$
 \item Given a pair $(\gamma, \beta) \in [1,10]\times(0,1)$, the model is determined
-\item Why not to try many values and try to match the equity premium and the risk-free rate?
+\item Why not try many values to match the equity premium and the risk-free rate?
 \item Essentially, no pair is able to match the data!
 \end{itemize}
 \column{0.55\textwidth}
@@ -495,7 +517,7 @@ $$
 
 ```{=latex}
 \begin{gather*}
-u(c)=\frac{c^{1-\gamma}}{1-\gamma} \\
+u(c)=\frac{c^{1-\gamma}}{1-\gamma}, \qquad
 \text{RRA} \equiv -\frac{c u''(c)}{u'(c)} = \gamma
 \end{gather*}
 ```
@@ -512,13 +534,19 @@ u(c)=\frac{c^{1-\gamma}}{1-\gamma} \\
 \end{gather*}
 ```
 
-- Same parameter: $\uparrow \gamma \implies$ more risk averse **and** less willing to shift consumption over time
-
+- $\uparrow \gamma \implies$ more risk averse **and** less willing to shift consumption over time
 
 ## {.standout}
 Questions?
 
 ## AI-Generated Summary
+
+- Standard power utility with $\gamma < 10$ cannot generate 6% equity premium
+- Increasing $\gamma$ to match equity premium makes $r^f$ explode
+- CRRA confounds risk aversion and intertemporal substitution (EIS $= 1/\gamma$)
+- Consumption too smooth: $\sigma(\Delta c) \ll \sigma(r^e)$
+
+
 
 
 ## Readings and References {.noframenumbering .allowframebreaks}
