@@ -157,7 +157,7 @@ Now, assume No-Arbitrage holds;
 . . .
 
 - Assume $F(x) < 0$ for some $x \in M$;
-- Then, for any $y \in K$, we have that $F(-x) > 0$ and $F(-x) > 0$;
+- Then, for any $x \in M$, we have that $F(-x) > 0$ and $F(-x) > 0$;
 - This is a contradiction since $-x \in M$ ($M$ is a linear subspace!);
 - Thus, $F(x) = 0, \forall x \in M$;
 
@@ -240,7 +240,7 @@ Questions?
 
 Recall that for any risk premium $R - R_f$, we can write:
 $$
-\mathbb{E}[m(R - R_f)] = 0 \implies \mathbb{E}[R - R_f] = -\text{Cov}(m, R)
+\mathbb{E}[m(R - R_f)] = 0 \implies \mathbb{E}[R - R_f] = -\frac{\text{Cov}(m, R)}{\mathbb{E}[m]}
 $$
 
 - Let $\rho(m, R - R_f) \equiv \frac{\text{Cov}(m, R - R_f)}{\sigma(m) \sigma(R - R_f)}$ be the correlation between $m$ and $R - R_f$;
@@ -288,7 +288,7 @@ Questions?
 
 ## What's the least volatile SDF?
 
-- Consider $N$ assets with random payoffs $R = (R_1, \ldots, R_N)^\top$ and a risk-free rate $R_f$;
+- Consider $N$ assets with random returns $R = (R_1, \ldots, R_N)^\top$ and a risk-free rate $R_f$;
 - Consider finding the SDF with the smallest variance that prices these assets correctly;
 - This is _the_ SDF that _attains_ the HJ bound;
 
