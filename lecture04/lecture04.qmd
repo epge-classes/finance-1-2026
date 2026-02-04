@@ -113,7 +113,7 @@ $$
 - Last slide: all we need to justify the CAPM is a way to justify $m = a - b R_m$
 - Many ways to do this:
   - Quadratic utility in two periods
-  - Exponential utility in two periods and log-normally distributed returns
+  - Exponential utility in two periods and normally distributed returns
   - Infinite horizon, quadratic utility, and i.i.d. returns...
 - Most importantly: a theory about where returns come from implies a theory about the SDF
 - The converse is obviously also true
@@ -214,7 +214,7 @@ Assume returns follow a K-factor model, there is no arbitrage in large markets, 
 
 ## Proof Part 1
 
-- Take a fixed $n$. Let $E \equiv [\mathbb{E}[R_1], \ldots, \mathbb{E}[R_n]]^\top$ and $epsilon \equiv [\epsilon_1, \ldots, \epsilon_n]^\top$
+- Take a fixed $n$. Let $E \equiv [\mathbb{E}[R_1], \ldots, \mathbb{E}[R_n]]^\top$ and $\epsilon \equiv [\epsilon_1, \ldots, \epsilon_n]^\top$
 - Let $e \equiv [1, \ldots , 1]^\top$ and $\beta \equiv [\beta_1, \ldots, \beta_n]^\top$
 - Notice that we can write $R = E + \beta F + \epsilon$ where $R \equiv [R_1, \ldots, R_n]^\top$
 - We can always write $E = \gamma e + \beta \lambda + c$ with $c \in \mathbb{R}^n$ such that $e'c = 0$ and $\beta' c = 0$. Why?
