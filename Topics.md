@@ -31,6 +31,11 @@ This is a collection of recommended readings and references.
 - [Connor and Korajczyk, 1995](http://dx.doi.org/10.1016/S0927-0507(05)80048-9)
 - [Bai and Ng, 2002](http://dx.doi.org/10.1111/1468-0262.00273)
 
+### Lecture 5: The Equity Premium and Risk-Free Rate Puzzles
+- [Lucas, 1978](http://dx.doi.org/10.2307/1913837)
+- [Mehra and Prescott, 1985](http://dx.doi.org/10.1016/0304-3932(85)90061-3)
+- [Weil, 1989](http://dx.doi.org/10.1016/0304-3932(89)90028-7)
+
 ### The SDF as a Change of Measure
 - Basics of Measure Theory and change of measure;
 - The Radon-Nikodym derivative and the SDF;
