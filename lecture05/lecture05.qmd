@@ -194,16 +194,9 @@ where $\beta \in (0,1)$ and $\gamma > 0$. If $\gamma = 1$, we have log-utility
 
 . . .
 
-```{=latex}
-\begin{gather*}
-\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^f\right]=1, \qquad R_{t+1}^f = \frac{1}{q_t} \\
-\mathbb{E}_t\!\left[m_{t+1} R_{t+1}^e\right]=1, \qquad R_{t+1}^e = \frac{p_{t+1}+y_{t+1}}{p_t}
-\end{gather*}
-```
-
 - There is one unit of an equity asset that pays perishable dividends $y_t$ every period, evolving according to
 $$
-y_{t+1} = x_{t+1} \cdot y_t
+y_{t+1} = x_{t+1} \cdot y_t, \quad y_0 > 0
 $$
 
 - The growth rate process $x_t \in \{\lambda_1, \ldots, \lambda_n\}$ follows an ergodic Markov chain
@@ -214,7 +207,7 @@ $$
 ## Household Problem (Sequential)
 
 - Choose $\{c_t, b_{t+1}, s_{t+1}\}_{t\ge 0} \implies$ consumption, bond holdings, and shares of the tree
-- State variables: $(b_t, s_t, y_t) \implies$ current holdings of bonds, shares, and dividend
+- State variables: $(b_t, s_t, y_t, x_t) \implies$ current holdings of bonds, shares, dividend, and growth state
 - Prices: $q_t$ (bond), $p_t$ (tree)
 
 ```{=latex}
@@ -222,7 +215,7 @@ $$
 \max_{\{c_t, b_{t+1}, s_{t+1}\}_{t \ge 0}} \; \mathbb{E}_0\left[\sum_{t=0}^\infty \beta^t \frac{c_t^{1-\gamma}}{1-\gamma}\right] \\
 c_t + q_t b_{t+1} + p_t s_{t+1}
 \;\le\;
-b_t + (p_t + y_t)s_t
+b_t + (p_t + y_t)s_t, \qquad \forall t
 \end{gather*}
 ```
 
