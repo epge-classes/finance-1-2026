@@ -1,0 +1,186 @@
+---
+title: "Lecture 6: Excessive Volatility in Prices and Returns"
+date: "2026-02-01"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+
+# Do Stock Prices Move Too Much to be Justified by Subsequent Changes in Dividends?
+
+## Motivation
+
+- @Shiller1981 is a provocative paper
+- Equity prices move around a lot... can dividend expectation changes justify this?
+
+. . .
+
+- Typical model to price stocks (recall your analyst friend from Lecture 1):
+
+$$
+P_t = \mathbb{E}_t\left[\sum\limits_{k=1}^{\infty}\frac{D_{t+k}}{(1+r)^k}\right]
+$$
+
+- $D_{t+k}$ = dividend at time $t+k$
+- $r$ = constant discount rate
+
+. . .
+
+- With constant $r$, can this model generate the same volatility in prices as seen in the data?
+- Price changes **must** be driven by news about future dividends!
+
+## Realized vs Forecasted Dividends
+
+- The "efficient market model" implies:
+$$
+P_t = \mathbb{E}_t\left[\sum\limits_{k=1}^{\infty}\frac{D_{t+k}}{(1+r)^k}\right] = \sum\limits_{k=1}^{\infty}\gamma^{k+1}\mathbb{E}_t[D_{t+k}], \qquad  \gamma \equiv \frac{1}{1+r}
+$$
+
+. . .
+
+- Realized dividends are the sum of expected dividends and an "innovation" (forecast error):
+$$
+D_{t+k} = \mathbb{E}_{t}[D_{t+k}] + \varepsilon_{t+k}, \quad \mathbb{E}_{t}[\varepsilon_{t+k}] = 0
+$$
+
+. . .
+
+- The realized series cannot be smoother than its projection:
+$$
+\sigma^2(D_{t+k}) = \sigma^2(\mathbb{E}_{t}[D_{t+k}] + \varepsilon_{t+k}) = \sigma^2(\mathbb{E}_{t}[D_{t+k}]) + \sigma^2(\varepsilon_{t+k}) \geq \sigma^2(\mathbb{E}_{t}[D_{t+k}])
+$$
+
+## Shiller's Key Insight
+
+- Let $P_t^* \equiv \sum\limits_{k=1}^{\infty}\gamma^{k+1}D_{t+k}$. How should $\sigma(P_t^*)$ and $\sigma(P_t)$ compare?
+
+. . .
+
+- Let $\Pi_t$ be the GDP deflator and $A \equiv 1+g$, where $g$ a growth rate for real dividends
+- Shiller deflated the index prices and dividends by inflation and the growth rate:
+  
+$$
+p_t \equiv \frac{P_t}{\Pi_t A^{t-T}}, \qquad d_t \equiv \frac{D_t}{\Pi_t A^{t+1-T}}
+$$
+where $T = 1978$ is the last year of the sample and $g$ is estimated as the constant log-growth rate of real dividends.
+
+. . .
+
+- Then we have $p_t = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k+1}\mathbb{E}_t[d_{t+k}]$, where $\tilde{\gamma} \equiv \frac{A}{1+r} = A\gamma$
+
+. . .
+
+- Similarly: $p_t^* = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k+1}d_{t+k}$
+
+## Shiller's Key Insight
+
+- Crucially, we have the relationship:
+$$
+p_t = \mathbb{E}_t[p_t^*] \implies \sigma^2(p_t) = \sigma^2(\mathbb{E}_t[p_t^*]) \leq \sigma^2(p_t^*)
+$$
+
+. . .
+
+**Implementation matters**:
+
+- Dividends after 1978 are unknown at time $t$
+- Shiller assumed that they would grow at rate $g$ forever
+- This assumption likely understates $\sigma^2(p_t^*)$
+
+. . . 
+
+- $p^*_{1978}$ is computed with "fake dividends" and then you use the recursion backward:
+$$
+p^*_t = \tilde{\gamma}(d_{t+1} + p^*_{t+1})
+$$
+- The discount rate $r$ is such that $r = \frac{\mathbb{E}[d]}{\mathbb{E}[p]}$ (why was deflating necessary for this step?)
+
+## The Main Plot
+![](Figure1.png){fig-align="center" width="83%"}
+
+## Main Numerical Result
+
+```{=latex}
+\begin{columns}[c]
+\begin{column}{0.5\textwidth}
+\begin{itemize}\itemsep1em
+\item Strange things: inequalities upside down!
+\item You see many rows because he derived many bounds with different assumptions
+\item The data is rejecting theory by an order of magnitude
+\item $50 > 8$ and $355.9 > 26.8$
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Historical evidence}:
+
+\begin{itemize}\itemsep1em
+\item During the Great Depression, (real) dividends were below average only on 1933-1935, and 1939
+\item But returns were pretty bad!
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\includegraphics[width=0.68\textwidth]{Table2.png}
+\end{center}
+\end{column}
+\end{columns}
+```
+
+## Newer Data
+![](Shiller2014.png){fig-align="center" width="75%"}
+
+## What if Discount Rates Vary?
+
+- We can always write:
+$$
+P_t = \mathbb{E}_t\left[\sum\limits_{k=1}^{\infty}D_{t+k}\prod\limits_{j=1}^{k}\frac{1}{1+r_{t+j-1}}\right]
+$$
+- If we impose no discipline, this will always be true for some series of returns
+- @Shiller1981 used 6-month prime commercial paper + a constant
+- @Shiller2014 used our good and old friend:
+$$
+r_{t+1}  = -\log(\beta) + \delta \cdot \Delta c_{t+1}
+$$
+
+## Newer Data and Time-Varying Interest Rates
+![](Newer_Data.png){fig-align="center" width="80%"}
+
+## Where The Literature Took This
+
+**Takeaway message**: 
+
+- Stock prices move too much to be justified by subsequent changes in dividends
+- The natural way to reconcile this is allowing for rich time-variation in discount rates
+
+**Two Paths Forward**:
+
+. . .
+
+1. **Return decompositions**: how much of price movements is due to changes in dividend expectations vs expected returns? [@CampbellShiller1988; @Campbell1991; @cochrane_presidential_2011]
+
+. . .
+
+2. **Behavioral finance and limits to arbitrage**: prices deviate from fundamentals due to investor psychology and limits to arbitrage [@DeLong1990; @ShleiferVishny1997; @Shiller2014; @BarberisThaler2003; @Barberis2018]
+
+## Behavioral Finance
+
+- Excess volatility could reflect investor psychology, not rational risk premia
+- Noise traders and limits to arbitrage [@DeLong1990; @ShleiferVishny1997]
+- @Shiller2014: irrational exuberance and social dynamics drive speculative prices
+
+. . .
+
+- Surveys: @BarberisThaler2003 and @Barberis2018 (extrapolation, overconfidence, prospect theory)
+- We will not pursue this path, but it is an important and active research program
+
+
+## {.standout}
+Questions?
+
+## AI-Generated Summary
+
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
