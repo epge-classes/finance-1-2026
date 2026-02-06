@@ -179,18 +179,166 @@ $$
 ## {.standout}
 Questions?
 
-## Campbell-Shiller Decomposition
+## Campbell--Shiller Log-Linearization (Setup)
 
-- Recall the log-linearization of prices and returns from Lecture 2:
+- Exact log return identity:
 $$
-p_t - d_t \approx k + \rho (p_{t+1} - d_{t+1}) + (1 - \rho)r_{t+1} - d_{t+1}
+h_t \equiv \log(P_{t+1}+D_t)-\log(P_t)
 $$
-- Iterating forward:
+
+. . .
+
+- Rewrite the nonlinear term:
 $$
-p_t - d_t \approx k + \sum\limits_{j=1}^{\infty}\rho^{j-1}\left((1 - \rho)r_{t+j} - \Delta d_{t+j}\right)
-$$  
-- This expression decomposes the log price-dividend ratio into expected future returns and expected future dividend growth
-- We can use this to quantify how much of price movements are due to changes in expected returns vs expected dividend growth
+\log(P_{t+1}+D_t)=p_{t+1}+\log\!\left(1+\exp(d_t-p_{t+1})\right)
+$$
+
+- Define the log dividend--price ratio:
+$$
+\delta_{t+1}\equiv d_t-p_{t+1}
+$$
+
+- Dividend $D_t$ is paid at time $t+1$ in this notation (keeping it close to the paper)
+
+---
+
+## Campbell--Shiller Log-Linearization (Taylor Step)
+
+- Let $g(\delta)\equiv \log(1+e^\delta)$ and expand around $\bar\delta$:
+$$
+g(\delta_{t+1})\approx g(\bar\delta)+g'(\bar\delta)(\delta_{t+1}-\bar\delta)
+$$
+
+. . .
+
+- Derivative and the key constant $\rho$:
+$$
+g'(\delta)=\frac{e^\delta}{1+e^\delta},\qquad
+1-\rho\equiv g'(\bar\delta),\qquad
+\rho=\frac{1}{1+e^{\bar\delta}}
+$$
+
+. . .
+
+- Collect constants into $k$:
+$$
+\log(P_{t+1}+D_t)\approx k+\rho\,p_{t+1}+(1-\rho)\,d_t
+$$
+
+---
+
+## Campbell--Shiller Log-Linear Return + Forward Solution
+
+- Substitute into the return identity:
+$$
+h_t \approx k+\rho\,p_{t+1}+(1-\rho)\,d_t-p_t
+$$
+
+. . .
+
+- Express in terms of $\delta_t\equiv d_{t-1}-p_t$:
+$$
+h_t \approx k+\Delta d_t+\delta_t-\rho\,\delta_{t+1}
+$$
+
+. . .
+
+- Rearranged recursion and forward solution:
+$$
+\delta_t = (h_t-\Delta d_t-k)+\rho\,\delta_{t+1}
+\;\Rightarrow\;
+\boxed{\delta_t = \sum_{j=0}^{\infty}\rho^j\big(h_{t+j}-\Delta d_{t+j}\big)-\frac{k}{1-\rho}}
+$$
+
+- This equation has no economic content: it is an (approximate) **identity**. Intuition?
+
+## How to Add Empirical Content
+
+- Notice that we can take expectations conditional on information at time $t$:
+$$
+\delta_t = \mathbb{E}_t\left[\sum_{j=0}^{\infty}\rho^j\big(h_{t+j}-\Delta d_{t+j}\big)\right]-\frac{k}{1-\rho} = \sum_{j=0}^{\infty}\rho^j\big(\mathbb{E}_t[h_{t+j}]-\mathbb{E}_t[\Delta d_{t+j}]\big)-\frac{k}{1-\rho}
+$$
+
+- An Asset Pricing model will imply structure about $\mathbb{E}_t[h_{t+j}]$ and $\mathbb{E}_t[\Delta d_{t+j}]$
+
+. . .
+
+- Example: suppose that for some $r_{t+j}$ and some $c$ we have $\mathbb{E}_t[h_{t+j}] = \mathbb{E}_t[r_{t+j}] + c$
+- We can write:
+$$
+\delta_t = \sum_{j=0}^{\infty}\rho^j\big(\mathbb{E}_t[r_{t+j}]-\mathbb{E}_t[\Delta d_{t+j}]\big)+\frac{c-k}{1-\rho}
+$$
+
+- This will become testable once we specify a model for returns and dividends
+  
+. . .
+
+- Example: give me $\tilde{r}_{t,j} \equiv \mathbb{E}_t[r_{t+j}]$ and $\tilde{\Delta d}_{t,j} \equiv \mathbb{E}_t[\Delta d_{t+j}]$ and generate $\tilde{\delta}_t$
+- We should have $\delta_t \approx \tilde{\delta}_t$
+
+## {.standout}
+Questions?
+
+# Campbell and Shiller Meet the Data
+
+## Setup
+
+- Assume that market participants use state variables $y_t$ to do forecasts
+- $y_t$ evolves linearly (think about an MA($\infty$) process)
+- The econometrician observes (with abbuse of notation) $x_t \equiv (\delta_t, h_{t-1}, \Delta d_{t-1})^\top \subset y_t$
+
+. . .
+
+- Assume that $x_t$ (already demeaned) follows a VAR($p$):
+$$
+x_t = C_1 x_{t-1} + \ldots + C_p x_{t-p} + u_t
+$$ 
+where all variables are demeaned and $u_t$ is a white noise process each $C_i$ is a $3\times 3$ matrix
+
+. . .
+
+- Rewrite the VAR in companion form:
+$$
+z_t \equiv \begin{bmatrix}
+x_t \\
+x_{t-1} \\
+\vdots \\
+x_{t-p+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+C_1 & C_2 & \ldots & C_p \\
+I & 0 & \ldots & 0 \\
+0 & I & \ldots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \ldots & 0
+\end{bmatrix}
+\begin{bmatrix}
+x_{t-1} \\
+x_{t-2} \\
+\vdots \\
+x_{t-p} \\
+\end{bmatrix}+
+\begin{bmatrix}
+u_t \\
+0 \\
+\vdots \\
+0
+\end{bmatrix} = A z_{t-1} + v_t
+$$
+
+## The VAR Approach
+
+- The companion form implies: $\mathbb{E}_t[z_{t+j}] = A^j z_t$
+- The VAR is a forecasting machine to generate discount rate and dividend forecasts
+- Given $A$, we can compute:
+$$
+\tilde{\delta}_t = \sum_{j=0}^{\infty}\rho^j\big(\mathbb{E}[h_{t+j}| \{x_t, x_{t-1}, \ldots\}]-\mathbb{E}[\Delta d_{t+j}| \{x_t, x_{t-1}, \ldots\}]\big)
+$$
+where $\tilde{r}_{t,j}$ and $\tilde{\Delta d}_{t,j}$ are the appropriate elements of $\mathbb{E}_t[z_{t+j}]$
+
+## There is hope in the approximation!
+![](CS_Table2.png){fig-align="center" width="80%"}
 
 ## AI-Generated Summary
 
