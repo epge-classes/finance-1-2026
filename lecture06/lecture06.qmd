@@ -179,6 +179,19 @@ $$
 ## {.standout}
 Questions?
 
+## Campbell-Shiller Decomposition
+
+- Recall the log-linearization of prices and returns from Lecture 2:
+$$
+p_t - d_t \approx k + \rho (p_{t+1} - d_{t+1}) + (1 - \rho)r_{t+1} - d_{t+1}
+$$
+- Iterating forward:
+$$
+p_t - d_t \approx k + \sum\limits_{j=1}^{\infty}\rho^{j-1}\left((1 - \rho)r_{t+j} - \Delta d_{t+j}\right)
+$$  
+- This expression decomposes the log price-dividend ratio into expected future returns and expected future dividend growth
+- We can use this to quantify how much of price movements are due to changes in expected returns vs expected dividend growth
+
 ## AI-Generated Summary
 
 
