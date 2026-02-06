@@ -179,6 +179,19 @@ $$
 ## {.standout}
 Questions?
 
+# Discount Rates: They Like to Move It!
+
+## The Campbell-Shiller Decomposition
+
+- @CampbellShiller1988 made a simple, crazy powerful point
+- Prices are *discounted expected cash-flows*: either return or dividends expectations must move to **generate** returns! 
+
+. . .
+
+- *The dividend-price ratio can only move if either **expected returns** or **expected dividend growth** moves, regardless of your mambo-jambo model!*
+- They introduced the "Campbell-Shiller" decomposition, based on a Taylor expansion
+- An almost model-free playground to test theories of time-varying discount rates
+
 ## Campbell--Shiller Log-Linearization (Setup)
 
 - Exact log return identity:
@@ -225,7 +238,6 @@ $$
 \log(P_{t+1}+D_t)\approx k+\rho\,p_{t+1}+(1-\rho)\,d_t
 $$
 
----
 
 ## Campbell--Shiller Log-Linear Return + Forward Solution
 
@@ -281,6 +293,9 @@ Questions?
 
 # Campbell and Shiller Meet the Data
 
+## There is hope in the approximation!
+![](CS_Table2.png){fig-align="center" width="80%"}
+
 ## Setup
 
 - Assume that market participants use state variables $y_t$ to do forecasts
@@ -335,10 +350,75 @@ $$
 $$
 \tilde{\delta}_t = \sum_{j=0}^{\infty}\rho^j\big(\mathbb{E}[h_{t+j}| \{x_t, x_{t-1}, \ldots\}]-\mathbb{E}[\Delta d_{t+j}| \{x_t, x_{t-1}, \ldots\}]\big)
 $$
-where $\tilde{r}_{t,j}$ and $\tilde{\Delta d}_{t,j}$ are the appropriate elements of $\mathbb{E}_t[z_{t+j}]$
 
-## There is hope in the approximation!
-![](CS_Table2.png){fig-align="center" width="80%"}
+. . .
+
+- Let $e_1 = (1,0,0, \ldots, 0)^\top$ and $e_2 = (0,1,0, \ldots, 0)^\top$ and $e_3 = (0,0,1,0, \ldots, 0)^\top$. Then:
+$$
+\tilde{\delta}_t = \sum_{j=0}^{\infty}\rho^j\big(e_2^\top A^{j+1} z_t - e_3^\top A^{j+1} z_t\big) = \sum_{j=0}^{\infty}\rho^j\big((e_2-e_3)^\top A^{j+1} z_t\big)
+$$
+
+. . .
+
+- What condition would make the observed $\delta_t$ and the synthetic $\tilde{\delta}_t$ match?
+
+## Rational Pricing Implies Objective Forecasts
+
+- If we impose $\delta_t = \tilde{\delta}_t$, then:
+$$
+e_1^\top z_t = \delta_t = \tilde{\delta}_t = \sum_{j=0}^{\infty}\rho^j\big((e_2-e_3)^\top A^{j+1} z_t\big) = \bigg(\sum_{j=0}^{\infty}\rho^j (e_2-e_3)^\top A^{j+1}\bigg) z_t, \forall z_t
+$$
+
+. . .
+
+- This would imply the following restriction on the VAR coefficients:
+$$
+\boxed{
+e_1^\top = \bigg(\sum_{j=0}^{\infty}\rho^j (e_2-e_3)^\top A^{j+1}\bigg) = (e_2-e_3)^\top A(I-\rho A)^{-1}
+}
+$$
+
+. . .
+
+- We can do a Wald test! This is just a (non-linear) restriction on the VAR coefficients!
+- A rejection would imply that whatever theory we imposed to generate the forecasts is not consistent with the data
+- $\rho = 0.93$ to match average dividend--price ratio in the data
+
+## Tested Theory 1
+
+- They assume a constant conditional expected return $\mathbb{E}_t[h_{t+j}] = \bar{r}$
+- They can use $x_t = (\delta_t, \Delta d_{t-1})$ here since $\bar{r}$ gets absorbed
+
+. . .
+
+![](Cowles_Constant_Returns.png){fig-align="center" width="90%"}
+
+- The idea of constant expected returns is easily rejected!
+
+## Tested Theory 2
+
+- They impose a constant *premium* over the risk-free rate: $\mathbb{E}_t[h_{t+j}] = \mathbb{E}_t[r^f_{t+j}] + c$
+- Use $x_t = (\delta_t, r_{t-1}^f - \delta d_{t-1})$ with nominal rvariables -- inflation cancels out!
+
+. . .
+
+![](Constant_Excess_Returns.png){fig-align="center" width="90%"}
+
+## Tested Theory 3 and 4
+
+- The third one: $\mathbb{E}_t{h_{t+j}} = \alpha \cdot \mathbb{E}_t[\delta c_{t+j}] + \text{constant}$, where $\alpha$ is an estimated RRA parameter
+- The fourth one: $\mathbb{E}_t{h_{t+j}} = \alpha \cdot V_t + \text{constant terms}$, where $V_t = h_t^2$ is a proxy for volatility
+- This is due to @Mehra1985 and @Pyndick1984
+
+## Tested Theory 3 and 4
+![](Vol.png){fig-align="center" width="90%"}
+
+## Main Takeaways
+
+- @CampbellShiller1988 called it: the dividend-price ratio can only move if either expected returns or expected dividend growth moves
+- Their decomposition imposes very little structure! *You give me some theory, my VAR gives you a test.*
+- Constant expected returns cannot rationalize the data!
+- Allowing the discount rates to depend on consumption and volatility was *not* enough
 
 ## AI-Generated Summary
 
