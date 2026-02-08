@@ -15,7 +15,6 @@ This is a collection of recommended readings and references.
 - (C) - Chap 1 and 3
 - [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x)
 
-
 ### Lecture 3: The Geometry of No-Arbitrage
 - (C) Chapters 1, 4, and 5
 - (D) Chapter 1
@@ -45,23 +44,6 @@ This is a collection of recommended readings and references.
 - [Shiller, 2014](https://doi.org/10.1257/aer.104.8.2486)
 - [De La O and Myers, 2021](https://doi.org/10.1111/jofi.13016)
 
-### The SDF as a Change of Measure
-- Basics of Measure Theory and change of measure;
-- The Radon-Nikodym derivative and the SDF;
-- Risk-neutral pricing;
-
-### Arbitrage Pricing Theory
-- The APT Theorem;
-- Empirical implementation and tests;
-
-### The Intertemporal CAPM
-- Derivation and implications;
-- Where do all premia come from?;
-
-### The Equity Premium Puzzle
-- Mehra and Prescott (1985);
-- Hansen-Jagannathan bounds;
-
 ### Habit Models
 - Campbell and Cochrane (1999);
 - Does it help to increase the equity premium?
@@ -73,10 +55,6 @@ This is a collection of recommended readings and references.
 ### Disaster Models
 - Barro (2006) and Wachter (2013);
 - How would you calibrate that?
-
-### Production-Based Asset Pricing (maybe)
-- What happens when we make consumption endogenous?
-- The role of technology shocks;
 
 ### A Bit of Option Pricing and Black-Scholes
 - What are options?
