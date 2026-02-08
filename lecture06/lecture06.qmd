@@ -35,7 +35,7 @@ $$
 
 - The "efficient market model" implies:
 $$
-P_t = \mathbb{E}_t\left[\sum\limits_{k=1}^{\infty}\frac{D_{t+k}}{(1+r)^k}\right] = \sum\limits_{k=1}^{\infty}\gamma^{k+1}\mathbb{E}_t[D_{t+k}], \qquad  \gamma \equiv \frac{1}{1+r}
+P_t = \mathbb{E}_t\left[\sum\limits_{k=1}^{\infty}\frac{D_{t+k}}{(1+r)^k}\right] = \sum\limits_{k=1}^{\infty}\gamma^{k}\mathbb{E}_t[D_{t+k}], \qquad  \gamma \equiv \frac{1}{1+r}
 $$
 
 . . .
@@ -54,7 +54,7 @@ $$
 
 ## Shiller's Key Insight
 
-- Let $P_t^* \equiv \sum\limits_{k=1}^{\infty}\gamma^{k+1}D_{t+k}$. How should $\sigma(P_t^*)$ and $\sigma(P_t)$ compare?
+- Let $P_t^* \equiv \sum\limits_{k=1}^{\infty}\gamma^{k}D_{t+k}$. How should $\sigma(P_t^*)$ and $\sigma(P_t)$ compare?
 
 . . .
 
@@ -68,11 +68,11 @@ where $T = 1978$ is the last year of the sample and $g$ is estimated as the cons
 
 . . .
 
-- Then we have $p_t = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k+1}\mathbb{E}_t[d_{t+k}]$, where $\tilde{\gamma} \equiv \frac{A}{1+r} = A\gamma$
+- Then we have $p_t = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k}\mathbb{E}_t[d_{t+k}]$, where $\tilde{\gamma} \equiv \frac{A}{1+r} = A\gamma$
 
 . . .
 
-- Similarly: $p_t^* = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k+1}d_{t+k}$
+- Similarly: $p_t^* = \sum\limits_{k=1}^{\infty}\tilde{\gamma}^{k}d_{t+k}$
 
 ## Shiller's Key Insight
 
@@ -217,7 +217,7 @@ $$
 
 ## Campbell--Shiller Log-Linearization (Taylor Step)
 
-- Let $g(\delta)\equiv \log(1+e^\delta)$ and expand around $\bar\delta$:
+- Let $g(\delta)\equiv \log(1+e^\delta)$ and expand around $\bar\delta$ (the long-run average):
 $$
 g(\delta_{t+1})\approx g(\bar\delta)+g'(\bar\delta)(\delta_{t+1}-\bar\delta)
 $$
@@ -300,7 +300,7 @@ Questions?
 
 - Assume that market participants use state variables $y_t$ to do forecasts
 - $y_t$ evolves linearly (think about an MA($\infty$) process)
-- The econometrician observes (with abbuse of notation) $x_t \equiv (\delta_t, h_{t-1}, \Delta d_{t-1})^\top \subset y_t$
+- The econometrician observes (with abuse of notation) $x_t \equiv (\delta_t, h_{t-1}, \Delta d_{t-1})^\top \subset y_t$
 
 . . .
 
@@ -398,7 +398,7 @@ $$
 ## Tested Theory 2
 
 - They impose a constant *premium* over the risk-free rate: $\mathbb{E}_t[h_{t+j}] = \mathbb{E}_t[r^f_{t+j}] + c$
-- Use $x_t = (\delta_t, r_{t-1}^f - \delta d_{t-1})$ with nominal rvariables -- inflation cancels out!
+- Use $x_t = (\delta_t, r_{t-1}^f - \Delta d_{t-1})$ with nominal variables -- inflation cancels out!
 
 . . .
 
@@ -406,21 +406,337 @@ $$
 
 ## Tested Theory 3 and 4
 
-- The third one: $\mathbb{E}_t{h_{t+j}} = \alpha \cdot \mathbb{E}_t[\delta c_{t+j}] + \text{constant}$, where $\alpha$ is an estimated RRA parameter
-- The fourth one: $\mathbb{E}_t{h_{t+j}} = \alpha \cdot V_t + \text{constant terms}$, where $V_t = h_t^2$ is a proxy for volatility
+- The third one: $\mathbb{E}_t[h_{t+j}] = \alpha \cdot \mathbb{E}_t[\Delta c_{t+j}] + \text{constant}$, where $\alpha$ is an estimated RRA parameter
+- The fourth one: $\mathbb{E}_t[h_{t+j}] = \alpha \cdot V_t + \text{constant terms}$, where $V_t = h_t^2$ is a proxy for volatility
 - This is due to @Mehra1985 and @Pyndick1984
 
 ## Tested Theory 3 and 4
 ![](Vol.png){fig-align="center" width="90%"}
 
-## Main Takeaways
+## Main Takeaways from C-S 1988
 
 - @CampbellShiller1988 called it: the dividend-price ratio can only move if either expected returns or expected dividend growth moves
 - Their decomposition imposes very little structure! *You give me some theory, my VAR gives you a test.*
 - Constant expected returns cannot rationalize the data!
 - Allowing the discount rates to depend on consumption and volatility was *not* enough
+- Expected discount rates *have* to move, and they have to move a lot!
+
+## {.standout}
+Questions?
+
+# The Variance Decomposition of Returns
+
+## From C-S Identity to News Decomposition
+
+- @Campbell1991 took the C-S log-linearization one step further
+- Recall the approximate identity:
+$$
+h_t \approx k + \Delta d_t + \delta_t - \rho\,\delta_{t+1}
+$$
+
+. . .
+
+- The forward solution gives:
+$$
+h_t \approx -\sum_{j=1}^{\infty}\rho^j \Delta d_{t+j} + \sum_{j=1}^{\infty}\rho^j h_{t+j} + \Delta d_t + (1-\rho)\delta_t + k'
+$$
+where $k' \equiv k/(1-\rho)$ collects constants
+
+. . .
+
+- This is still just an identity -- but now let's take *surprises*
+
+## Taking Surprises
+
+- Define the "surprise operator": $(\mathbb{E}_t - \mathbb{E}_{t-1})[\cdot]$
+- Apply it to both sides of the identity. Constants and $t-1$-known quantities vanish:
+
+$$
+h_t - \mathbb{E}_{t-1}[h_t] = (\mathbb{E}_t - \mathbb{E}_{t-1})\left[\sum_{j=0}^{\infty}\rho^j \Delta d_{t+j}\right] - (\mathbb{E}_t - \mathbb{E}_{t-1})\left[\sum_{j=1}^{\infty}\rho^j h_{t+j}\right]
+$$
+
+. . .
+
+- Define **cash-flow news** and **discount-rate news**:
+$$
+\eta_{d,t} \equiv (\mathbb{E}_t - \mathbb{E}_{t-1})\sum_{j=0}^{\infty}\rho^j \Delta d_{t+j}, \qquad \eta_{h,t} \equiv (\mathbb{E}_t - \mathbb{E}_{t-1})\sum_{j=1}^{\infty}\rho^j h_{t+j}
+$$
+
+## The @Campbell1991 Decomposition
+
+$$
+\boxed{h_t - \mathbb{E}_{t-1}[h_t] = \eta_{d,t} - \eta_{h,t}}
+$$
+
+- Unexpected returns = cash-flow news $-$ discount-rate news
+- Still an approximate identity -- no model content yet!
+
+. . .
+
+- Intuition for the signs:
+  - Good cash-flow news ($\eta_{d,t} > 0$): future dividends revised upward $\implies$ positive surprise return
+  - Positive discount-rate news ($\eta_{h,t} > 0$): expected future returns revised upward $\implies$ current price drops $\implies$ negative surprise return
+
+. . .
+
+- This is the key equation: how much of the variance of unexpected returns comes from each component?
+
+## VAR Implementation for News
+
+- Use the same VAR machinery from the C-S section. With $z_t = A z_{t-1} + v_t$:
+$$
+(\mathbb{E}_t - \mathbb{E}_{t-1})[z_{t+j}] = A^jz_t - A^j\mathbb{E}_{t-1}[z_t] = A^j\left(z_t - \mathbb{E}_{t-1}[z_t]\right) = A^j v_t
+$$
+
+. . .
+
+- Discount-rate news (let $e_h$ select the return row from $z_t$):
+$$
+\eta_{h,t} = e_h^\top \sum_{j=1}^{\infty}\rho^j A^j \, v_t = e_h^\top \rho A(I - \rho A)^{-1} v_t
+$$
+
+. . .
+
+- Cash-flow news (backed out from the identity):
+$$
+\eta_{d,t} = (h_t - \mathbb{E}_{t-1}[h_t]) + \eta_{h,t} = e_h^\top v_t + e_h^\top \rho A(I - \rho A)^{-1} v_t
+$$
+
+. . .
+
+- Both $\eta_{d,t}$ and $\eta_{h,t}$ are linear functions of the VAR innovations $v_t$
+- $\text{Var}(\eta_{h,t}) = \lambda ' \Sigma_v \lambda$ where $\lambda \equiv e_h^\top \rho A(I - \rho A)^{-1}$ and $\Sigma_v$ is the covariance matrix of $v_t$
+
+## The Variance Decomposition
+
+- Take variances of the decomposition $h_t - \mathbb{E}_{t-1}[h_t] = \eta_{d,t} - \eta_{h,t}$:
+$$
+\text{Var}(h_t - \mathbb{E}_{t-1}[h_t]) = \text{Var}(\eta_{d,t}) + \text{Var}(\eta_{h,t}) - 2\,\text{Cov}(\eta_{d,t}, \eta_{h,t})
+$$
+
+. . .
+
+- Divide both sides by $\text{Var}(h_t - \mathbb{E}_{t-1}[h_t])$:
+$$
+1 = \frac{\text{Var}(\eta_{d,t})}{\text{Var}(h_t - \mathbb{E}_{t-1}[h_t])} + \frac{\text{Var}(\eta_{h,t})}{\text{Var}(h_t - \mathbb{E}_{t-1}[h_t])} - \frac{2\,\text{Cov}(\eta_{d,t}, \eta_{h,t})}{\text{Var}(h_t - \mathbb{E}_{t-1}[h_t])}
+$$
+
+. . .
+
+- Notice that $\text{Var}(h_t - \mathbb{E}_{t-1}[h_t]) = e_h^\top \Sigma_v e_h$
+- The question: which share is larger?
+- This is all computable from the VAR estimates ($A$ and $\Sigma_v$)
+
+## Another Interesting Measure
+
+- If expected returns are moving around, these expectations might have some persistence
+- Let $u_{t} \equiv [\mathbb{E}_t - \mathbb{E}_{t-1}]h_{t+1}$. 
+- This is news about tomorrow's return, which came in today
+- Notice that $u_t = e_h^\top A v_t$
+
+. . .
+
+- Define $P_h$ as the following ratio:
+$$
+P_h \equiv \frac{\sigma(\eta_{h, t})}{\sigma(u_t)} = \frac{\lambda^\top \Sigma_v \lambda}{e_h^\top A \Sigma_v A^\top e_h}
+$$
+
+- Intuition: if $u_t$ increases, by how much does $\eta_{h,t}$ increase?
+- Important exercise: show that if $\mathbb{E}_{t}[h_{t+1}]$ follows an AR(1), $\eta_{h,t}$ and $u_t$ are proportional
+
+. . .
+
+Notes on implementation:
+
+- Everything is done at the monthly frequency, unless specified otherwise
+- Focus on the broad NYSE index to smooth dividends
+
+## Variance Decomposition
+![](Variance_Decomposition.png){fig-align="center" width="65%"}
+
+## Implied Variance Ratios
+![](Return_Persistence.png){fig-align="center" width="70%"}
+
+## Main Takeaways from @Campbell1991
+
+- News about *expected returns* explain at least half of the variation in unexpected *realized returns*
+- Expected returns are persistent, and show negative autocorrelation at longer horizons
+- This is consistent with the idea that expected returns are time-varying and that they are a key driver of stock price movements
+- In the post-war period, it's almost all discount-rate news and very little cash-flow news
+
+## {.standout}
+Questions?
+
+## Taking Stock
+- @Shiller1981 showed that stocks prices are too volatile to be consistent by constant discount rates
+- @CampbellShiller1988 built the decomposition framework and tested theories of time-varying discount rates
+- Strong rejection of constant premia and of premia that depend on consumption growth and volatility
+- @Campbell1991: *You guys have been paying attention to wrong thing!*
+- Most of the variation in stock prices comes from variation in expected returns!
+
+. . .
+
+**Implications for Asset Pricing**:
+- The bar is high: models should have time-varying discount rates
+- From @Mehra1985: rates should be higher than what a Lucas-economy can deliver
+- Oh, and by the way, they should move a lot!
+
+
+## Implications and Road Ahead
+
+- Shiller showed that prices are too volatile under constant discount rates
+- @CampbellShiller1988 built the decomposition framework and tested theories
+- @Campbell1991 showed that most price variation is **discount-rate news**
+
+. . .
+
+- The message is clear: we need models that generate rich time-variation in discount rates!
+- @cochrane_presidential_2011: this is *the* central finding of modern empirical asset pricing
+
+## {.standout}
+Questions?
+
+# Some More Modern Stuff
+
+## Newer Data, Same Message
+- @cochrane_presidential_2011 revisited @CampbellShiller1988 with data up to 2010
+- Recall the decomposition:
+$$
+\delta_t = \sum_{j=0}^{\infty}\rho^j h_{t+1+j} - \sum_{j=0}^{\infty}\rho^j\Delta d_{t+j} + \text{constants}
+$$
+
+. . .
+
+Take the covariance on both sides with $\delta_t$:
+$$
+\text{Var}(\delta_t, \delta_t) = \text{Cov}(\delta_t, \delta_t) = \text{Cov}\left(\delta_t, \sum_{j=1}^{\infty}\rho^j h_{t+1+j}\right) - \text{Cov}\left(\delta_t, \sum_{j=1}^{\infty}\rho^j\Delta d_{t+j}\right)
+$$
+
+. . .
+
+- We get an identity in terms of regression coefficients:
+  
+$$
+1 = \frac{\text{Cov}\left(\delta_t, \sum_{j=1}^{\infty}\rho^j h_{t+1+j}\right)}{\text{Var}(\delta_t)} - \frac{\text{Cov}\left(\delta_t, \sum_{j=1}^{\infty}\rho^j\Delta d_{t+j}\right)}{\text{Var}(\delta_t)} \equiv b_r - b_{\Delta d}
+$$
+
+## It's All Discount-Rate News
+![](Cochrane_Regression.png){fig-align="center" width="80%"}
+
+- Essentially **all** variation in the dividend-price ratio is explained by variation in expected returns
+- The game in town is explaining time-variation of expected returns!
+- Given early lectures: this is tightly connected to explaining time-variation of the SDF!
+
+## 30 years later... Dividends Strike Back!
+- @DeLaO2021 brought *subjective beliefs* into the picture
+- Under rational expectations, we have that
+$$
+\text{Cov}(\mathbb{E}_t[\Delta d_{t+1}], \delta_t) = \text{Cov}(\Delta d_{t+1}, \delta_t)
+$$
+- Under subjective beliefs, it does not need to be the case!
+
+. . .
+
+Their idea:
+
+- Measure return and dividend growth expectation using survey data (IBES and Graham-Harvey)!
+- Instead of inferring what people think, just ask them!
+- This is a *very* influential paper
+
+## One-year ahead expectations
+![](Subjective_Expectations.png){fig-align="center" width="99%"}
+
+## The Subjective Belief Campbell-Shiller Decomposition
+- If $\mathbb{E}_t^*$ is a *subjective* expectation operator, we can write:
+$$
+\delta_t = \sum_{j=0}^{\infty}\rho^j \mathbb{E}_t^*[h_{t+1+j}] - \sum_{j=0}^{\infty}\rho^j \mathbb{E}_t^*[\Delta d_{t+j}] + \text{constants}
+$$
+- This has to hold because it's just an accounting identity!
+
+. . . 
+
+- They don't observe, at time $t$, the full path of expectations. They focus on:
+$$
+1
+=
+\underbrace{
+\frac{
+\operatorname{cov}\!\left( E_t^*[\Delta d_{t+1}], \, \delta_t \right)
+}{
+\operatorname{var}(\delta_t)
+}
+}_{CF_1}
+\;+\;
+\underbrace{
+\frac{
+-\operatorname{cov}\!\left( E_t^*[r_{t+1}], \, \delta_t \right)
+}{
+\operatorname{var}(\delta_t)
+}
+}_{DR_1}
+\;+\;
+\underbrace{
+\rho
+\frac{
+\operatorname{cov}\!\left( E_t^*[\delta_{t+1}], \, \delta_t \right)
+}{
+\operatorname{var}(\delta_t)
+}
+}_{LT}
+$$
+
+- They can **directly** measure $CF_1$ and $DR_1$ in the data
+
+## Empirical Results
+
+![](DLM_Decomposition.png){fig-align="center" width="90%"}
+
+- You'd expect very high $DR_1$ and very low $CF_1$... not what happens!
+- Most of the variation in price-dividends and price-earnings is steaming from dividends!
+- This is exactly the *opposite* to @Campbell1991
+
+## Empirical Results
+
+![](CF2.png){fig-align="center" width="90%"}
+
+$$
+CF_2
+\equiv
+\frac{
+\operatorname{cov}\!\left(
+\sum_{j=1}^{2} \rho^{\,j-1} E_t^*[\Delta d_{t+j}],
+\, \delta_t
+\right)
+}{
+\operatorname{var}(\delta_t)
+}
+\qquad
+DR_{10}
+\equiv
+\frac{
+\operatorname{cov}\!\left(
+-\sum_{j=1}^{10} \rho^{\,j-1} E_t^*[r_{t+j}],
+\, \delta_t
+\right)
+}{
+\operatorname{var}(\delta_t)
+}
+$$
+
+## Benchmarks
+![](Benchmarks.png){fig-align="center" width="70%"}
+
+## {.standout}
+Questions?
 
 ## AI-Generated Summary
+
+- @Shiller1981: with constant $r$, prices are too volatile
+- Takeaway: big time-variation in expected returns / discount rates (SDF)
+- @CampbellShiller1988: dividend--price ratio reflects expected returns vs dividend growth
+- VAR tests reject constant expected returns (and simple consumption/volatility stories)
+- @Campbell1991 / @cochrane_presidential_2011: discount-rate news dominates
+- @DeLaO2021: surveys + subjective beliefs revive cash-flow news
 
 
 ## Readings and References {.noframenumbering .allowframebreaks}

@@ -30,11 +30,20 @@ This is a collection of recommended readings and references.
 - [Connor and Korajczyk, 1993](http://dx.doi.org/10.1111/j.1540-6261.1993.tb04754.x)
 - [Connor and Korajczyk, 1995](http://dx.doi.org/10.1016/S0927-0507(05)80048-9)
 - [Bai and Ng, 2002](http://dx.doi.org/10.1111/1468-0262.00273)
+- [DeMiguel et al., 2023](https://doi.org/10.1016/j.jfineco.2023.103737)
 
 ### Lecture 5: The Equity Premium and Risk-Free Rate Puzzles
 - [Lucas, 1978](http://dx.doi.org/10.2307/1913837)
 - [Mehra and Prescott, 1985](http://dx.doi.org/10.1016/0304-3932(85)90061-3)
 - [Weil, 1989](http://dx.doi.org/10.1016/0304-3932(89)90028-7)
+
+### Lecture 6: Excessive Volatility in Prices and Returns
+- [Shiller, 1981](https://doi.org/10.2307/1802789)
+- [Campbell and Shiller, 1988](https://doi.org/10.2307/2297846)
+- [Campbell, 1991](https://doi.org/10.2307/2938211)
+- [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x)
+- [Shiller, 2014](https://doi.org/10.1257/aer.104.8.2486)
+- [De La O and Myers, 2021](https://doi.org/10.1111/jofi.13016)
 
 ### The SDF as a Change of Measure
 - Basics of Measure Theory and change of measure;
