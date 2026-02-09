@@ -7,6 +7,18 @@ bibliography: ../asset_pricing_references.bib
 
 # Intro
 
+- Last class: equity premium and risk-free rate puzzles
+- Consumption too smooth: $\sigma(\Delta c) \ll \sigma(r^e)$
+
+. . .
+
+**Today: Excessive Volatility**
+
+- Prices move too much for constant discount rates (@Shiller1981)
+- Campbell-Shiller: decompose into expected returns vs dividend growth
+- Discount-rate news dominates (@Campbell1991, @cochrane_presidential_2011)
+- Subjective beliefs revive cash-flow news (@DeLaO2021)
+
 
 # Do Stock Prices Move Too Much to be Justified by Subsequent Changes in Dividends?
 
