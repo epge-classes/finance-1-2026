@@ -1,0 +1,261 @@
+---
+title: "Lecture 7: By Force of Habit"
+date: "2026-02-13"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+## Flight Plan
+
+- Part I: derive the Campbell-Cochrane habit model [@CampbellCochrane1999]
+- Part II: calibration and quantitative discipline
+- Part III: follow-up tracks in equity, bonds, and FX
+- Core state variable: surplus consumption ratio, $S_t$
+
+# Part I: Let's Derive the Model
+
+## Why Habit?
+
+- Time-separable CRRA struggles with high equity premia and low/steady $r_f$ [@Mehra1985; @Weil1989]
+- We want countercyclical risk prices without implausible interest-rate dynamics
+- External habit creates a recession state variable
+- Target: high Sharpe ratios in bad times
+
+## Preferences and Surplus Consumption
+
+- Representative agent utility with external habit:
+
+$$
+U_t = \mathbb{E}_t\left[\sum_{j=0}^{\infty}\beta^j \frac{(C_{t+j}-X_{t+j})^{1-\gamma}-1}{1-\gamma}\right]
+$$
+
+- $X_t$: habit, $C_t$: consumption, $\beta$: discount factor, $\gamma$: power parameter
+
+## Preferences and Surplus Consumption
+
+- Define the surplus consumption ratio and its log state:
+
+$$
+S_t \equiv \frac{C_t-X_t}{C_t}, \qquad s_t \equiv \log S_t
+$$
+
+- Local curvature is state dependent: $\eta_t = \gamma/S_t$
+- Low $S_t$ (consumption near habit) means high effective risk aversion
+
+## Habit Dynamics
+
+- Campbell-Cochrane law of motion:
+
+$$
+s_{t+1} = (1-\phi)\bar s + \phi s_t + \lambda(s_t)\big(\Delta c_{t+1}-g\big), \qquad \Delta c_{t+1}=g+\sigma\varepsilon_{t+1}
+$$
+
+- $\phi$: persistence, $g$: mean consumption growth, $\lambda(s_t)$: sensitivity function
+
+## SDF
+
+- Intertemporal marginal rate of substitution:
+
+$$
+M_{t+1} = \beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\left(\frac{S_{t+1}}{S_t}\right)^{-\gamma}
+$$
+
+- Risk premia move through both consumption growth and surplus-consumption dynamics
+
+## HJ/Sharpe-Ratio Logic
+
+- Maximum conditional Sharpe ratio is pinned down by SDF volatility:
+
+$$
+\max_{R}\frac{\mathbb{E}_t[R_{t+1}^e]}{\sigma_t(R_{t+1}^e)} = \sqrt{\exp\!\left(\gamma^2\sigma^2\,[1+\lambda(s_t)]^2\right)-1}
+$$
+
+- In recessions ($s_t$ low), $\lambda(s_t)$ is high, so Sharpe ratios rise
+
+## Risk-Free Rate
+
+- Implied real risk-free rate:
+
+$$
+r_{f,t} = -\log(\beta) + \gamma g - \gamma(1-\phi)(s_t-\bar s) - \frac{\gamma^2\sigma^2}{2}[1+\lambda(s_t)]^2
+$$
+
+- Intertemporal-substitution and precautionary-savings terms offset by construction
+
+## Restricting $\lambda(s_t)$
+
+- Functional-form choice in @CampbellCochrane1999:
+
+$$
+\lambda(s_t)=
+\begin{cases}
+\dfrac{1}{\bar S}\sqrt{1-2(s_t-\bar s)}-1, & s_t\le s_{\max} \\
+0, & s_t > s_{\max}
+\end{cases}
+$$
+
+- Delivers: near-steady predetermined habit, nonnegative habit response, stable $r_f$
+
+## Economic Mechanism
+
+- Bad times: $S_t$ low $\Rightarrow$ marginal utility highly sensitive
+- Price of risk rises exactly when cash flows are weak
+- Expected returns become countercyclical
+- Valuation ratios fall in recessions
+
+## TODO Figure: Sensitivity Function + Habit Response
+
+- TODO: insert Figure 1 from @CampbellCochrane1999
+- Intended exhibits: $\lambda(s_t)$ and $d\log X_t / d\log C_t$
+
+\vspace{3.5cm}
+
+## {.standout}
+Questions?
+
+# Part II: Calibration
+
+## Data and Targets
+
+- Baseline sample in @CampbellCochrane1999: postwar U.S. consumption and equity data
+- Match consumption moments: $g$, $\sigma$
+- Match valuation-ratio persistence: $\phi$
+- Match risk-free rate and Sharpe ratio with $\beta$ and $\gamma$
+
+## Parameter Choices
+
+- Annualized baseline choices:
+- $g=1.89\%$, $\sigma=1.50\%$, $\phi=0.87$, $\gamma=2.0$
+- Dividend process inputs: $\sigma_d=11.2\%$, $\rho(\Delta d,\Delta c)=0.2$
+- Implied: $\beta\approx 0.89$, $\bar S\approx 0.057$, $S_{\max}\approx 0.094$
+
+## TODO Table: Campbell-Cochrane Table 1
+
+- TODO: insert calibration table from @CampbellCochrane1999 (Table 1)
+- Intended exhibit: assumed and implied parameters
+
+\vspace{4.0cm}
+
+## Simulated Moments
+
+- The model targets: equity premium, Sharpe ratio, and low average $r_f$
+- It reproduces high return volatility with smooth consumption growth
+- It generates persistent valuation-ratio dynamics and return predictability
+- These are out-of-sample moments relative to calibration targets
+
+## TODO Table: Campbell-Cochrane Table 2
+
+- TODO: insert means and standard deviations from @CampbellCochrane1999 (Table 2)
+- Intended exhibit: model vs data moments
+
+\vspace{4.0cm}
+
+## Dynamic Implications
+
+- Low $S_t$ predicts high expected returns (equity and consumption claims)
+- Return volatility is countercyclical and persistent
+- Long-horizon predictability rises with horizon
+- Volatility-test decompositions load heavily on discount-rate variation
+
+## TODO Figure/Table: Campbell-Cochrane Figures 4-6 / Tables 5-6
+
+- TODO: insert Figure 4 (expected returns), Figure 5 (volatility), Figure 6 (Sharpe ratios)
+- TODO: insert Tables 5-6 (long-horizon predictability and variance decomposition)
+
+\vspace{2.8cm}
+
+## {.standout}
+Questions?
+
+# Part III: Where Habit Models Went
+
+## Three Follow-Up Tracks
+
+- Track 1 (equity): richer predictability and valuation implications
+- Track 2 (term structure): bond premia under habit-based discount rates
+- Track 3 (international/FX): currency premia from cross-country habit risk
+- Same backbone as Parts I-II: state-dependent SDF via $S_t$
+
+## Track 1: Menzly, Santos, Veronesi (2004)
+
+- Extends the habit mechanism to a broader equity-pricing setting [@MenzlySantosVeronesi2004]
+- Keeps countercyclical risk prices driven by the surplus-consumption state
+- Uses the same discount-rate channel to organize predictability facts
+- Direct link: Part I mechanism + Part II discipline, but richer equity objects
+
+## TODO Figure/Table: MSV (2004)
+
+- TODO: insert one key empirical figure from @MenzlySantosVeronesi2004
+- TODO: insert one key table (moments/predictability fit)
+
+\vspace{4.0cm}
+
+## Track 2: Wachter (2006)
+
+- Brings the habit state variable to bond pricing [@Wachter2006]
+- Term premia become state dependent through the same risk-price channel
+- Generates a joint view of expected stock and bond returns
+- Direct link: same $S_t$-driven discount-rate variation, new asset class
+
+## TODO Figure/Table: Wachter (2006)
+
+- TODO: insert one yield-curve or bond-risk-premium figure from @Wachter2006
+- TODO: insert one table with term-structure moments/predictability
+
+\vspace{4.0cm}
+
+## Track 3: Verdelhan (2010)
+
+- Two-country habit framework for currency risk premia [@Verdelhan2010]
+- Carry returns load on cross-country differences in bad-times risk
+- Habit-based SDFs rationalize the forward-premium puzzle patterns
+- Direct link: same mechanism from Parts I-II, exported to FX markets
+
+## TODO Figure/Table: Verdelhan (2010)
+
+- TODO: insert one key FX/carry figure from @Verdelhan2010
+- TODO: insert one table with currency-risk-premium evidence
+
+\vspace{4.0cm}
+
+## Comparative Synthesis
+
+- Common mechanism: $S_t$ controls local curvature and the price of risk
+- Calibration logic: match core moments, then test dynamic implications
+- Main difference: which assets load most on recession-state risk
+- Habit is a transportable discount-rate engine across markets
+
+## TODO Comparative Table: Mechanism vs Data vs Limits
+
+- TODO: insert comparison table for @MenzlySantosVeronesi2004, @Wachter2006, @Verdelhan2010
+- Intended columns: mechanism, targeted facts, main success, open limitation
+
+\vspace{3.6cm}
+
+## Takeaways and Transition
+
+- External habit resolves key aggregate puzzles through state-dependent risk prices
+- Calibration discipline is essential: moments first, dynamics second
+- Follow-ups show the same mechanism in equities, bonds, and FX
+- Next step in the course: compare habits to long-run risks and disasters
+
+## {.standout}
+Questions?
+
+## AI-Generated Summary
+
+- @CampbellCochrane1999: external habit makes risk prices countercyclical
+- Surplus consumption ratio $S_t$ is the key state variable
+- Calibration matches equity premium facts with a low, stable risk-free rate
+- Follow-ups map the same mechanism into equities, bonds, and FX
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
+
+- @CampbellCochrane1999
+- @MenzlySantosVeronesi2004
+- @Wachter2006
+- @Verdelhan2010
+- Background: @Mehra1985, @Weil1989

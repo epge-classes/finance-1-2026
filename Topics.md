@@ -44,9 +44,11 @@ This is a collection of recommended readings and references.
 - [Shiller, 2014](https://doi.org/10.1257/aer.104.8.2486)
 - [De La O and Myers, 2021](https://doi.org/10.1111/jofi.13016)
 
-### Habit Models
-- Campbell and Cochrane (1999);
-- Does it help to increase the equity premium?
+### Lecture 7: By Force of Habit (Habit Models)
+- [Campbell and Cochrane, 1999](https://doi.org/10.1086/250059)
+- [Menzly, Santos, and Veronesi, 2004](https://doi.org/10.1086/379934)
+- [Wachter, 2006](https://doi.org/10.1016/j.jfineco.2005.02.004)
+- [Verdelhan, 2010](https://doi.org/10.1111/j.1540-6261.2009.01525.x)
 
 ### Long-Run Risks
 - Bansal and Yaron (2004);
