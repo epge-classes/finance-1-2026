@@ -7,12 +7,18 @@ bibliography: ../asset_pricing_references.bib
 
 # Intro
 
+- Late 80s: everyone started for a solution to the equity premium puzzle
+- Many solutions proposed: more complicated preferences, market frictions, aggregation issues...
+- There is no single solution -- many mechanisms are at play
+- No notion of "best" or worse
+- Everyone was looking for the same: how can we *spice up* the SDF and get more volatility?
+- The next few classes will be about "wins" in this game
+
 ## Flight Plan
 
-- Part I: derive the Campbell-Cochrane habit model [@CampbellCochrane1999]
-- Part II: calibration and quantitative discipline
-- Part III: follow-up tracks in equity, bonds, and FX
-- Core state variable: surplus consumption ratio, $S_t$
+- Parts I-II: derive the Campbell-Cochrane habit model [@CampbellCochrane1999]
+- Part III: the model meets (and matches!) the data
+- Part IV: follow-up tracks in equity markets, fixed income securities, and foreign exchange (FX)
 
 # Part I: By Force of Habit -- Main Setup
 
