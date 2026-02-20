@@ -260,10 +260,12 @@ Questions?
 - Keep disaster-size mechanism from Barro
 - Add time-varying disaster probability [@Wachter2013]
 - Disaster risk becomes a persistent state variable
+- Extra trick: recursive preferences (more on that later)
 - Target: premia, valuation ratios, and volatility dynamics
 
 ## Time-Varying Disaster Intensity
 
+- The model is written in **continuous time**. A discrete-time analog would be
 $$
 \lambda_{t+1}=(1-\phi_\lambda)\bar\lambda+\phi_\lambda\lambda_t+\sigma_\lambda\sqrt{\lambda_t}\,\varepsilon_{t+1}^{\lambda}
 $$
@@ -280,80 +282,40 @@ $$
 
 - Same jump-size logic as Barro
 - Disaster arrival risk varies over time
+- Consumption decreases during disasters as Poisson shocks arrive
 - Conditional tail risk drives conditional premia
 
-## Valuation Implication
+## Equity Risk Premium and Volatility
 
-$$
-\frac{P_t}{D_t}=f(\lambda_t),\qquad \frac{\partial f(\lambda_t)}{\partial \lambda_t}<0
-$$
+::::{.columns align=center}
 
-- High disaster intensity lowers price-dividend ratios
-- Expected returns rise in high-$\lambda_t$ states
-- Volatility and predictability move with tail-risk state
+:::{.column}
+![](Wachter_Premium.png)
+:::
 
-## How Wachter Took It to Data
+:::{.column}
+![](Wachter_Volatility.png)
+:::
+::::
 
-- Calibrate persistence and volatility of $\lambda_t$
-- Match premium and volatility moments jointly
-- Compare valuation-ratio dynamics with data
-- Evaluate return-predictability implications
+- Time-varying disaster risk moves *both* the premium and volatility
+- She was able to tackle *both* the equity risk premium puzzle and the volatility puzzle
 
-## Quantitative Fit: What Improves?
-
-- Better conditional dynamics than constant-$p$ models
-- Richer movements in valuation ratios
-- Stronger time variation in expected returns
-- Fit remains sensitive to tail-process assumptions
-
-## TODO Figure: Wachter Disaster Intensity State
-
-- TODO: insert disaster-intensity figure from @Wachter2013
-- Intended exhibit: high-$\lambda_t$ episodes and valuation compression
-
-\vspace{3.8cm}
-
-## TODO Table: Wachter Quantitative Fit
-
-- TODO: insert benchmark moments table from @Wachter2013
-- Intended exhibit: data vs model on premia, volatility, predictability
-
-\vspace{3.8cm}
+## Implied Disaster Probability
+![](Implied_Disaster_Probability.png){fig-align="center" width="90%"}
 
 ## {.standout}
 Questions?
 
-# Part IV: Pros, Cons, and Criticism
-
-## Pros of the Disaster-Risk Agenda
-
-- Coherent macro-finance tail-risk mechanism
-- Joint intuition for high premium and low average $r_f$
-- Clear mapping from disasters to SDF movements
-- Stronger empirical discipline from Rietz to Barro/Wachter
-
-## Criticism and Limits
-
-- Rare-event identification is fragile in finite samples
-- Disaster definitions vary across countries and periods
-- Quantitative fit is sensitive to tail-size assumptions
-- Not all cross-asset moments are matched simultaneously
-
-# Closing
-
-## Takeaways
+## Taking Stock
 
 - Rietz: tails can solve premium puzzles in principle
 - Barro: key innovation is data-disciplined disaster frequencies and sizes
 - Wachter: time-varying disaster probability adds conditional dynamics
 - Main debate: quantitative fit vs tail-risk identification limits
 
-## AI-Generated Summary
-
-- Disaster models price macro tail risk directly
-- Barro (2006) moved the agenda from calibrated thought experiment to measured tails
-- Wachter (2013) added a disaster-risk state variable
-- Strengths and criticism both hinge on tail measurement
+## {.standout}
+Questions?
 
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
