@@ -50,29 +50,30 @@ This is a collection of recommended readings and references.
 - [Wachter, 2006](https://doi.org/10.1016/j.jfineco.2005.02.004)
 - [Verdelhan, 2010](https://doi.org/10.1111/j.1540-6261.2009.01525.x)
 
-### Long-Run Risks
+### Lecture 8: Rare Disasters and Asset Prices
+- [Rietz, 1988](https://doi.org/10.1086/261527)
+- [Barro, 2006](https://doi.org/10.1162/qjec.121.3.823)
+- [Wachter, 2013](https://doi.org/10.3982/ECTA10105)
+
+### Lecture 9: Long-Run Risks
 - Bansal and Yaron (2004);
 - Does it help to increase the equity premium?
 
-### Disaster Models
-- Barro (2006) and Wachter (2013);
-- How would you calibrate that?
-
-### A Bit of Option Pricing and Black-Scholes
+### Lecture 10: A Bit of Option Pricing and Black-Scholes
 - What are options?
 - The Black-Scholes-Merton model;
 - Implied volatilities and the volatility smile;
 
-### Non-parametric SDF Estimation
+### Lecture 11: Non-parametric SDF Estimation
 - The SDF puzzle;
 - Minimum dispersion SDFs;
 
-### Term Structure of Interest Rates
+### Lecture 12: Term Structure of Interest Rates
 - Stylized facts;
 - Affine term structure models;
 - The macro-finance link;
 
-### Machine Learning and Asset Pricing
+### Lecture 13: Machine Learning and Asset Pricing
 - Estimation of large covariance matrices;
 - SDF estimation with ML techniques;
 - Returns predictability;
