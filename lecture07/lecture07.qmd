@@ -10,7 +10,7 @@ bibliography: ../asset_pricing_references.bib
 - Late 80s: everyone started for a solution to the equity premium puzzle
 - Many solutions proposed: more complicated preferences, market frictions, aggregation issues...
 - There is no single solution -- many mechanisms are at play
-- No notion of "best" or worse
+- No notion of "better" or "worse"
 - Everyone was looking for the same: how can we *spice up* the SDF and get more volatility?
 - The next few classes will be about "wins" in this game
 
@@ -334,7 +334,7 @@ Questions?
 - The equity premium is large *and* it is time-varying!
 - Return volatility is high and countercyclical, even with smooth consumption growth
 
-## Consumptio Growth, Stock Returns, and $P/D$ Ratio
+## Consumption Growth, Stock Returns, and $P/D$ Ratio
 ::: columns
 ::: column
 ![](C_Growth.png){fig-align="center"}
@@ -362,7 +362,7 @@ At least three quite cool direct follow-ups:
 ## {.standout}
 Questions?
 
-## Takeaways and Transition
+## Takeaways
 
 - External habit resolves key aggregate puzzles through state-dependent risk prices
 - Main trick: time-varying risk-aversion even with smooth consumption growth
