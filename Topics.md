@@ -9,7 +9,7 @@ This is a collection of recommended readings and references.
 - [Cont, 2001](http://rama.cont.perso.math.cnrs.fr/pdf/empirical.pdf)
 - [Campbell, 2001](https://www.jstor.org/stable/222372)
 - [Cochrane, 2011](https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2011.01671.x) and/or (C) - Chap 20
-- [New Frontiers in Asset Pricing](https://www.youtube.com/watch?v=JzdZmvH8kpA) and [Some Open Questions](https://www.youtube.com/watch?v=9JwliAf-Ulc)
+- PLEASE WATCH: [New Frontiers in Asset Pricing](https://www.youtube.com/watch?v=JzdZmvH8kpA), [Some Open Questions](https://www.youtube.com/watch?v=9JwliAf-Ulc), [Big Picture Asset Pricing](https://www.youtube.com/watch?v=MnTdy2HrADA) -- from 1:27:00 onwards
 
 ### Lecture 2: Welcome to Class, Mr. SDF
 - (C) - Chap 1 and 3
