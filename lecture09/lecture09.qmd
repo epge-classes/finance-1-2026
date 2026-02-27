@@ -1,0 +1,132 @@
+---
+title: "Lecture 9: Risk Aversion vs Intertemporal Substitution"
+date: "2026-02-13"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+Intro
+
+# Building Blocks
+
+## What is Risk Aversion?
+
+- This is essentially how you rank risky bets (lotteries)
+- You don't need the concept of *time* to think about risk aversion
+
+. . .
+
+- $X$: a set of outcomes; $\Delta(X)$: the set of lotteries over $X$ (the simplex)
+- Let $\succeq$ be a preference relation over $\Delta(X)$
+- You are **risk-averse** if, for any $p \in \Delta(X)$, you have $\delta_{\mathbb{E}[p]} \succeq p$
+
+## What Von-Neumann and Morgenstern Taught Us
+- Typical assumptions: $\succeq$ is complete, transitive, and continuous
+- Independence axiom: if $p \succeq q$, then for any $r$ and $\alpha \in (0,1)$, we have $\alpha p + (1-\alpha) r \succeq \alpha q + (1-\alpha) r$
+
+. . .
+
+- Under independence, $\succeq$ can be represented by a utility function $U: \Delta(X) \to \mathbb{R}$ such that
+$$
+U(p) = \sum_{x \in X} \pi(x) u(x)
+$$
+where $\pi(x)$ is the probability of outcome $x$ and $u(x)$ is the utility of outcome $x$
+- The preferences we will cover in this lecture will violate exactly this axiom, stay tuned!
+
+## More or Less Risk Averse?
+
+- The **Certainty Equivalent** of $p \in \Delta(X)$ is the amount of money $c$ such that $\delta_c \sim p$
+$$
+CE(p) \equiv \{c \in \mathbb{R} : \delta_c \sim p\}
+$$
+
+. . .
+
+- With a slight abuse in notation:
+$$
+u(CE(p)) = \mathbb{E}[u(x)] \iff CE(p) = u^{-1}(\mathbb{E}[u(x)])
+$$
+
+. . .
+
+- John is (weakly) **more risk-averse** than Mary if $CE_J(p) \leq CE_M(p)$ for all $p \in \Delta(X)$
+
+- Pratt showed that this is all about how concave $u$ is!
+- Concavity is measured by second derivatives... but these are not scale-free!
+- We typically measure risk aversion by $-u''(.)/u'(.)$ or $-x\cdot u''(x)/u'(x)$
+- Many prominent utility functions: CARA, CRRA, HARA, ...
+
+## The Special Case of CRRA
+
+- In Macro, we often use the CRRA utility function:
+$$
+u(C) = \frac{C^{1-\gamma} - 1}{1-\gamma}
+$$
+- The parameter $\gamma$ is the coefficient of relative risk aversion (RRA)
+
+$$
+\frac{-c\cdot u''(c)}{u'(c)} = \gamma
+$$
+
+- Relative risk aversion is constant across all levels of consumption
+
+. . . 
+
+- The real reason people like this in Macro: homothetic preferences
+- If $x \succeq y$, then $\alpha x \succeq \alpha y$ for any $\alpha > 0$ (Indifference curves are radially symmetric)
+
+. . .
+
+- Optimal portfolio weights are independent of wealth (with complete markets)
+- Equilibrium prices (and returns) depend on *growth rates*, not levels
+
+## {.standout}
+Questions?
+
+## Intertemporal Substitution
+
+- You don't need the concept of *uncertainty* to think about intertemporal substitution
+- Think about two periods and a consumer choosing optimal consumption:
+```{=latex}
+\begin{equation*}
+\max_{C_1, C_2} u(C_1) + \beta u(C_2) \quad \text{s.t.} \quad C_1 + \frac{C_2}{1+r} = W
+\end{equation*}
+```
+
+. . .
+
+- The relative price of consumption between the periods is $1+r$
+- If $r$ goes up, you consume less today and save more... but **how much more**?
+
+. . .
+
+- **Elasticity of Intertemporal Substitution (EIS)**: $\frac{d\log(c2/c1)}{d\log(1+r)} > 0$
+
+. . .
+
+- Exercise: show that for CRRA preferences, the EIS is $1/\gamma$
+
+## Risk Aversion vs Intertemporal Substitution
+
+- With CRRA preferences, high $\gamma \implies$ high risk aversion
+- But high $\gamma \implies$ low EIS $\implies$ low willingness to substitute consumption
+- Only two possibilities:
+  - High $\gamma$: very risk-averse, hates shifting consumption around
+  - Low $\gamma$: not very risk-averse, and very willing to shift consumption around
+
+. . .
+
+- If you bump up $\gamma$ to make the consumer afraid of equity...
+- She will really upset about shifting consumption around!
+- You have to make the relative price of consuming tomorrow low $\implies$ high risk-free rate!
+- The prize for waiting must be large... risk-free rate puzzle from @Weil1989!
+
+## {.standout}
+Questions?
+
+
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
+- Campbell, Chap. 6
