@@ -224,6 +224,93 @@ f(x,y) \equiv \left((1-\beta)x^{1-\rho} + \beta y^{1-\rho}\right)^{\frac{1}{1-\r
 
 - @EpsteinZin1991 took it to the data and showed how to use the implied SDF
 - We will follow a heuristic derivation from François Gourio's lecture notes (see Github)
+- We will assume, just to make math clear, that we have a countable state space
+- Expectations will become sums weighted by conditional probabilities $\pi_t(s_{t+1})$
+
+. . .
+
+$$
+\mu_t(U_{t+1}) = \left(\sum_{s_{t+1}}\pi_t(s_{t+1})\, U_{t+1}(s_{t+1})^{1-\alpha}\right)^{\frac{1}{1-\alpha}}
+$$
+
+## The Recursion
+
+- Substituting $\mu_t$ into $f$, the Epstein-Zin recursion is:
+$$
+U_t = \left[(1-\beta)C_t^{1-\rho} + \beta\left(\sum_{s_{t+1}}\pi_t(s_{t+1})\, U_{t+1}(s_{t+1})^{1-\alpha}\right)^{\frac{1-\rho}{1-\alpha}}\right]^{\frac{1}{1-\rho}}
+$$
+
+. . .
+
+- Let $q_t(s_{t+1})$ be the time-$t$ price of an Arrow-Debreu security
+- If you buy one unit, your utility changes by $\partial U_{t}/\partial C_{t+1}(s_{t+1})$
+- You pay $q_t(s_{t+1})$ and each unit of consumption hurts you by $\partial U_{t}/\partial C_{t}(s_{t})$
+
+. . .
+
+- At the margin $\dfrac{\partial U_{t}}{\partial C_{t+1}(s_{t+1})} = q_t(s_{t+1}) \cdot \dfrac{\partial U_{t}}{\partial C_{t}(s_{t})}, \forall s_{t+1}, s_t, t$
+- For any asset $i$ with return $R_{i,t+1}(s_{t+1})$ in state $s_{t+1}$, we have
+
+\vspace{-1.5em}
+$$
+\mathbb{E}_t\left[M_{t+1}\, R_{i,t+1}\right] = \sum_{s_{t+1}} \pi_t(s_{t+1})\, M_{t+1}(s_{t+1})\, R_{i,t+1}(s_{t+1}) =\sum_{s_{t+1}} q_t(s_{t+1})\cdot R_{i, t+1}(s_{t+1}) = 1
+$$
+
+## Marginal Utilities
+
+- Raise both sides of the recursion to the power $1-\rho$:
+$$
+U_t^{1-\rho} = (1-\beta)\,C_t^{1-\rho} + \beta\,\mu_t^{1-\rho}
+$$
+- Differentiate w.r.t. $C_t$:
+$$
+\frac{\partial U_t}{\partial C_t} = (1-\beta)\left(\frac{C_t}{U_t}\right)^{-\rho}
+$$
+
+. . .
+
+- For $C_{t+1}(s_{t+1})$, chain rule: $\;\dfrac{\partial U_t}{\partial C_{t+1}(s_{t+1})} = \dfrac{\partial U_t}{\partial \mu_t}\cdot\dfrac{\partial \mu_t}{\partial U_{t+1}(s_{t+1})}\cdot\dfrac{\partial U_{t+1}(s_{t+1})}{\partial C_{t+1}(s_{t+1})}$
+```{=latex}
+\begin{gather*}
+\frac{\partial U_t}{\partial \mu_t} = \beta\left(\frac{\mu_t}{U_t}\right)^{-\rho}, \qquad
+\frac{\partial \mu_t}{\partial U_{t+1}(s_{t+1})} = \pi_t(s_{t+1})\left(\frac{U_{t+1}(s_{t+1})}{\mu_t}\right)^{-\alpha}, \\
+\frac{\partial U_{t+1}(s_{t+1})}{\partial C_{t+1}(s_{t+1})} = (1-\beta)\left(\frac{C_{t+1}(s_{t+1})}{U_{t+1}(s_{t+1})}\right)^{-\rho}
+\end{gather*}
+```
+
+## The SDF
+
+The ratio of marginal utilities yields:
+
+\vspace{-1.5em}
+$$
+q_t(s_{t+1}) = \frac{\partial U_t/\partial C_{t+1}(s_{t+1})}{\partial U_t/\partial C_{t}(s_{t})} = \beta\pi_t(s_{t+1})\left(\frac{C_{t+1}(s_{t+1})}{C_t}\right)^{-\rho}\left(\frac{U_{t+1}(s_{t+1})}{\mu_t}\right)^{\rho - \alpha}
+$$
+
+- We are left with:
+$$
+M_{t+1}(s_{t+1}) = \beta\left(\frac{C_{t+1}(s_{t+1})}{C_t}\right)^{-\rho}\left(\frac{U_{t+1}(s_{t+1})}{\mu_t}\right)^{\rho - \alpha}
+$$
+
+. . .
+
+- When $\alpha = \rho$: the last term vanishes and we recover standard CRRA
+$$
+M_{t+1} = \beta\left(\frac{C_{t+1}}{C_t}\right)^{-\rho}
+$$
+
+. . .
+
+- Problem: $U_{t+1}(s_{t+1})/\mu_t$ is not directly observable
+- We will deal with this later using the return on the "wealth portfolio"
+
+## {.standout}
+Questions?
+
+# The Wealth Portfolio Trick
+
+
+# Meeting the Data
 
 ## Can Kreps-Porteus Preferences Solve the Equity Premium Puzzle?
 - @Weil1989: no, not really. You need way more than only that
