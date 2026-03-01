@@ -309,6 +309,100 @@ Questions?
 
 # The Wealth Portfolio Trick
 
+## The Problem
+
+- Recall: we derived
+$$
+M_{t+1}(s_{t+1}) = \beta\left(\frac{C_{t+1}(s_{t+1})}{C_t}\right)^{-\rho}\left(\frac{U_{t+1}(s_{t+1})}{\mu_t}\right)^{\rho - \alpha}
+$$
+- The ratio $U_{t+1}(s_{t+1})/\mu_t$ involves the continuation value — not observable!
+- **Idea**: link it to the return on a traded portfolio
+
+## The Wealth Portfolio
+
+- Let $W_t$ be total wealth: the value of all future consumption
+- Budget constraint (Gourio, Section 3):
+$$
+W_{t+1}(s_{t+1}) = (W_t - C_t)\, R_{a,t+1}(s_{t+1})
+$$
+- Consume $C_t$ out of $W_t$, invest the rest at the return $R_{a,t+1}$
+
+. . .
+
+- By homotheticity of EZ preferences: $U_t$ is homogeneous of degree 1 in $W_t$
+- Value function takes the form $U_t = \phi(s_t)\, W_t$, i.e., $\phi$ depends on the state, not on wealth
+
+## Using Homogeneity
+
+- Using $U_{t+1}(s_{t+1}) = \phi(s_{t+1})\, (W_t - C_t)\, R_{a,t+1}(s_{t+1})$:
+
+$$
+\frac{U_{t+1}(s_{t+1})}{\mu_t} = \frac{\phi(s_{t+1})\, R_{a,t+1}(s_{t+1})}{\left(\mathbb{E}_t\left[\phi(s_{t+1})^{1-\alpha}\, R_{a,t+1}(s_{t+1})^{1-\alpha}\right]\right)^{\frac{1}{1-\alpha}}}
+$$
+
+- Note: $(W_t - C_t)$ is known at $t$ and cancels immediately
+
+. . .
+
+- But $\phi(s_{t+1})$ is **random** — it does not cancel!
+- We need one more step...
+
+## FOC and Envelope Theorem
+
+- Define $\Phi_t \equiv \left(\mathbb{E}_t\left[(\phi(s_{t+1})\, R_{a,t+1})^{1-\alpha}\right]\right)^{1/(1-\alpha)}$, so $\mu_t = (W_t - C_t)\,\Phi_t$
+- FOC for $C_t$ (optimality of consumption-savings):
+$$
+(1-\beta)\, C_t^{-\rho} = \beta\, (W_t - C_t)^{-\rho}\, \Phi_t^{1-\rho}
+$$
+
+. . .
+
+- Envelope theorem + FOC $\implies$ $\phi(s_t) = \partial U_t / \partial C_t = (1-\beta)(C_t / U_t)^{-\rho}$
+- With $U_t = \phi(s_t)\, W_t$:
+$$
+\phi(s_t)^{1-\rho} = (1-\beta)\left(\frac{W_t}{C_t}\right)^{\rho}
+$$
+
+## The Key Identity
+
+- Envelope at $t+1$: $\;\phi(s_{t+1})^{1-\rho} = (1-\beta)(W_{t+1}/C_{t+1})^{\rho}$
+- FOC rearranged: $\;\Phi_t^{1-\rho} = \frac{1-\beta}{\beta}\left(\frac{W_t - C_t}{C_t}\right)^{\rho}$
+- Take the ratio and use $R_{a,t+1} = W_{t+1}/(W_t - C_t)$:
+$$
+\frac{\phi(s_{t+1})^{1-\rho}}{\Phi_t^{1-\rho}} = \beta\, R_{a,t+1}^{\rho}\left(\frac{C_t}{C_{t+1}}\right)^{\rho}
+$$
+
+. . .
+
+- Since $\left(\frac{U_{t+1}}{\mu_t}\right)^{1-\rho} = \frac{\phi(s_{t+1})^{1-\rho}}{\Phi_t^{1-\rho}}\, R_{a,t+1}^{1-\rho}$:
+
+$$
+\boxed{\left(\frac{U_{t+1}}{\mu_t}\right)^{1-\rho} = \beta\left(\frac{C_{t+1}}{C_t}\right)^{-\rho} R_{a,t+1}}
+$$
+
+- All $\phi$ terms have cancelled!
+
+## The Epstein-Zin SDF
+
+- Define $\theta \equiv \dfrac{1-\alpha}{1-\rho}$, and note $\rho - \alpha = (1-\rho)(\theta - 1)$
+- Raise the key identity to power $\theta - 1$:
+$$
+\left(\frac{U_{t+1}}{\mu_t}\right)^{\rho-\alpha} = \beta^{\theta-1}\left(\frac{C_{t+1}}{C_t}\right)^{-\rho(\theta-1)} R_{a,t+1}^{\theta-1}
+$$
+
+. . .
+
+- Substitute into $M_{t+1} = \beta(C_{t+1}/C_t)^{-\rho}(U_{t+1}/\mu_t)^{\rho-\alpha}$:
+
+$$
+\boxed{M_{t+1} = \beta^\theta\left(\frac{C_{t+1}}{C_t}\right)^{-\rho\,\theta}\, R_{a,t+1}^{\theta - 1}}
+$$
+
+. . .
+
+- $\alpha = \rho$ $(\theta = 1)$: $\;M_{t+1} = \beta\left(\frac{C_{t+1}}{C_t}\right)^{-\rho}$ — standard CRRA
+- $\alpha \neq \rho$: SDF depends on consumption growth **and** the wealth return
+
 
 # Meeting the Data
 
