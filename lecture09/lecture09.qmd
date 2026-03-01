@@ -125,6 +125,121 @@ Questions?
 ## {.standout}
 Questions?
 
+# A New Class of Preferences Comes to Town
+
+## Do We Care About *When* Uncertainty is Resolved?
+
+- With expected utility, only probabilities and outcomes matter
+- The timing of uncertainty is irrelevant
+- But what if you care about *when* uncertainty is resolved?
+
+. . .
+
+- An irreversible medical condition... do you want to find out now or later?
+- At the slot machine in Vegas... do you want to wait and gamble, or to resolve it immediately?
+- It's already decided whether you get tenured or not... do you want to find out now or later?
+
+## Kreps-Porteus Preferences
+
+- @Kreps1978: axiomatic characterization of preferences over lotteries _and_ timing
+- In the EU framework, "time" only matters because it induces other _states_...
+- Example: flip a coin, consume 5 at $t=0$, 10 at $t=1$ if heads, 0 at $t=1$ if tails 
+- Do you want to find out the outcome of the coin flip at $t=0$ or at $t=1$?
+
+. . .
+
+- Under EU, you should be indifferent between options
+- KP preferences allow you to prefer one over the other
+
+. . .
+
+- EU: preferences over probability distributions
+- KP: preferences over "filtrations" -- information structures
+- KP recover EU when the agent does not care about timing
+
+## Quick Look Into Their Setup (Skipping Super Technical Terms)
+- Time is discrete $t \in \{0, 1, 2, \dots, T\}$
+- For every $t$, there is a payoff space $Z_t$
+- $D_T$ is the set of probability measures over $Z_T$ (lotteries at time $T$)
+
+. . .
+
+- $X_t$: the set of all nonempty closed subsets of $D_t$
+- $D_{T-1} \equiv Z_{T-1}\times X_T$
+
+. . .
+
+- In general: $D_t \equiv Z_t\times X_{t+1}, \forall t < T$
+- Your preference relation $\succeq$ ranks elements of $D_t$ for all $t$
+  
+. . .
+
+- Usual stuff: completeness, transitivity, continuity, monotonicity, ...
+- If you want some stuff, check the paper!
+
+## Example
+![](KP_Example.png){fig-align="center" width="75%}
+
+## The Representation Theorem
+- In a finite decision tree, suppose $U_t$ is your continuation value 
+- $U_{t+1}$: the _random_ (from the point of view of $t$) continuation value tomorrow
+- Let $\mu_t(U_{t+1})$ be the certainty equivalent of $U_{t+1}$
+- Interpretation: money you get right now, for sure, to stop playing
+
+. . .
+
+- Axioms from @Kreps1978 $\implies$ there exists an "aggregator" function $f$ such that
+$$
+U_t = f(Z_t, \mu_t(U_{t+1}))
+$$
+
+## Intuition
+
+- $\mu_t(.)$ encodes how risk-averse you are: the more risk-averse, the lower $\mu_t(U_{t+1})$ is
+- The aggregator measures how much you trade-off payoff today vs keep playing
+- But the continuation value is already summarized by $\mu_t(.)$
+
+. . .
+
+- If $f$ is linear in the second argument and $\mu_t(U_{t+1}) = \mathbb{E}_t[U_{t+1}]$ we recover expected utility!
+
+## Epstein and Zin (1989)
+
+- @EpsteinZin1989 made the whole setup operational
+- They extended @Kreps1978 to the infinite horizon case
+- Super non-trivial since there is no "end date"... continuation becomes a fixed point problem
+
+. . .
+
+- They specialize functional forms:
+```{=latex}
+\begin{gather*}
+f(x,y) \equiv \left((1-\beta)x^{1-\rho} + \beta y^{1-\rho}\right)^{\frac{1}{1-\rho}} \\
+\mu_t(U_{t+1}) \equiv \left(\mathbb{E}_t[U_{t+1}^{1-\alpha}]\right)^{\frac{1}{1-\alpha}}
+\end{gather*}
+```
+- $\alpha$ controls risk aversion, $\rho$ controls intertemporal substitution
+
+# Heuristic Derivation of the SDF
+
+- @EpsteinZin1991 took it to the data and showed how to use the implied SDF
+- We will follow a heuristic derivation from François Gourio's lecture notes (see Github)
+
+## Can Kreps-Porteus Preferences Solve the Equity Premium Puzzle?
+- @Weil1989: no, not really. You need way more than only that
+
+![](Weil_Table.png){fig-align="center" width="75%"}
+
+## The Way Forward
+- There are two more fundamental reasons for the puzzle:
+    - There is not enough aggregate risk in consumption growth
+    - The average consumption growth is too high to be consistent with low interest rates
+
+. . .
+
+- Increasing risk in consumption growth: disasters, long-run risks, ...
+- Or introduce very imperfect insurance markets (e.g. incomplete markets, borrowing constraints, ...)
+- Heterogeneity across agents is likely important!
 
 
 ## Readings and References {.noframenumbering .allowframebreaks}
