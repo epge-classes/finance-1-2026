@@ -66,20 +66,6 @@ This is a collection of recommended readings and references.
 - The Black-Scholes-Merton model;
 - Implied volatilities and the volatility smile;
 
-### Lecture 11: Non-parametric SDF Estimation
-- The SDF puzzle;
-- Minimum dispersion SDFs;
-
-### Lecture 12: Term Structure of Interest Rates
-- Stylized facts;
-- Affine term structure models;
-- The macro-finance link;
-
-### Lecture 13: Machine Learning and Asset Pricing
-- Estimation of large covariance matrices;
-- SDF estimation with ML techniques;
-- Returns predictability;
-- Double descent;
 
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
