@@ -8,7 +8,7 @@ bibliography: ../asset_pricing_references.bib
 ## Intro
 
 - We covered two ways to solve the equity premium puzzle: habits and disasters
-- Habits can be relatively hard to microfound depending who you ask...
+- Habits can be relatively hard to microfound depending on who you ask...
 - Disaster models are super hard to calibrate...
 - Epstein and Zin [-@EpsteinZin1989; -@EpsteinZin1991] adapted @Kreps1978 to Asset Pricing
 - Risk aversion and intertemporal substitution become disentangled
@@ -55,7 +55,7 @@ $$
 
 . . .
 
-- With a slight abuse in notation:
+- With a slight abuse of notation:
 $$
 u(CE(p)) = \mathbb{E}[u(x)] \iff CE(p) = u^{-1}(\mathbb{E}[u(x)])
 $$
@@ -130,7 +130,7 @@ Questions?
 . . .
 
 - If you bump up $\gamma$ to make the consumer afraid of equity...
-- She will really upset about shifting consumption around!
+- She will be really upset about shifting consumption around!
 - You have to make the relative price of consuming tomorrow low $\implies$ high risk-free rate!
 - The prize for waiting must be large... risk-free rate puzzle from @Weil1989!
 
@@ -190,7 +190,7 @@ Questions?
 - If you want some stuff, check the paper!
 
 ## Example
-![](KP_Example.png){fig-align="center" width="75%}
+![](KP_Example.png){fig-align="center" width="75%"}
 
 ## The Representation Theorem
 - In a finite decision tree, suppose $U_t$ is your continuation value 
@@ -421,11 +421,11 @@ $$
 $$
 W_t = c_t + \mathbb{E}_{t}[M_{t+1}W_{t+1}] = \sum_{i=0}^\infty \mathbb{E}_t\left[\left(\prod_{j=0}^i M_{t+j}\right)\, c_{t+i}\right], \qquad M_0=1
 $$
-- Think about $W_t$ as the amount of money you need today to sustain you optimal consumption stream
+- Think about $W_t$ as the amount of money you need today to sustain your optimal consumption stream
 
 . . .
 
-- That *has* to include human capital, real estate, money you expect to inherit, etc
+- That *has* to include human capital, real estate, money you expect to inherit, etc.
 - Not only financial wealth like stocks and bonds!
 - Measuring $R_{a, t+1}$ is super tricky (impossible?)! 
 
