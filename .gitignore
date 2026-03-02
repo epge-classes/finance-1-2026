@@ -2,7 +2,6 @@
 *.docx
 .DS_Store
 Topics.pdf
-AGENTS.md
 *_files/
 .vscode/
 
