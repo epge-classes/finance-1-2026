@@ -55,9 +55,11 @@ This is a collection of recommended readings and references.
 - [Barro, 2006](https://doi.org/10.1162/qjec.121.3.823)
 - [Wachter, 2013](https://doi.org/10.3982/ECTA10105)
 
-### Lecture 9: Long-Run Risks
-- Bansal and Yaron (2004);
-- Does it help to increase the equity premium?
+### Lecture 9: Risk Aversion vs Intertemporal Substitution
+- [Kreps and Porteus, 1978](http://dx.doi.org/10.2307/1913656)
+- [Epstein and Zin, 1989](https://EconPapers.repec.org/RePEc:ecm:emetrp:v:57:y:1989:i:4:p:937-69)
+- [Epstein and Zin, 1991](https://www.journals.uchicago.edu/doi/10.1086/261750)
+- [Weil, 1989](http://dx.doi.org/10.1016/0304-3932(89)90028-7)
 
 ### Lecture 10: A Bit of Option Pricing and Black-Scholes
 - What are options?
