@@ -5,8 +5,20 @@ bibliography: ../asset_pricing_references.bib
 
 ---
 
-# Intro
-Intro
+## Intro
+
+- We covered two ways to solve the equity premium puzzle: habits and disasters
+- Habits can be relatively hard to microfound depending who you ask...
+- Disaster models are super hard to calibrate...
+- Epstein and Zin [-@EpsteinZin1989; -@EpsteinZin1991] adapted @Kreps1978 to Asset Pricing
+- Risk aversion and intertemporal substitution become disentangled
+
+## Flight Plan
+
+- Basics from @Kreps1978 -- please take Leandro's class if you want axioms and fancy things!
+- Preferences following the parametrization in @EpsteinZin1989
+- Derivation of the SDF as in @EpsteinZin1991
+- Empirical performance [@EpsteinZin1991; @Weil1989]
 
 # Building Blocks
 
@@ -347,7 +359,7 @@ $$
 - But $\phi(s_{t+1})$ is **random** — it does not cancel!
 - We need one more step...
 
-## FOC and Envelope Theorem
+## Pinning Down $\phi$
 
 - Define $\Phi_t \equiv \left(\mathbb{E}_t\left[(\phi(s_{t+1})\, R_{a,t+1})^{1-\alpha}\right]\right)^{1/(1-\alpha)}$, so $\mu_t = (W_t - C_t)\,\Phi_t$
 - FOC for $C_t$ (optimality of consumption-savings):
@@ -357,15 +369,14 @@ $$
 
 . . .
 
-- Envelope theorem + FOC $\implies$ $\phi(s_t) = \partial U_t / \partial C_t = (1-\beta)(C_t / U_t)^{-\rho}$
-- With $U_t = \phi(s_t)\, W_t$:
+- Substitute the FOC into the recursion $U_t^{1-\rho} = (1-\beta)C_t^{1-\rho} + \beta(W_t - C_t)^{1-\rho}\Phi_t^{1-\rho}$:
 $$
-\phi(s_t)^{1-\rho} = (1-\beta)\left(\frac{W_t}{C_t}\right)^{\rho}
+\phi(s_t)^{1-\rho}\, W_t^{1-\rho} = (1-\beta)\,C_t^{-\rho}\,W_t \implies \phi(s_t)^{1-\rho} = (1-\beta)\left(\frac{W_t}{C_t}\right)^{\rho}
 $$
 
 ## The Key Identity
 
-- Envelope at $t+1$: $\;\phi(s_{t+1})^{1-\rho} = (1-\beta)(W_{t+1}/C_{t+1})^{\rho}$
+- Same relation at $t+1$: $\;\phi(s_{t+1})^{1-\rho} = (1-\beta)(W_{t+1}/C_{t+1})^{\rho}$
 - FOC rearranged: $\;\Phi_t^{1-\rho} = \frac{1-\beta}{\beta}\left(\frac{W_t - C_t}{C_t}\right)^{\rho}$
 - Take the ratio and use $R_{a,t+1} = W_{t+1}/(W_t - C_t)$:
 $$
@@ -403,24 +414,170 @@ $$
 - $\alpha = \rho$ $(\theta = 1)$: $\;M_{t+1} = \beta\left(\frac{C_{t+1}}{C_t}\right)^{-\rho}$ — standard CRRA
 - $\alpha \neq \rho$: SDF depends on consumption growth **and** the wealth return
 
-
 # Meeting the Data
 
-## Can Kreps-Porteus Preferences Solve the Equity Premium Puzzle?
-- @Weil1989: no, not really. You need way more than only that
-
-![](Weil_Table.png){fig-align="center" width="75%"}
-
-## The Way Forward
-- There are two more fundamental reasons for the puzzle:
-    - There is not enough aggregate risk in consumption growth
-    - The average consumption growth is too high to be consistent with low interest rates
+- Empirically, what is the return on the wealth portfolio?
+- The wealth $W_t$ is the price of the whole (optimal) consumption stream
+$$
+W_t = c_t + \mathbb{E}_{t}[M_{t+1}W_{t+1}] = \sum_{i=0}^\infty \mathbb{E}_t\left[\left(\prod_{j=0}^i M_{t+j}\right)\, c_{t+i}\right], \qquad M_0=1
+$$
+- Think about $W_t$ as the amount of money you need today to sustain you optimal consumption stream
 
 . . .
 
-- Increasing risk in consumption growth: disasters, long-run risks, ...
+- That *has* to include human capital, real estate, money you expect to inherit, etc
+- Not only financial wealth like stocks and bonds!
+- Measuring $R_{a, t+1}$ is super tricky (impossible?)! 
+
+## GMM Strikes Back
+
+- In @EpsteinZin1991 there are $N$ risky assets
+- The consumer forms optimal portfolios of these assets
+- The return of the optimal portfolio is $R_{a, t+1}$
+
+. . .
+
+For any asset $i$:
+$$
+\mathbb{E}_t\left[M_{t+1} R_{i, t+1}\right] = \beta^\theta \mathbb{E}_t\left[\left(\frac{C_{t+1}}{C_t}\right)^{-\rho\,\theta} R_{a,t+1}^{\theta - 1} R_{i, t+1}\right] = 1
+$$
+
+- If we observe returns, we GMM our way to estimate all parameters!
+- Important: risk premia will stem from _both_ correlation with consumption growth and correlation with $R_{a, t+1}$
+
+## Empirical Implementation
+
+- @EpsteinZin1991 used the NYSE value-weighted return as a proxy for $R_{a, t+1}$
+- Also 5 stock indices from different industries as the other assets + risk-free bond
+- Estimate everything using GMM with different instruments (see the paper)
+- Whenever looking at results like these, take care with different parametrizations!!!
+
+## Estimates
+```{=latex}
+\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{lcccccc}
+\hline\hline
+& \multicolumn{3}{c}{1959:4--1986:12} 
+& \multicolumn{3}{c}{1959:4--1978:12} \\
+\cline{2-4} \cline{5-7}
+& INST1 & INST2 & INST3 & INST1 & INST2 & INST3 \\
+\hline
+\multicolumn{7}{c}{\textit{Nondurables}} \\
+\hline
+$\delta = (1/\beta) - 1$
+& .0033 & .0033 & -.0015 
+& .0006 & .0006 & -.0040 \\
+& (.0018) & (.0018) & (.0036) 
+& (.0031) & (.0031) & (.0065) \\[4pt]
+
+$\gamma$ (= $\alpha/\rho$)
+& -.0108 & -.0146 & -.0235 
+& -.0122 & -.0122 & -.0065 \\
+& (.0564) & (.0564) & (.0746) 
+& (.0659) & (.0659) & (.0889) \\[4pt]
+
+$\sigma = 1/(1-\rho)$ (EIS)
+& .8652 & .8158 & .1754 
+& .8499 & .7973 & .2392 \\
+& (.5429) & (.5021) & (.0728) 
+& (.6391) & (.5948) & (.0950) \\[4pt]
+
+1 - $\alpha$ (Risk aversion)
+& .0016 & .0033 & .1106 
+& .0052 & .0031 & .0207 \\
+& (.0127) & (.0182) & (.3402) 
+& (.0307) & (.0251) & (.2790) \\[6pt]
+
+$J(12)$ 
+& 19.04 & 24.20 & 8.054 
+& 18.54 & 18.69 & 10.22 \\
+& [.088] & [.019] & [.781] 
+& [.100] & [.096] & [.597] \\[4pt]
+
+$J(13)-J(12)$ 
+& 157.17 & 165.73 & 7.941 
+& 141.46 & 148.39 & 6.760 \\
+& [.000] & [.000] & [.005] 
+& [.000] & [.000] & [.009] \\[4pt]
+
+GH(15) 
+&  &  &  
+& 16.40 & 15.40 & 17.94 \\
+&  &  &  
+& [.356] & [.423] & [.266] \\
+
+\hline\hline
+\end{tabular}
+\end{table}
+```
+
+## Can Kreps-Porteus Preferences Solve the Equity Premium Puzzle?
+- @EpsteinZin1991 didn't answer this question. @Weil1989 tried to answer it.
+- A Lucas-tree economy with two states, one risky asset, like @Mehra1985
+- Main change: EZ preferences so we can play with risk aversion _and_ intertemporal substitution
+- Calibration followed @Mehra1985
+
+. . .
+
+Two major insights from @Weil1989:
+
+- If consumption has i.i.d growth, even with EZ preferences, you cannot solve the puzzle
+- With the Markov Chain calibration from @Mehra1985, we still need high risk aversion and crazy small EIS
+
+## Take a look
+
+![](Weil_Table.png){fig-align="center" width="75%"}
+
+## Equity Risk Premium and Risk-Free Rate (Bold)
+
+```{=latex}
+\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{l ccccccc}
+\hline\hline
+EIS & \multicolumn{7}{c}{CRRA ($\gamma$)} \\
+\cline{2-8}
+$1/\rho$ & 0 & 0.5 & 1 & 5 & 10 & 20 & 45 \\
+\hline
+$\infty$ & 0.00 & 0.05 & 0.10 & 0.48 & 0.94 & 1.77 & 3.01 \\
+         & \textbf{5.25} & \textbf{5.24} & \textbf{5.21} & \textbf{5.01} & \textbf{4.78} & \textbf{4.40} & \textbf{4.09} \\[4pt]
+2        & 0.01 & 0.06 & 0.11 & 0.51 & 1.01 & 1.89 & 3.14 \\
+         & \textbf{6.20} & \textbf{6.16} & \textbf{6.12} & \textbf{5.79} & \textbf{5.40} & \textbf{4.73} & \textbf{3.93} \\[4pt]
+1        & 0.01 & 0.07 & 0.12 & 0.55 & 1.08 & 2.00 & 3.27 \\
+         & \textbf{7.14} & \textbf{7.08} & \textbf{7.03} & \textbf{6.56} & \textbf{6.02} & \textbf{5.06} & \textbf{3.76} \\[4pt]
+0.2      & 0.10 & 0.18 & 0.26 & 0.88 & 1.64 & 2.91 & 4.34 \\
+         & \textbf{15.02} & \textbf{14.81} & \textbf{14.61} & \textbf{13.02} & \textbf{11.11} & \textbf{7.75} & \textbf{2.45} \\[4pt]
+0.1      & 0.24 & 0.35 & 0.45 & 1.31 & 2.33 & 4.04 & \cellcolor{yellow}5.72 \\
+         & \textbf{25.73} & \textbf{25.32} & \textbf{24.96} & \textbf{21.68} & \textbf{17.87} & \textbf{11.23} & \cellcolor{yellow}\textbf{0.85} \\[4pt]
+0.05     & 0.56 & 0.72 & 0.87 & 2.12 & 3.66 & 6.25 & 8.66 \\
+         & \textbf{50.51} & \textbf{49.55} & \textbf{48.61} & \textbf{41.26} & \textbf{32.80} & \textbf{18.65} & \textbf{-2.23} \\[4pt]
+$1/45$   & 1.13 & 1.36 & 1.60 & 3.58 & 6.22 & 11.22 & 17.11 \\
+         & \textbf{138.91} & \textbf{135.56} & \textbf{132.25} & \textbf{107.44} & \textbf{80.69} & \textbf{40.39} & \textbf{-9.22} \\
+\hline\hline
+\end{tabular}
+\end{table}
+```
+
+## The Way Forward
+Two fundamental problems:
+
+![](Weil_Suggestion.png){fig-align="center" width="75%"}
+
+. . .
+
+- How to increase risk in consumption growth: disasters, long-run risks, models with job loss ...
 - Or introduce very imperfect insurance markets (e.g. incomplete markets, borrowing constraints, ...)
-- Heterogeneity across agents is likely important!
+- Another idea: heterogenous shocks across the population
+
+. . .
+
+- Next class: long-run risks!
+
+## {.standout}
+Questions?
 
 
 ## Readings and References {.noframenumbering .allowframebreaks}
