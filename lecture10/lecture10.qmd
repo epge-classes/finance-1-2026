@@ -5,23 +5,173 @@ bibliography: ../asset_pricing_references.bib
 
 ---
 
-<!-- TODO: add bib entry for Bansal and Yaron (2004) -->
-
 ## Intro
 
 - Mehra-Prescott leaves too little equity premia unless risk aversion is pushed hard
 - Habits and disasters fix this by changing risk prices or tail risk
-- Bansal and Yaron ask a different question: can *small* persistent growth news move prices a lot?
+- @BansalYaron2004 ask a different question: can *small* persistent growth news move prices a lot?
 - Long-run growth risk plus time-varying macro uncertainty is their answer
 - With Epstein-Zin preferences, distant bad news becomes first-order for valuation
 
 ## Flight Plan
 
 - Motivation: why long-run risk is not "just another AR(1)"
+- A short detour: the extended consumption CAPM
 - Primitives: preferences, cash-flow dynamics, and state variables
 - Approximate solution via the Campbell-Shiller decomposition [@CampbellShiller1988]
 - What must be solved numerically in the full model
 - Quantitative targets, plus placeholders for the key figures and tables
+
+# A Useful Detour
+
+## Notation for This Detour
+
+$$
+m_{t+1} \equiv \log M_{t+1}
+= \theta \log \delta - \frac{\theta}{\psi}\Delta c_{t+1} - (1-\theta)r_{w,t+1}
+$$
+
+$$
+\widetilde x_{t+1} \equiv x_{t+1} - E_t[x_{t+1}]
+$$
+
+- $M_{t+1}$ is the stochastic discount factor
+- $m_{t+1}$ is its log
+- $r_{w,t+1}$ is the log return on the wealth portfolio
+- A tilde means an innovation: the unexpected part relative to time-$t$ information
+- We will apply this to $\widetilde m_{t+1}$, $\widetilde c_{t+1}$, and $\widetilde r_{w,t+1}$
+
+## Why Start with the Extended Consumption CAPM?
+
+- Recursive utility prices more than current consumption risk
+- It also prices shocks that revise continuation values
+- Campbell's log-linearization makes those continuation shocks observable as "news"
+- This is the clean bridge from Epstein-Zin preferences to long-run risk
+- @BansalYaron2004 will load exactly on that extra news term
+
+## Two Important Exercises
+
+- Assume: the SDF and the returns of traded assets are jointly lognormal and homokedastic
+- Exercise 1: show that, for any asset $i$, we have
+$$
+\mathbb{E}_t[r_{i,t+1}-r_{f,t}] + \frac{1}{2}\sigma_i^2
+= -\operatorname{cov}_t(m_{t+1},r_{i,t+1}) = \frac{\theta}{\psi}\sigma_{ic} + (1-\theta)\sigma_{iw}
+$$
+
+. . . 
+
+- Exercise 2: show that the risk-free rate $r_{f, t+1} = \log(R_{f,t+1})$ given by:
+$$
+r_{f, t+1} = -\log(\delta) + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}] - \frac{\theta}{2\psi^2}\sigma_c^2 + \frac{(1-\theta)}{2}\sigma_w^2 = \text{constants} + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}]
+$$
+
+(Hint: let $i=w$ after exercise 1)
+
+. . .
+
+- What's the intuition of $\psi$? How does it affect these rates? Why?
+
+## Epstein-Zin in Innovations Form
+
+$$
+\widetilde m_{t+1} = -\frac{\theta}{\psi}\widetilde c_{t+1} - (1-\theta)\widetilde r_{w,t+1}
+$$
+
+- $\widetilde r_{w,t+1}$ is the unexpected return on the wealth portfolio
+- The wealth portfolio is the claim to aggregate consumption
+- Compared with the baseline CCAPM, wealth-return news is also priced
+- If $\theta=1$, we are back to the standard case
+
+. . .
+
+- Next step: rewrite $\widetilde r_{w,t+1}$ in terms of consumption news
+
+## From Log-Linearization to News Form
+
+$$
+r_{w,t+1} \approx \kappa_0 + \kappa_1 z^w_{t+1} - z^w_t + \Delta c_{t+1},
+\qquad
+z^w_t \equiv \log(P_t/C_t)
+$$
+
+$$
+\widetilde r_{w,t+1}
+= (E_{t+1}-E_t)\left[\Delta c_{t+1} + \kappa_1 z^w_{t+1}\right]
+$$
+
+- This is the standard Campbell-Shiller log-linearization applied to the wealth claim
+- Because the wealth portfolio pays consumption, the dividend-growth term is $\Delta c_{t+1}$
+- $z^w_t$ is known at time $t$, so it drops out of the innovation
+- Forward-iterate $z^w_{t+1}$ and impose the no-bubble condition
+- That produces the news representation on the next slide
+
+## Wealth Return News
+
+$$
+\widetilde r_{w,t+1}
+= (E_{t+1}-E_t)\sum_{j=0}^{\infty}\kappa_1^j \Delta c_{t+1+j}
+- (E_{t+1}-E_t)\sum_{j=1}^{\infty}\kappa_1^j r_{w,t+1+j}
+$$
+
+- This is the Campbell-Shiller decomposition in "cash-flow news" and "discount rate news" form
+- The dividend on the wealth portfolio is consumption (see Gourio's notes)
+- First term: cash-flow news
+- Second term: discount-rate news
+
+## A Return Formula in Terms of Consumption News
+
+Let $N_{c,t+1}$ be the news about future consumption growth, so that
+$$
+N_{c,t+1} \equiv (E_{t+1}-E_t)\sum_{j=1}^{\infty}\kappa_1^j \Delta c_{t+1+j}
+$$
+
+. . .
+
+Exercise 3: show that $(\mathbb{E}_{t+1}-\mathbb{E}_t)[r_{w, t+1+j}] = (\mathbb{E}_{t+1}-\mathbb{E}_t)[\Delta c_{t + 1 + j}]$ using Exs. 1 and 2
+
+. . .
+
+Using exercise 3 we conclude:
+
+$$
+\widetilde r_{w,t+1} = \widetilde c_{t+1} + \left(1-\frac{1}{\psi}\right)N_{c,t+1}
+$$
+
+- Intuition for the role of $\psi$?
+
+## Plugging Back into the SDF
+Recall the form of the SDF innovations:
+$$
+\widetilde m_{t+1} = -\frac{\theta}{\psi}\widetilde c_{t+1} - (1-\theta)\widetilde r_{w,t+1}
+$$
+
+Using what we just derived, we have:
+
+$$
+\widetilde m_{t+1} = -\gamma \widetilde c_{t+1} - \left(\gamma-\frac{1}{\psi}\right)N_{c,t+1}
+$$
+
+- **Important**:$\gamma$ and $\psi$ are not the same parameter!
+- You can bump up $\gamma$ without changing the IES $\psi$, and vice versa
+- What if $\gamma=1/\psi$?
+
+
+## The Extended Consumption CAPM
+
+$$
+\widetilde m_{t+1} = -\gamma \widetilde c_{t+1} - \left(\gamma-\frac{1}{\psi}\right)N_{c,t+1}
+$$
+
+$$
+\mathbb{E}_t[r_{i,t+1}-r_{f,t}] + \frac{1}{2}\sigma_i^2
+= \gamma \sigma_{ic} + \left(\gamma-\frac{1}{\psi}\right)\sigma_{iN}
+$$
+
+- Standard CCAPM term: covariance with current consumption shocks
+- New term: covariance with news about future consumption
+- Here $\sigma_{iN} \equiv \operatorname{cov}_t(r_{i,t+1},N_{c,t+1})$
+- If $\gamma > 1$ and $\psi > 1$, bad long-run news raises marginal utility
+- Long-run risk models make this second covariance quantitatively important
 
 # Primitives
 
@@ -94,14 +244,34 @@ $$
 
 # Approximate Solution
 
+## Recall: Campbell-Shiller in General
+
+$$
+R_{t+1} = \frac{P_{t+1}+D_{t+1}}{P_t}
+$$
+
+$$
+r_{t+1} \approx \kappa_0 + \kappa_1 (p_{t+1}-d_{t+1}) - (p_t-d_t) + \Delta d_{t+1}
+$$
+
+- This is the standard log-linear return decomposition [@CampbellShiller1988]
+- $P_t$: ex-dividend price at time $t$
+- $D_t$: payout at time $t$, so next period's cash flow is $D_{t+1}$
+- $R_{t+1}$: gross return from $t$ to $t+1$
+- Lowercase letters are logs: $r_t = \log R_t$, $p_t = \log P_t$, $d_t = \log D_t$
+- It is a first-order expansion around the mean log price-dividend ratio
+
 ## Campbell-Shiller Step
 
 $$
 r_{a,t+1} = \kappa_0 + \kappa_1 z_{t+1} - z_t + g_{t+1}
 $$
 
-- Lowercase letters are logs
-- $z_t \equiv \log(P_t/C_t)$ is the log price-consumption ratio
+- This is the Campbell-Shiller identity applied to the consumption claim
+- Set the "dividend" equal to consumption: $D_t = C_t$
+- If $W_t$ is cum-dividend wealth, the ex-dividend price is $P_t = W_t - C_t$
+- Hence $z_t = \log(P_t/C_t) = \log\!\left((W_t-C_t)/C_t\right)$
+- Here $\Delta d_{t+1}$ becomes consumption growth $g_{t+1}$
 - There is an analogous decomposition for the market using $z_{m,t}$
 - This log-linearization makes the economics transparent
 
@@ -117,7 +287,28 @@ $$
 - Plug the guess into the Euler equation and match coefficients
 - In the full model, we add a loading on $\sigma_t^2$
 
+## Case I: What Comes Out of the Guess
+
+$$
+\mathbb{E}_t[r_{a,t+1}] = \text{const} + \left(1 - A_1 + \kappa_1 \rho A_1\right)x_t
+$$
+
+$$
+\mathbb{E}_t[r_{m,t+1}] = \text{const} + \left(\phi - A_{1,m} + \kappa_{1,m}\rho A_{1,m}\right)x_t
+$$
+
+- Substitute $z_t = A_0 + A_1 x_t$ and $x_{t+1} = \rho x_t + \varphi_e \sigma e_{t+1}$ into the Campbell-Shiller identity
+- In Case I, conditional variances are constant, so conditional risk premia are constant
+- Therefore the only time variation in expected returns comes from the risk-free rate
+- The Euler equation implies $r_{f,t} = \text{const} + \frac{1}{\psi}x_t$
+
 ## Long-Run Growth Loads
+
+$$
+1 - A_1 + \kappa_1 \rho A_1 = \frac{1}{\psi},
+\qquad
+\phi - A_{1,m} + \kappa_{1,m}\rho A_{1,m} = \frac{1}{\psi}
+$$
 
 $$
 A_1 = \frac{1 - 1/\psi}{1-\kappa_1 \rho},
@@ -125,6 +316,8 @@ A_1 = \frac{1 - 1/\psi}{1-\kappa_1 \rho},
 A_{1,m} = \frac{\phi - 1/\psi}{1-\kappa_{1,m}\rho}
 $$
 
+- Match the coefficient on $x_t$ on both sides and solve
+- The same discount-rate slope, $1/\psi$, prices both claims
 - If $\psi > 1$, then $A_1 > 0$
 - More persistent $x_t$ raises both loadings
 - If $\phi > 1$, dividend claims are more sensitive than consumption claims
@@ -236,7 +429,7 @@ Questions?
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
 
-- Main paper: Bansal and Yaron (2004), *Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles*
+- Main paper [@BansalYaron2004]
 - Campbell-Shiller log-linearization [@CampbellShiller1988]
 - Recursive utility foundations [@EpsteinZin1989; @EpsteinZin1991]
 - Useful benchmark for comparison: habits [@CampbellCochrane1999]
