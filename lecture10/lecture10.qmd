@@ -1,0 +1,243 @@
+---
+title: "Lecture 10: Long-Run Risks"
+date: "2026-03-02"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+<!-- TODO: add bib entry for Bansal and Yaron (2004) -->
+
+## Intro
+
+- Mehra-Prescott leaves too little equity premia unless risk aversion is pushed hard
+- Habits and disasters fix this by changing risk prices or tail risk
+- Bansal and Yaron ask a different question: can *small* persistent growth news move prices a lot?
+- Long-run growth risk plus time-varying macro uncertainty is their answer
+- With Epstein-Zin preferences, distant bad news becomes first-order for valuation
+
+## Flight Plan
+
+- Motivation: why long-run risk is not "just another AR(1)"
+- Primitives: preferences, cash-flow dynamics, and state variables
+- Approximate solution via the Campbell-Shiller decomposition [@CampbellShiller1988]
+- What must be solved numerically in the full model
+- Quantitative targets, plus placeholders for the key figures and tables
+
+# Primitives
+
+## The Economic Environment
+
+- Representative agent with recursive utility [@EpsteinZin1989; @EpsteinZin1991]
+- Two aggregate cash-flow objects: consumption and dividends
+- The market is a claim to dividends, not a claim to aggregate consumption
+- We therefore track both $R_{a,t+1}$ and $R_{m,t+1}$
+- In the full model, the state vector is $(x_t,\sigma_t^2)$
+
+## Preferences
+
+$$
+\mathbb{E}_t \left[ \delta^\theta G_{t+1}^{-\theta/\psi} R_{a,t+1}^{-(1-\theta)} R_{i,t+1} \right] = 1
+$$
+
+- $G_{t+1}$ is gross consumption growth
+- $\psi$ is the IES, $\gamma$ is risk aversion
+- $\theta \equiv \frac{1-\gamma}{1-1/\psi}$
+- The whole mechanism needs the Epstein-Zin wedge between $\gamma$ and $\psi$
+
+## Why Separate $R_{a,t+1}$ and $R_{m,t+1}$?
+
+- $R_{a,t+1}$ is the return on a claim to aggregate consumption
+- $R_{m,t+1}$ is the observable market return: the aggregate dividend claim
+- Solve for the consumption claim first: it pins down the IMRS
+- Then price the market using dividend dynamics
+- This is where leverage in dividends will matter
+
+## Growth Dynamics: Case I
+
+$$
+\begin{aligned}
+x_{t+1} &= \rho x_t + \varphi_e \sigma e_{t+1} \\
+g_{t+1} &= \mu + x_t + \sigma \eta_{t+1} \\
+g_{d,t+1} &= \mu_d + \phi x_t + \varphi_d \sigma u_{t+1}
+\end{aligned}
+$$
+
+- $x_t$ is the small persistent component in expected growth
+- $\phi > 1$ makes dividend cash flows more exposed than consumption
+
+## What Each Shock Does
+
+- $e_{t+1}$ moves beliefs about future growth
+- $\eta_{t+1}$ is short-run consumption risk
+- $u_{t+1}$ adds dividend risk not perfectly tied to consumption
+- $\rho$ close to one makes growth news long-lived
+- Tiny news today can then have large valuation effects
+
+## Full Model: Stochastic Volatility
+
+$$
+\sigma_{t+1}^2 = \sigma^2 + \nu_1\left(\sigma_t^2 - \sigma^2\right) + \sigma_w w_{t+1}
+$$
+
+- Economic uncertainty is the conditional variance of consumption growth
+- $\nu_1$ controls how persistent volatility shocks are
+- $w_{t+1}$ becomes a priced shock in the full model
+- This is what generates time-varying risk premia
+
+## Why This Is a Long-Run Risk Model
+
+- The quantity shock is small
+- The persistence is large
+- Duration amplifies valuation responses to growth news
+- If $\psi > 1$, good long-run growth news raises wealth and asset prices
+- If $\psi < 1$, the same news works in the wrong direction
+
+# Approximate Solution
+
+## Campbell-Shiller Step
+
+$$
+r_{a,t+1} = \kappa_0 + \kappa_1 z_{t+1} - z_t + g_{t+1}
+$$
+
+- Lowercase letters are logs
+- $z_t \equiv \log(P_t/C_t)$ is the log price-consumption ratio
+- There is an analogous decomposition for the market using $z_{m,t}$
+- This log-linearization makes the economics transparent
+
+## Guess the Price-Consumption Ratio
+
+$$
+z_t = A_0 + A_1 x_t,
+\qquad
+z_{m,t} = A_{0,m} + A_{1,m} x_t
+$$
+
+- In Case I, one state variable is enough
+- Plug the guess into the Euler equation and match coefficients
+- In the full model, we add a loading on $\sigma_t^2$
+
+## Long-Run Growth Loads
+
+$$
+A_1 = \frac{1 - 1/\psi}{1-\kappa_1 \rho},
+\qquad
+A_{1,m} = \frac{\phi - 1/\psi}{1-\kappa_{1,m}\rho}
+$$
+
+- If $\psi > 1$, then $A_1 > 0$
+- More persistent $x_t$ raises both loadings
+- If $\phi > 1$, dividend claims are more sensitive than consumption claims
+- This is the core "small shock, big price effect" step
+
+## The IMRS
+
+$$
+m_{t+1} = \theta \log \delta - \frac{\theta}{\psi} g_{t+1} + (\theta - 1) r_{a,t+1}
+$$
+
+- Asset prices are about covariance with $m_{t+1}$
+- Recursive utility makes the continuation return matter directly
+- Long-run news enters the SDF through $r_{a,t+1}$
+
+## Innovation in the IMRS
+
+$$
+m_{t+1} - \mathbb{E}_t[m_{t+1}]
+= \lambda_{m,\eta}\sigma \eta_{t+1} - \lambda_{m,e}\sigma e_{t+1}
+$$
+
+- $\lambda_{m,e}$ is the price of long-run growth news
+- As $\rho$ rises, growth news becomes more permanent
+- More permanence means more covariance with the IMRS
+- The long-run risk premium rises with persistence
+
+## Add Volatility as a State
+
+$$
+z_t = A_0 + A_1 x_t + A_2 \sigma_t^2
+$$
+
+- $A_1$ is unchanged
+- $A_2$ captures how valuation reacts to economic uncertainty
+- With $\gamma > 1$ and $\psi > 1$, the paper gets $A_2 < 0$
+- Higher uncertainty lowers the wealth-consumption ratio
+
+## Time-Varying Premia
+
+$$
+\mathbb{E}_t(r_{m,t+1} - r_{f,t})
+= \beta_{m,e}\lambda_{m,e}\sigma_t^2
++ \beta_{m,w}\lambda_{m,w}\sigma_w^2
+- \frac{1}{2}\operatorname{var}_t(r_{m,t+1})
+$$
+
+- Growth-risk and volatility-risk both earn premia
+- When $\sigma_t$ is high, the conditional Sharpe ratio rises
+- The model can produce high premia and a low, smooth risk-free rate at the same time
+
+## What the Approximation Teaches
+
+- Long-run growth news matters because it moves future discount rates and future cash flows
+- Volatility news matters because it changes risk premia and current valuations
+- The sign restrictions hinge on $\psi > 1$
+- Before any numerics, the Campbell-Shiller algebra already tells us what to look for
+
+# Quantitative Checks
+
+## Figure: Long-Horizon Return Predictability
+
+<!-- TODO: insert the long-horizon return predictability figure -->
+\vfill
+
+## Figure: Consumption Volatility and Valuation Ratios
+
+<!-- TODO: insert the volatility vs. price-dividend ratio figure -->
+\vfill
+
+## Table: Baseline Calibration
+
+<!-- TODO: insert the baseline parameter table -->
+\vfill
+
+# Numerical Implementation
+
+## How to Solve It Numerically
+
+- Treat $(x_t,\sigma_t^2)$ as the state space
+- Approximate policy functions or valuation ratios with a projection basis
+- Choose coefficients to minimize Euler equation errors
+- Simulate at the monthly decision frequency
+- Time-aggregate simulated data to annual moments before comparing to the data
+
+. . .
+
+- In the paper, the numerical results are close to the log-linear analytics
+
+## What to Match
+
+- Mean and persistence of consumption and dividend growth
+- Equity premium and average risk-free rate
+- Volatility of the market return, the risk-free rate, and the price-dividend ratio
+- Long-horizon return predictability
+- The negative relation between economic uncertainty and valuation ratios
+
+## Takeaways
+
+- The paper prices *persistent* growth news, not just bad short-run shocks
+- Epstein-Zin preferences are doing essential work: $\psi > 1$ is not optional here
+- Stochastic volatility gives the model time-varying premia and volatility feedback
+- The approximation is simple enough to teach, but the full quantitative model is numerical
+- Next step in class: decide which empirical moments we want to emphasize
+
+## {.standout}
+Questions?
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
+
+- Main paper: Bansal and Yaron (2004), *Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles*
+- Campbell-Shiller log-linearization [@CampbellShiller1988]
+- Recursive utility foundations [@EpsteinZin1989; @EpsteinZin1991]
+- Useful benchmark for comparison: habits [@CampbellCochrane1999]
+- Campbell, Chapter 6
