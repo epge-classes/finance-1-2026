@@ -22,7 +22,7 @@ bibliography: ../asset_pricing_references.bib
 - What must be solved numerically in the full model
 - Quantitative targets, plus placeholders for the key figures and tables
 
-# A Useful Detour
+# An Useful Detour
 
 ## Notation for This Detour
 
@@ -142,7 +142,7 @@ $$
 ## Plugging Back into the SDF
 Recall the form of the SDF innovations:
 $$
-\widetilde m_{t+1} = -\frac{\theta}{\psi}\widetilde c_{t+1} - (1-\theta)\widetilde r_{w,t+1}
+\widetilde m_{t+1} = -\frac{\theta}{\psi}\widetilde c_{t+1} - (1-\theta)\widetilde r_{w,t+1}, \qquad \theta \equiv \frac{1-\gamma}{1-1/\psi}
 $$
 
 Using what we just derived, we have:
@@ -155,25 +155,57 @@ $$
 - You can bump up $\gamma$ without changing the IES $\psi$, and vice versa
 - What if $\gamma=1/\psi$?
 
+## {.standout}
+Questions?
 
-## The Extended Consumption CAPM
-
+## Another Useful Insight
+The premium on the wealth portfolio is given by:
 $$
-\widetilde m_{t+1} = -\gamma \widetilde c_{t+1} - \left(\gamma-\frac{1}{\psi}\right)N_{c,t+1}
+\mathbb{E}_t[r_{w,t+1}-r_{f,t}] + \frac{1}{2}\sigma_w^2
+= \gamma \operatorname{cov}_t(r_{w,t+1},\widetilde c_{t+1})
++ \left(\gamma-\frac{1}{\psi}\right)\operatorname{cov}_t(r_{w,t+1},N_{c,t+1})
 $$
 
+. . .
+
+Don't be lazy:
+```{=latex}
+\begin{align*}
+\mathbb{E}_t[r_{w,t+1}-r_{f,t}] + \frac{1}{2}\sigma_w^2
+&= \gamma \operatorname{cov}_t\!\left(\widetilde c_{t+1}+\left(1-\frac{1}{\psi}\right)N_{c,t+1},\widetilde c_{t+1}\right) \\
+&\quad + \left(\gamma-\frac{1}{\psi}\right)\operatorname{cov}_t\!\left(\widetilde c_{t+1}+\left(1-\frac{1}{\psi}\right)N_{c,t+1},N_{c,t+1}\right)
+\end{align*}
+```
+
+. . .
+
+If innovations in $\tilde{c}_{t+1}$ and $N_{c, t+1}$ are uncorrelated, we get:
 $$
-\mathbb{E}_t[r_{i,t+1}-r_{f,t}] + \frac{1}{2}\sigma_i^2
-= \gamma \sigma_{ic} + \left(\gamma-\frac{1}{\psi}\right)\sigma_{iN}
+\boxed{
+\mathbb{E}_t[r_{w,t+1}-r_{f,t}] + \frac{1}{2}\sigma_w^2
+= \gamma \sigma_{c, t}^2
++ \left(\gamma-\frac{1}{\psi}\right)\left(1-\frac{1}{\psi}\right)\operatorname{var}_t(N_{c,t+1})
+}
 $$
 
-- Standard CCAPM term: covariance with current consumption shocks
-- New term: covariance with news about future consumption
-- Here $\sigma_{iN} \equiv \operatorname{cov}_t(r_{i,t+1},N_{c,t+1})$
-- If $\gamma > 1$ and $\psi > 1$, bad long-run news raises marginal utility
-- Long-run risk models make this second covariance quantitatively important
+## The Whole Motivation for Bansal and Yaron
 
-# Primitives
+Repeating the equation:
+$$
+\boxed{
+\mathbb{E}_t[r_{w,t+1}-r_{f,t}] + \frac{1}{2}\sigma_w^2
+= \gamma \sigma_{c, t}^2
++ \left(\gamma-\frac{1}{\psi}\right)\left(1-\frac{1}{\psi}\right)\operatorname{var}_t(N_{c,t+1})
+}
+$$
+
+- Recall that, in the data, $\sigma^2_c$ is small
+- What happens if consumption growth is i.i.d?
+- What if consumption growth moves a lot, but $\gamma = 1/\psi$?
+- @BansalYaron2004: what if consumption growth is slowly changing over time and you're afraid of that?
+- If $\gamma > 1/\psi$ and $\psi > 1$... we might be back in business!
+
+# Primitives for @BansalYaron2004
 
 ## The Economic Environment
 
@@ -181,7 +213,7 @@ $$
 - Two aggregate cash-flow objects: consumption and dividends
 - The market is a claim to dividends, not a claim to aggregate consumption
 - We therefore track both $R_{a,t+1}$ and $R_{m,t+1}$
-- In the full model, the state vector is $(x_t,\sigma_t^2)$
+- Consumption growth will be exogenous and display stochastic volatility
 
 ## Preferences
 
@@ -197,12 +229,12 @@ $$
 ## Why Separate $R_{a,t+1}$ and $R_{m,t+1}$?
 
 - $R_{a,t+1}$ is the return on a claim to aggregate consumption
-- $R_{m,t+1}$ is the observable market return: the aggregate dividend claim
-- Solve for the consumption claim first: it pins down the IMRS
-- Then price the market using dividend dynamics
-- This is where leverage in dividends will matter
+- $R_{m,t+1}$ is the **observable** market return: the aggregate dividend claim
+- Solve for the consumption claim first: take $i=a$ in the Euler equation
+- Then price the market using (exogenous) dividend dynamics
+- There will be two cases: with and without stochastic volatility
 
-## Growth Dynamics: Case I
+## Growth Dynamics: Case I (No Stochastic Volatility)
 
 $$
 \begin{aligned}
@@ -212,35 +244,31 @@ g_{d,t+1} &= \mu_d + \phi x_t + \varphi_d \sigma u_{t+1}
 \end{aligned}
 $$
 
-- $x_t$ is the small persistent component in expected growth
+- $x_t$ is the small persistent component in expected growth ($\rho$ is close to 1)
 - $\phi > 1$ makes dividend cash flows more exposed than consumption
-
-## What Each Shock Does
-
-- $e_{t+1}$ moves beliefs about future growth
-- $\eta_{t+1}$ is short-run consumption risk
+- Notice that $\sigma$ is constant
+- $e_{t+1}$ moves beliefs about future growth, while $\eta_{t+1}$ is short-run consumption risk
 - $u_{t+1}$ adds dividend risk not perfectly tied to consumption
 - $\rho$ close to one makes growth news long-lived
-- Tiny news today can then have large valuation effects
 
-## Full Model: Stochastic Volatility
+## Growth Dynamics: Case II (With Stochastic Volatility)
 
 $$
+\begin{aligned}
+x_{t+1} &= \rho x_t + \varphi_e \sigma_t e_{t+1} \\
+g_{t+1} &= \mu + x_t + \sigma_t \eta_{t+1} \\
+g_{d,t+1} &= \mu_d + \phi x_t + \varphi_d \sigma_t u_{t+1}
 \sigma_{t+1}^2 = \sigma^2 + \nu_1\left(\sigma_t^2 - \sigma^2\right) + \sigma_w w_{t+1}
+\end{aligned}
 $$
 
-- Economic uncertainty is the conditional variance of consumption growth
+- Economic uncertainty is the *conditional* variance of consumption growth
 - $\nu_1$ controls how persistent volatility shocks are
 - $w_{t+1}$ becomes a priced shock in the full model
 - This is what generates time-varying risk premia
 
-## Why This Is a Long-Run Risk Model
-
-- The quantity shock is small
-- The persistence is large
-- Duration amplifies valuation responses to growth news
-- If $\psi > 1$, good long-run growth news raises wealth and asset prices
-- If $\psi < 1$, the same news works in the wrong direction
+## {.standout}
+Questions?
 
 # Approximate Solution
 
@@ -283,69 +311,67 @@ z_t = A_0 + A_1 x_t,
 z_{m,t} = A_{0,m} + A_{1,m} x_t
 $$
 
-- In Case I, one state variable is enough
-- Plug the guess into the Euler equation and match coefficients
-- In the full model, we add a loading on $\sigma_t^2$
-
-## Case I: What Comes Out of the Guess
-
+For the consumption claim, take $i=a$ in the Euler equation:
 $$
-\mathbb{E}_t[r_{a,t+1}] = \text{const} + \left(1 - A_1 + \kappa_1 \rho A_1\right)x_t
+1 = \mathbb{E}_t\left[\exp\left(\theta \log \delta - \frac{\theta}{\psi} g_{t+1} + \theta r_{a,t+1}\right)\right]
 $$
 
+. . .
+
+Conditional normality gives:
 $$
-\mathbb{E}_t[r_{m,t+1}] = \text{const} + \left(\phi - A_{1,m} + \kappa_{1,m}\rho A_{1,m}\right)x_t
+0 = \mathbb{E}_t[m_{t+1}+r_{a,t+1}] + \frac{1}{2}\operatorname{var}_t(m_{t+1}+r_{a,t+1})
 $$
 
-- Substitute $z_t = A_0 + A_1 x_t$ and $x_{t+1} = \rho x_t + \varphi_e \sigma e_{t+1}$ into the Campbell-Shiller identity
-- In Case I, conditional variances are constant, so conditional risk premia are constant
-- Therefore the only time variation in expected returns comes from the risk-free rate
-- The Euler equation implies $r_{f,t} = \text{const} + \frac{1}{\psi}x_t$
+- In Case I, the variance term is constant
+- Use the guess $r_{a,t+1} = \kappa_0 + \kappa_1(A_0 + A_1 x_{t+1}) - (A_0 + A_1 x_t) + \mu + x_t + \sigma \eta_{t+1}$
+- You will only have constants and terms multiplying $x_t$
 
 ## Long-Run Growth Loads
-
+Match coefficients to get (you should show this and never trust me)
 $$
-1 - A_1 + \kappa_1 \rho A_1 = \frac{1}{\psi},
-\qquad
-\phi - A_{1,m} + \kappa_{1,m}\rho A_{1,m} = \frac{1}{\psi}
+1 - A_1 + \kappa_1 \rho A_1 = \frac{1}{\psi} \implies A_1 = \frac{1 - 1/\psi}{1-\kappa_1 \rho}
 $$
 
+. . .
+
+
+Redo the analysis for the Market claim in Case I:
 $$
-A_1 = \frac{1 - 1/\psi}{1-\kappa_1 \rho},
-\qquad
+\phi - A_{1,m} + \kappa_{1,m}\rho A_{1,m} = \frac{1}{\psi} \implies
 A_{1,m} = \frac{\phi - 1/\psi}{1-\kappa_{1,m}\rho}
 $$
 
-- Match the coefficient on $x_t$ on both sides and solve
-- The same discount-rate slope, $1/\psi$, prices both claims
-- If $\psi > 1$, then $A_1 > 0$
-- More persistent $x_t$ raises both loadings
+- If $\psi > 1$, then $A_1 > 0 \implies$ $x_t$ increases $r_{a, t+1}$
 - If $\phi > 1$, dividend claims are more sensitive than consumption claims
 - This is the core "small shock, big price effect" step
 
-## The IMRS
-
-$$
-m_{t+1} = \theta \log \delta - \frac{\theta}{\psi} g_{t+1} + (\theta - 1) r_{a,t+1}
-$$
-
-- Asset prices are about covariance with $m_{t+1}$
-- Recursive utility makes the continuation return matter directly
-- Long-run news enters the SDF through $r_{a,t+1}$
 
 ## Innovation in the IMRS
 
-$$
-m_{t+1} - \mathbb{E}_t[m_{t+1}]
-= \lambda_{m,\eta}\sigma \eta_{t+1} - \lambda_{m,e}\sigma e_{t+1}
-$$
+Exercise 4: show that the following is true:
+
+```{=latex}
+\begin{equation}
+\begin{aligned}
+m_{t+1}-E_t\!\left(m_{t+1}\right)
+&=\left[-\frac{\theta}{\psi}+\theta-1\right]\sigma\,\eta_{t+1}
+-(1-\theta)\left[\kappa_1\!\left(1-\frac{1}{\psi}\right)\frac{\varphi_e}{1-\kappa_1\rho}\right]\sigma\,e_{t+1} \\
+&=\lambda_{m,\eta}\sigma\,\eta_{t+1}-\lambda_{m,e}\sigma\,e_{t+1}.
+\end{aligned}
+\end{equation}
+```
 
 - $\lambda_{m,e}$ is the price of long-run growth news
 - As $\rho$ rises, growth news becomes more permanent
 - More permanence means more covariance with the IMRS
 - The long-run risk premium rises with persistence
+- What happens if $\theta=1$?
 
-## Add Volatility as a State
+## {.standout}
+Questions?
+
+## Case II - Adding Volatility as a State Variable
 
 $$
 z_t = A_0 + A_1 x_t + A_2 \sigma_t^2
@@ -357,17 +383,28 @@ $$
 - Higher uncertainty lowers the wealth-consumption ratio
 
 ## Time-Varying Premia
+In the paper, they show:
 
+$$
+m_{t+1}-E_t\!\left(m_{t+1}\right)
+=\lambda_{m,\eta}\sigma_t\eta_{t+1}
+-\lambda_{m,e}\sigma_t e_{t+1}
+-\lambda_{m,w}\sigma_w w_{t+1}
+$$
+
+This will imply:
 $$
 \mathbb{E}_t(r_{m,t+1} - r_{f,t})
 = \beta_{m,e}\lambda_{m,e}\sigma_t^2
 + \beta_{m,w}\lambda_{m,w}\sigma_w^2
 - \frac{1}{2}\operatorname{var}_t(r_{m,t+1})
 $$
+where $\operatorname{var}_t(r_{m,t+1}) = \beta^2_{m,e}\sigma_t^2 + \beta^2_{m,w}\sigma_w^2 + \varphi_d^2\sigma_t^2$
 
 - Growth-risk and volatility-risk both earn premia
-- When $\sigma_t$ is high, the conditional Sharpe ratio rises
+- When $\sigma_t$ is high, the conditional risk premium rises
 - The model can produce high premia and a low, smooth risk-free rate at the same time
+- Said in another way: volatile times are times of low valuation (leverage effect)
 
 ## What the Approximation Teaches
 
@@ -376,52 +413,108 @@ $$
 - The sign restrictions hinge on $\psi > 1$
 - Before any numerics, the Campbell-Shiller algebra already tells us what to look for
 
-# Quantitative Checks
+## {.standout}
+Questions?
 
-## Figure: Long-Horizon Return Predictability
+# Meeting The Data
 
-<!-- TODO: insert the long-horizon return predictability figure -->
-\vfill
+## What Kind of Equity Risk Premium Can We Get? -- Case I
 
-## Figure: Consumption Volatility and Valuation Ratios
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\scriptsize
+\begin{tabular}{ccrrrrr}
+\toprule
+$\gamma$ & $\psi$ & $E(R_m-R_f)$ & $E(R_f)$ & $\sigma(R_m)$ & $\sigma(R_f)$ & $\sigma(p-d)$ \\
+\midrule
+\multicolumn{7}{c}{\textbf{Panel A:} $\phi=3.0$, $\rho=0.979$} \\
+\midrule
+7.5  & 0.5 & 0.55 & 4.80 & 13.11 & 1.17 & 0.07 \\
+7.5  & 1.5 & 2.71 & 1.61 & 16.21 & 0.39 & 0.16 \\
+10.0 & 0.5 & 1.19 & 4.89 & 13.11 & 1.17 & 0.07 \\
+10.0 & 1.5 & 4.20 & 1.34 & 16.21 & 0.39 & 0.16 \\
+\midrule
+\multicolumn{7}{c}{\textbf{Panel B:} $\phi=3.5$, $\rho=0.979$} \\
+\midrule
+7.5  & 0.5 & 1.11 & 4.80 & 14.17 & 1.17 & 0.10 \\
+7.5  & 1.5 & 3.29 & 1.61 & 18.23 & 0.39 & 0.19 \\
+10.0 & 0.5 & 2.07 & 4.89 & 14.17 & 1.17 & 0.10 \\
+10.0 & 1.5 & 5.10 & 1.34 & 18.23 & 0.39 & 0.19 \\
+\midrule
+\multicolumn{7}{c}{\textbf{Panel C:} $\phi=3.0$, $\rho=\varphi_e=0$} \\
+\midrule
+7.5  & 0.5 & $-0.74$ & 4.02 & 12.15 & 0.00 & 0.00 \\
+7.5  & 1.5 & $-0.74$ & 1.93 & 12.15 & 0.00 & 0.00 \\
+10.0 & 0.5 & $-0.74$ & 3.75 & 12.15 & 0.00 & 0.00 \\
+10.0 & 1.5 & $-0.74$ & 1.78 & 12.15 & 0.00 & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
 
-<!-- TODO: insert the volatility vs. price-dividend ratio figure -->
-\vfill
+## What Kind of Equity Risk Premium Can We Get? -- Case II
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\scriptsize
+\begin{tabular}{lccrr}
+\toprule
+& \multicolumn{2}{c}{Data} & \multicolumn{2}{c}{Model} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Variable & Estimate & SE & $\gamma=7.5$ & $\gamma=10$ \\
+\midrule
+\multicolumn{5}{c}{\textbf{Returns}} \\
+\midrule
+$E(r_m-r_f)$ & 6.33 & (2.15) & 4.01 & 6.84 \\
+$E(r_f)$     & 0.86 & (0.42) & 1.44 & 0.93 \\
+$\sigma(r_m)$& 19.42& (3.07) & 17.81& 18.65 \\
+$\sigma(r_f)$& 0.97 & (0.28) & 0.44 & 0.57 \\
+\midrule
+\multicolumn{5}{c}{\textbf{Price Dividend}} \\
+\midrule
+$E(\exp(p-d))$ & 26.56 & (2.53) & 25.02 & 19.98 \\
+$\sigma(p-d)$  & 0.29  & (0.04) & 0.18  & 0.21 \\
+$AC1(p-d)$     & 0.81  & (0.09) & 0.80  & 0.82 \\
+$AC2(p-d)$     & 0.64  & (0.15) & 0.65  & 0.67 \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
 
-## Table: Baseline Calibration
+- Pretty good match for the equity premium and volatility!
+- Well-behaved risk-free rate!
 
-<!-- TODO: insert the baseline parameter table -->
-\vfill
+## Is $\psi > 1$ actually reasonable?
 
-# Numerical Implementation
+$$
+g_{t+1} = \mu + x_t + \sigma_t \eta_{t+1},
+\qquad
+r_{f,t} = \text{const} + \frac{1}{\psi}x_t + \text{term in }\sigma_t^2
+$$
 
-## How to Solve It Numerically
+- In @Hall1988, the slope of $g_{t+1}$ on $r_{f,t}$ identifies $\psi$
+- That needs $r_{f,t}$ to move only with $x_t$
+- In @BansalYaron2004, $r_{f,t}$ also moves with $\sigma_t^2$
+- Then $r_{f,t}$ contains extra noise about future growth
+- Result: the slope is too small
+- In their calibration: true $\psi=1.5$, estimated $\psi \approx 0.62$ like @Hall1988
 
-- Treat $(x_t,\sigma_t^2)$ as the state space
-- Approximate policy functions or valuation ratios with a projection basis
-- Choose coefficients to minimize Euler equation errors
-- Simulate at the monthly decision frequency
-- Time-aggregate simulated data to annual moments before comparing to the data
-
-. . .
-
-- In the paper, the numerical results are close to the log-linear analytics
-
-## What to Match
-
-- Mean and persistence of consumption and dividend growth
-- Equity premium and average risk-free rate
-- Volatility of the market return, the risk-free rate, and the price-dividend ratio
-- Long-horizon return predictability
-- The negative relation between economic uncertainty and valuation ratios
+## {.standout}
+Questions?
 
 ## Takeaways
 
-- The paper prices *persistent* growth news, not just bad short-run shocks
-- Epstein-Zin preferences are doing essential work: $\psi > 1$ is not optional here
-- Stochastic volatility gives the model time-varying premia and volatility feedback
-- The approximation is simple enough to teach, but the full quantitative model is numerical
-- Next step in class: decide which empirical moments we want to emphasize
+$$
+P_t = \mathbb{E}_t[M_{t+1}X_{t+1}]
+$$
+
+- This is still the master equation
+- The vanilla CCAPM fails in the data; the framework does not
+- The big empirical fact is time-varying discount rates
+- Good models make marginal utility rise sharply in bad times
+- Habit, disasters, and long-run risks are three ways to get there
+- Long-run risk does it with small but persistent growth and volatility news
 
 ## {.standout}
 Questions?
@@ -429,8 +522,4 @@ Questions?
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
 
-- Main paper [@BansalYaron2004]
-- Campbell-Shiller log-linearization [@CampbellShiller1988]
-- Recursive utility foundations [@EpsteinZin1989; @EpsteinZin1991]
-- Useful benchmark for comparison: habits [@CampbellCochrane1999]
 - Campbell, Chapter 6
