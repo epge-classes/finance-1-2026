@@ -62,7 +62,7 @@ $$
 
 - Exercise 2: show that the risk-free rate $r_{f, t+1} = \log(R_{f,t+1})$ given by:
 $$
-r_{f, t+1} = -\log(\delta) + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}] - \frac{\theta}{2\psi^2}\sigma_c^2 + \frac{(1-\theta)}{2}\sigma_w^2 = \text{constants} + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}]
+r_{f, t+1} = -\log(\delta) + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}] - \frac{\theta}{2\psi^2}\sigma_c^2 - \frac{(1-\theta)}{2}\sigma_w^2 = \text{constants} + \frac{1}{\psi}\mathbb{E}_t[\Delta c_{t+1}]
 $$
 
 (Hint: let $i=w$ after exercise 1)
@@ -127,7 +127,7 @@ $$
 
 . . .
 
-Exercise 3: show that $(\mathbb{E}_{t+1}-\mathbb{E}_t)[r_{w, t+1+j}] = (\mathbb{E}_{t+1}-\mathbb{E}_t)[\Delta c_{t + 1 + j}]$ using Exs. 1 and 2
+Exercise 3: show that $(\mathbb{E}_{t+1}-\mathbb{E}_t)[r_{w, t+1+j}] = \frac{1}{\psi}(\mathbb{E}_{t+1}-\mathbb{E}_t)[\Delta c_{t + 1 + j}]$ using Exs. 1 and 2
 
 . . .
 
@@ -257,7 +257,7 @@ $$
 \begin{aligned}
 x_{t+1} &= \rho x_t + \varphi_e \sigma_t e_{t+1} \\
 g_{t+1} &= \mu + x_t + \sigma_t \eta_{t+1} \\
-g_{d,t+1} &= \mu_d + \phi x_t + \varphi_d \sigma_t u_{t+1}
+g_{d,t+1} &= \mu_d + \phi x_t + \varphi_d \sigma_t u_{t+1}\\
 \sigma_{t+1}^2 = \sigma^2 + \nu_1\left(\sigma_t^2 - \sigma^2\right) + \sigma_w w_{t+1}
 \end{aligned}
 $$
