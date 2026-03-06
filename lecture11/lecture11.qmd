@@ -1,0 +1,289 @@
+---
+title: "Lecture 11: Early CAPM Tests and First Cracks"
+date: "2026-03-09"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+## Intro
+
+- We now start the factor-model module in empirical asset pricing
+- Today is about the first CAPM tests and the first cracks in the model
+- Logic: CAPM benchmark first, data second, anomalies third, joint tests last
+
+## Flight Plan
+
+- Part I: why CAPM looked compelling in theory [@Sharpe1964; @Lintner1965; @Mossin1966]
+- Part II: early empirical protocols from @BlackJensenScholes1972 and @FamaMacBeth1973
+- Part III: the first anomaly evidence [@Basu1977; @Banz1981; @DeBondtThaler1985]
+- Part IV: joint testing logic, from @Roll1977 to @GibbonsRossShanken1989
+
+# Part I: CAPM Recall Before Data
+
+## Why CAPM Looked So Convincing
+
+- It linked portfolio choice to equilibrium expected returns
+- It delivered one clear sufficient statistic: market beta
+- It generated a sharp cross-sectional prediction
+- It was simple enough to estimate and teach
+- It became the default benchmark for cost of capital
+
+## CAPM Assumptions (What We Bought Into)
+
+- Investors are mean-variance optimizers over one period
+- Everyone can borrow/lend at a common risk-free rate
+- Homogeneous beliefs about return moments
+- Frictionless markets: no taxes, no transaction costs, full divisibility
+- Everyone can hold the same set of traded assets
+
+## Mean-Variance Frontier and Tangency Portfolio
+
+$$
+\max_{w}\; \frac{\mathbb{E}[R_p]-R_f}{\sigma(R_p)}, \qquad R_p = w'R
+$$
+
+- Efficient portfolios are combinations of the risk-free asset and one tangency portfolio
+- The tangency portfolio is the highest Sharpe-ratio risky portfolio
+- All investors differ only in how much risk they scale, not in risky composition
+
+## Market Portfolio in Equilibrium
+
+- If everyone chooses the same tangency risky portfolio, aggregate demand must match supply
+- Market clearing implies the tangency portfolio is the market portfolio
+- This equilibrium step turns mean-variance math into an asset-pricing model
+- From here, beta with the market should price expected returns
+
+## From Equilibrium to Beta Pricing
+
+$$
+\mathbb{E}[R_i - R_f] = \beta_i\,\mathbb{E}[R_m - R_f],
+\qquad
+\beta_i \equiv \frac{\operatorname{cov}(R_i,R_m)}{\operatorname{var}(R_m)}
+$$
+
+- Expected excess returns are linear in market beta
+- Only systematic market covariance is priced
+- Idiosyncratic risk should not earn a premium
+
+## Security Market Line
+
+$$
+\mathbb{E}[R_i] = R_f + \beta_i\big(\mathbb{E}[R_m]-R_f\big)
+$$
+
+- Intercept: risk-free rate
+- Slope: market risk premium
+- Prediction: all assets should lie on one line in mean-beta space
+
+## CAPM as SDF/Beta Representation (Bridge to Lecture 4)
+
+$$
+m_{t+1} = a - bR_{m,t+1}
+$$
+
+- CAPM is one special case of the general SDF framework from Lecture 4
+- If the SDF is affine in market returns, beta pricing follows mechanically
+- This gives a clean bridge between no-arbitrage language and equilibrium CAPM
+
+## Testable Implication 1: Linear Risk-Return Tradeoff
+
+- Cross-section: higher beta assets should have higher average returns
+- The relation should be approximately linear
+- One factor should summarize priced risk in equities
+- Adding characteristics should not add explanatory power if CAPM is exact
+
+## Testable Implication 2: Zero Pricing Errors
+
+$$
+R_{i,t}-R_{f,t} = \alpha_i + \beta_i(R_{m,t}-R_{f,t}) + \varepsilon_{i,t}
+$$
+
+- Exact CAPM implies $\alpha_i=0$ for all test assets
+- Economic failures show up as nonzero alphas
+- Empirical work became a hunt for systematic alpha patterns
+
+## Black (1972): Zero-Beta CAPM
+
+$$
+\mathbb{E}[R_i] = \mathbb{E}[R_z] + \beta_i\big(\mathbb{E}[R_m]-\mathbb{E}[R_z]\big)
+$$
+
+- @Black1972 relaxes unrestricted risk-free borrowing and lending
+- A zero-beta portfolio replaces $R_f$ as the intercept object
+- The linear beta-pricing equation survives with a different baseline return
+
+## Why Zero-Beta Matters for Empirical Work
+
+- Data often reject the strict Sharpe-Lintner intercept restriction
+- A nontrivial zero-beta return can absorb part of that mismatch
+- This reframed tests as "is linear beta pricing there?" rather than "is intercept exactly $R_f$?"
+- It directly shaped how @BlackJensenScholes1972 interpreted evidence
+
+## {.standout}
+Questions so far?
+
+# Part II: Early CAPM Tests in Data
+
+## From Theory to Data: What Early Tests Actually Did
+
+- Build test assets with different estimated betas
+- Estimate time-series loadings and pricing errors
+- Run cross-sectional regressions linking average returns to betas
+- Evaluate whether CAPM restrictions hold jointly
+
+## Black-Jensen-Scholes (1972): Design
+
+- Core idea: sort assets by historical beta to get spread in risk exposure [@BlackJensenScholes1972]
+- Use portfolio returns to reduce idiosyncratic noise
+- Compare average returns across low- and high-beta portfolios
+- Check whether estimated intercept behavior matches strict or zero-beta CAPM
+
+## BJS Time-Series Regression Setup
+
+$$
+R_{p,t}-R_{f,t} = \alpha_p + \beta_p(R_{m,t}-R_{f,t}) + \varepsilon_{p,t}
+$$
+
+- Run the regression for each beta-sorted portfolio $p$
+- Test whether $\alpha_p$ are close to zero
+- Inspect whether low-beta and high-beta portfolios line up with CAPM slope restrictions
+
+## BJS Main Findings
+
+- Beta and average return are positively related, but flatter than strict CAPM predicts
+- Low-beta portfolios earn "too much" relative to strict CAPM
+- High-beta portfolios earn "too little" relative to strict CAPM
+- Evidence is more consistent with a zero-beta intercept than with the risk-free intercept
+
+## BJS Legacy: Method + Zero-Beta Interpretation
+
+- Set the template for beta-sorted portfolio tests
+- Popularized time-series alpha diagnostics in factor evaluation
+- Elevated zero-beta CAPM from theory to practical empirical benchmark
+- Opened the door for richer factor-model testing protocols
+
+## Fama-MacBeth (1973): Why Two Passes?
+
+- Exposure estimation and risk-price estimation are different statistical problems
+- Two-pass procedure separates those two steps cleanly [@FamaMacBeth1973]
+- It produces a time series of risk-price estimates for inference
+- This became the default empirical workflow in cross-sectional asset pricing
+
+## Fama-MacBeth Pass 1 (Estimate Betas)
+
+$$
+R_{i,t}-R_{f,t} = a_i + b_i(R_{m,t}-R_{f,t}) + e_{i,t}
+$$
+
+- First-pass time-series regressions estimate each asset's market beta
+- Betas are treated as characteristics for the second-pass cross section
+- Portfolio grouping can be used to stabilize estimates
+
+## Fama-MacBeth Pass 2 (Price of Risk)
+
+$$
+R_{i,t} = \gamma_{0,t} + \gamma_{1,t}\hat\beta_i + u_{i,t}
+$$
+
+- At each date, run a cross-sectional regression of returns on estimated betas
+- Average $\gamma_{1,t}$ over time to estimate the market price of beta risk
+- Average $\gamma_{0,t}$ to assess the intercept restriction
+
+## Fama-MacBeth Main Findings
+
+- A positive average beta-return relation is present
+- Intercept evidence is not cleanly aligned with strict Sharpe-Lintner CAPM
+- Higher-order beta terms and residual variance are not central once beta is in
+- Results reinforced linear-factor testing as an econometric program
+
+## Fama-MacBeth Legacy and Limits
+
+- Still the backbone of empirical factor-pricing papers
+- Inference must respect generated-regressor and beta-estimation issues
+- Results depend on test assets, sample period, and market proxy quality
+- Later work adds corrections and alternative estimators, not a full replacement
+
+## {.standout}
+If beta is enough, why did anomalies show up so quickly?
+
+# Part III: The First Cracks
+
+## Basu (1977): E/P as a Challenge to CAPM
+
+- @Basu1977 sorts stocks by earnings-to-price ratios
+- High E/P portfolios earn higher average returns than low E/P portfolios
+- This spread remains difficult to map into a pure one-beta CAPM story
+- Early signal that characteristics may contain pricing information
+
+## Basu Result: Characteristics vs Beta
+
+- CAPM says beta should span expected-return differences
+- Basu evidence says E/P also forecasts the cross section
+- Competing interpretations: omitted risk, mispricing, or measurement problems
+- This became an early precursor to characteristic-based models
+
+## Banz (1981): Size Effect
+
+- @Banz1981 documents higher average returns for small-cap stocks
+- The size-return spread is hard to eliminate with market beta alone
+- Small-minus-big logic later becomes a canonical factor construction
+- Another direct empirical crack in single-factor CAPM
+
+## DeBondt-Thaler (1985): Long-Run Reversal
+
+- @DeBondtThaler1985 show that long-horizon losers tend to outperform winners
+- Multi-year return reversals are difficult for static CAPM to rationalize
+- Short takeaway for this lecture: return dynamics matter for pricing tests
+- Behavioral interpretations enter the CAPM debate more directly
+
+## What These Cracks Have in Common
+
+- They generate systematic nonzero pricing errors relative to CAPM
+- Firm characteristics and past returns carry incremental information
+- One-factor beta seems too narrow for the observed cross section
+- The field now needs stronger model-comparison tools
+
+# Part IV: Joint Testing and Synthesis
+
+## Why We Need Joint Tests (Roll-to-GRS Motivation)
+
+- Testing each asset separately creates a multiple-testing problem
+- A valid model should price a set of assets jointly, not one by one
+- @Roll1977: every CAPM test is joint with the chosen market proxy
+- The natural next step is a formal joint test on the alpha vector
+
+## Gibbons-Ross-Shanken (1989): Main Result
+
+$$
+H_0:\; \alpha_1 = \alpha_2 = \cdots = \alpha_N = 0
+$$
+
+- @GibbonsRossShanken1989 propose an exact finite-sample test of this joint null
+- The test is built from time-series regression residual covariance and alpha estimates
+- Rejection means the tested factor portfolio is not mean-variance efficient for that asset set
+
+## GRS Practical Insight (No Heavy Math)
+
+- Good models need jointly small alphas, not only scattered insignificant t-stats
+- Statistical rejection and economic materiality are different objects
+- Conclusions depend on which assets and factors are included in the test
+- GRS remains a core diagnostic for factor-model performance
+
+## Taking Stock
+
+- CAPM gave a disciplined starting benchmark
+- BJS and Fama-MacBeth established the empirical playbook
+- Basu, Banz, and DeBondt-Thaler revealed systematic cracks
+- GRS formalized joint model evaluation in finite samples
+- Next step: the Fama-French revolution and the multi-factor era
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
+
+- Foundational CAPM papers: @Sharpe1964; @Lintner1965; @Mossin1966
+- Zero-beta and early tests: @Black1972; @BlackJensenScholes1972
+- Two-pass cross-sectional method: @FamaMacBeth1973
+- Early cracks: @Basu1977; @Banz1981; @DeBondtThaler1985
+- Joint-testing framework: @Roll1977; @GibbonsRossShanken1989
