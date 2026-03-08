@@ -114,7 +114,6 @@ $$
 Questions?
 
 ## Black (1972): Zero-Beta CAPM
-
 $$
 \mathbb{E}[R_i] = \mathbb{E}[R_z] + \beta_i\big(\mathbb{E}[R_m]-\mathbb{E}[R_z]\big)
 $$
@@ -136,65 +135,129 @@ $$
 - Orthogonality gives the same slope object ($\beta_i$), but a different intercept
 - Intercept shifts from $R_f$ to $\mathbb{E}[R_z]$
 
-## Why Zero-Beta Matters for Empirical Work
+## Zero-Beta Assets Are Cool Again
 
-- Data often reject the strict Sharpe-Lintner intercept restriction
-- A nontrivial zero-beta return can absorb part of that mismatch
-- This reframed tests as "is linear beta pricing there?" rather than "is intercept exactly $R_f$?"
-- It directly shaped how @BlackJensenScholes1972 interpreted evidence
+- The interest rates we observe on the data are a mix of many things
+- Policy decisions + expectations about the future + risk premia + market frictions
+- In the CAPM world, all we need is a zero-beta asset to get the main implications...
+
+. . .
+
+More recently:
+
+- @Tella2023 construct a zero-beta rate from the cross section of stock returns
+- They claim is the correct intertemporal price, not Fed Funds
+- They fit the level and vol of an implied risk premium remarkably well in a Lucas economy
+
+. . .
+
+Even more recently:
+
+- @Kocherlakota2025 analyzes the theoretical price of sovereign debt discount by the zero-beta rate
 
 ## {.standout}
-Questions so far?
+Questions?
 
-# Part II: Early CAPM Tests in Data
+# Part II: Early CAPM Tests
 
 ## From Theory to Data: What Early Tests Actually Did
 
-- Build test assets with different estimated betas
-- Estimate time-series loadings and pricing errors
-- Run cross-sectional regressions linking average returns to betas
-- Evaluate whether CAPM restrictions hold jointly
+- @BlackJensenScholes1972 decided to "draw" the Security Market Line
+- Do high-beta stocks earn higher average returns?
+- Is this increase proportional to the market risk premium?
+- By the way, "return on wealth" became "broad equity index return" really fast (see @Roll1977)
+
+. . .
+
+- First empirical issue: how to realiably measure $\beta_i$? Returns are noisy!
+
+. . .
+
+- Solution: group stocks into portfolios sorted on *past betas* to reduce noise
 
 ## Black-Jensen-Scholes (1972): Design + Regression Setup
 
-- Core idea: sort assets by historical beta to get spread in risk exposure [@BlackJensenScholes1972]
-- Use portfolio returns to reduce idiosyncratic noise
-- Run the standard time-series test in each beta-sorted portfolio:
+- In a given time $t$, for $N$ stocks, estimate $[\beta_1, ..., \beta_N]$:
 
 $$
-R_{p,t}-R_{f,t} = \alpha_p + \beta_p(R_{m,t}-R_{f,t}) + \varepsilon_{p,t}
+R_{i,t}-R_{f,t} = \alpha_i + \beta_i(R_{m,t}-R_{f,t}) + \varepsilon_{i,t}
 $$
 
-- Compare average returns across low- and high-beta portfolios
-- Check whether estimated intercept behavior matches strict or zero-beta CAPM
+- Create 10 portfolios sorted on individual past betas
+- Hold each portfolio for one year and redo sorting process every year
+- At the end, you have 10 time series of portfolio returns
 
-## BJS Main Findings + Legacy
+. . .
 
-- Beta and average return are positively related, but flatter than strict CAPM predicts
-- Low-beta portfolios earn "too much" relative to strict CAPM
-- High-beta portfolios earn "too little" relative to strict CAPM
-- Evidence is more consistent with a zero-beta intercept than with the risk-free intercept
-- Set the template for beta-sorted portfolio tests and alpha diagnostics
+- Redo the same regression for each of the 10 portfolios to get 10 alphas and 10 betas
+- Finally: estimate $\gamma_0$ and $\gamma_1$ from:
 
-## BJS Evidence: SML Flattening (Figure Placeholder)
+$$
+\mathbb{E}[R_{p,t}-R_{f,t}] = \gamma_0 + \gamma_1\beta_p + u_{p,t}
+$$
 
+- Important: this is a **cross-sectional** regression!
+
+## BJS Main Findings
 ```{=latex}
-\vspace{0.5cm}
-\begin{center}
-\textit{[Insert BJS SML flattening plot/table here]}
-\end{center}
-\vspace{5.2cm}
+\begin{columns}
+
+    \column{0.6\textwidth}
+    \begin{itemize}\itemsep0.8em
+        \item Beta and average returns are positively related
+        \item Low-beta portfolios earn ``too much''
+        \item High-beta portfolios earn ``too little''
+        \item $\hat{\gamma}_0 > 0$, $\hat{\gamma}_1$ is small
+    \end{itemize}
+
+    \column{0.4\textwidth}
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{BJS.png}
+    \end{center}
+
+\end{columns}
 ```
 
-## BJS Evidence (Table/Figure Placeholder)
+## BJS Regression Evidence
 
 ```{=latex}
-\vspace{0.5cm}
-\begin{center}
-\textit{[Insert BJS beta-portfolio table/figure here]}
-\end{center}
-\vspace{4.8cm}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lccccc}
+\hline
+& \multicolumn{5}{c}{\textit{Time Period}} \\
+\cline{2-6}
+& \multicolumn{1}{c}{\textit{Total Period}} & \multicolumn{4}{c}{\textit{Subperiods}} \\
+& 1/31--12/65 & 1/31--9/39 & 10/39--6/48 & 7/48--3/57 & 4/57--12/65 \\
+\hline
+$\hat{\gamma}_0$                 & 0.00359 & -0.00801 & 0.00439 & 0.00777 & 0.01020 \\
+$\hat{\gamma}_1$                 & 0.0108  & 0.0304   & 0.0107  & 0.0033  & -0.0012 \\
+$\gamma_1=\overline{R}_M$        & 0.0142  & 0.0220   & 0.0149  & 0.0112  & 0.0088 \\
+$t(\hat{\gamma}_0)$              & 6.52    & -4.45    & 3.20    & 7.40    & 18.89 \\
+$t(\gamma_1-\hat{\gamma}_1)$     & 6.53    & -4.91    & 3.23    & 7.98    & 19.61 \\
+\hline
+\end{tabular}
+\end{table}
 ```
+\vspace{0.5cm}
+- This was taken as a partial victory: higher beta, higher returns
+- The relationship is flatter than expected...
+- This is in fact support for the zero-beta CAPM!
+
+## Quick Look Into the Future
+
+- @Frazzini2014 showed this "anomaly" is still alive, and true across international markets
+- Also true in bond markets and commodities!
+- They provide a model and a theory to explain it: embedded leverage
+
+. . .
+
+- Some investors cannot lever up... high-beta stocks provide leverage
+- They bid up the prices, so returns tend to be lower than CAPM would predict
+- Fun fact: they show how Warren Buffet has been buying low-beta stocks for decades!
+
+## {.standout}
+Questions?
 
 ## Fama-MacBeth (1973): Why Two Passes?
 
@@ -211,15 +274,17 @@ $$
 
 - First-pass time-series regressions estimate each asset's market beta
 - Betas are treated as characteristics for the second-pass cross section
-- Portfolio grouping can be used to stabilize estimates
+- Portfolio grouping can be used too (in fact used in @FamaMacBeth1973)
 
-## Fama-MacBeth Pass 2 (Price of Risk)
+. . .
 
+**Pass 2**:
 $$
 R_{i,t} = \gamma_{0,t} + \gamma_{1,t}\hat\beta_i + u_{i,t}
 $$
 
 - At each date, run a cross-sectional regression of returns on estimated betas
+- This will deliver two time series of estimates: $\{\hat\gamma_{0,t}\}$ and $\{\hat\gamma_{1,t}\}$
 - Average $\gamma_{1,t}$ over time to estimate the market price of beta risk
 - Average $\gamma_{0,t}$ to assess the intercept restriction
 
@@ -229,26 +294,8 @@ $$
 - Intercept evidence is not cleanly aligned with strict Sharpe-Lintner CAPM
 - Still the backbone workflow, but with generated-regressor and beta-estimation caveats
 - Conclusions depend on test assets, sample period, and market proxy quality
-
-## Fama-MacBeth Risk Price Path (Table/Figure Placeholder)
-
-```{=latex}
-\vspace{0.5cm}
-\begin{center}
-\textit{[Insert time-series of $\gamma_{1,t}$ / rolling estimates here]}
-\end{center}
-\vspace{5.0cm}
-```
-
-## Fama-MacBeth Evidence (Table Placeholder)
-
-```{=latex}
-\vspace{0.5cm}
-\begin{center}
-\textit{[Insert Fama-MacBeth second-pass estimates table here]}
-\end{center}
-\vspace{4.8cm}
-```
+- [Click here for huge tables](https://www.jstor.org/stable/pdf/1831028.pdf?refreqid=fastly-default%3Afd387d7b6dd6de1ce4a94729e9127b73&ab_segments=&initiator=&acceptTC=1)
+- The @Roll1977 critique is always hunting us, by the way ...
 
 ## {.standout}
 If beta is enough, why did anomalies show up so quickly?
@@ -355,9 +402,3 @@ $$
 
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
-
-- Foundational CAPM papers: @Sharpe1964; @Lintner1965; @Mossin1966
-- Zero-beta and early tests: @Black1972; @BlackJensenScholes1972
-- Two-pass cross-sectional method: @FamaMacBeth1973
-- Early cracks: @Basu1977; @Banz1981; @DeBondtThaler1985
-- Joint-testing framework: @Roll1977; @GibbonsRossShanken1989
