@@ -20,74 +20,72 @@ bibliography: ../asset_pricing_references.bib
 - Part III: the first anomaly evidence [@Basu1977; @Banz1981; @DeBondtThaler1985]
 - Part IV: joint testing logic, from @Roll1977 to @GibbonsRossShanken1989
 
-# Part I: CAPM Recall Before Data
+# Part I: CAPM Recall
 
-## Why CAPM Looked Convincing (and What It Assumed)
+## Early Days
 
-- It linked portfolio choice to equilibrium expected returns
-- It delivered one sufficient statistic: market beta
-- Investors are mean-variance optimizers over one period
-- Homogeneous beliefs and frictionless trading are assumed
-- Everyone can borrow/lend at one risk-free rate and hold the same assets
-
-## Mean-Variance Frontier and Tangency Portfolio
-
-$$
-\max_{w}\; \frac{\mathbb{E}[R_p]-R_f}{\sigma(R_p)}, \qquad R_p = w'R
-$$
-
-- Efficient portfolios are combinations of the risk-free asset and one tangency portfolio
-- The tangency portfolio is the highest Sharpe-ratio risky portfolio
-- All investors differ only in how much risk they scale, not in risky composition
-
-## From Tangency to Beta Pricing in Equilibrium
-
-$$
-\mathbb{E}[R_i - R_f] = \beta_i\,\mathbb{E}[R_m - R_f],
-\qquad
-\beta_i \equiv \frac{\operatorname{cov}(R_i,R_m)}{\operatorname{var}(R_m)}
-$$
-
-- If everyone picks the same tangency risky portfolio, market clearing implies that portfolio is $R_m$
-- This turns portfolio geometry into an equilibrium pricing statement
-- Expected excess returns are linear in market beta
-- Only systematic market covariance is priced
-- Idiosyncratic risk should not earn a premium
-
-## CAPM Derivation Sketch: FOC to SML
-
-Start from mean-variance demand for excess returns:
-$$
-\max_w \; w'\mu^e - \frac{\gamma}{2}w'\Sigma w
-\quad\Longrightarrow\quad
-\mu^e = \gamma \Sigma w^\star
-$$
+- In 1952: Markowitz brings us to light with ``Modern Portfolio Theory''
+- Key insight: you should diversify your investments, correlation matters
+- Another key insight: you care about returns and variances, you don't care about what you own
 
 . . .
 
-- In equilibrium, market clearing implies $w^\star = w_m$
-- Hence $\mu_i^e = \gamma\,\operatorname{cov}(R_i,R_m)$
-- For $i=m$: $\mu_m^e = \gamma\,\operatorname{var}(R_m)$
-- Therefore $\mu_i^e = \beta_i \mu_m^e \implies \mathbb{E}[R_i]=R_f+\beta_i(\mathbb{E}[R_m]-R_f)$
+In the 1960s:
+
+- @Sharpe1964, @Lintner1965, and @Mossin1966 build on Markowitz to get the CAPM
+- Notice this *way* before the Rational Expectation revolution and the SDF framework
+- These guys were The Beatles of Finance!
+
+## What CAPM Delivered
+
+- It linked portfolio choice to equilibrium expected returns
+- It delivered one sufficient statistic: market beta
+- Investors are mean-variance optimizers over one period: you like returns, dislike variance
+- Homogeneous beliefs and frictionless trading are assumed
+- Everyone can borrow/lend at one risk-free rate and hold the same assets
+- Important: different investors will have different preferences!
+
+## Mean-Variance Frontier and Tangency Portfolio
+```{=latex}
+\begin{columns}
+
+    \column{0.5\textwidth}
+    \begin{itemize}\itemsep1em
+        \item Efficient portfolios are combinations of the risk-free asset and \textit{one} tangency portfolio
+        \item Tangency portfolio: highest Sharpe-ratio risky portfolio
+        \item Investors differ only in how much risk they scale, not in risky composition
+        \item They will \textit{not} have the same overall portfolio!
+    \end{itemize}
+
+    \column{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Lintner.png}
+    \end{center}
+
+\end{columns}
+```
 
 ## Security Market Line
-
-$$
-\mathbb{E}[R_i] = R_f + \beta_i\big(\mathbb{E}[R_m]-R_f\big)
-$$
-
-- Intercept: risk-free rate
-- Slope: market risk premium
-- Prediction: all assets should lie on one line in mean-beta space
-
-## CAPM Geometry (Figure Placeholder)
-
 ```{=latex}
-\vspace{0.5cm}
-\begin{center}
-\textit{[Insert mean-variance frontier, CML, and SML figure here]}
-\end{center}
-\vspace{4.6cm}
+\begin{columns}
+
+    \column{0.5\textwidth}
+    \begin{itemize}\itemsep0.8em
+        \item Expected excess returns are linear in market beta
+        \item Only systematic market covariance is priced
+        \item Idiosyncratic risk earns no premium
+    \end{itemize}
+    
+    \begin{equation*}
+    \mathbb{E}[R_i - R_f] = \beta_i\,\mathbb{E}[R_m - R_f], \quad \beta_i \equiv \frac{\operatorname{cov}(R_i,R_m)}{\operatorname{var}(R_m)}
+    \end{equation*}
+    
+    \column{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{SML.png}
+    \end{center}
+
+\end{columns}
 ```
 
 ## CAPM as SDF/Beta Representation (Bridge to Lecture 4)
@@ -99,9 +97,9 @@ $$
 - CAPM is one special case of the general SDF framework from Lecture 4
 - If the SDF is affine in market returns, beta pricing follows mechanically
 - This gives a clean bridge between no-arbitrage language and equilibrium CAPM
+- The idea of @BansalYaron2004 to think about a "wealth portfolio" is much older than you think!
 
 ## Testable Implications for Data
-
 $$
 R_{i,t}-R_{f,t} = \alpha_i + \beta_i(R_{m,t}-R_{f,t}) + \varepsilon_{i,t}
 $$
@@ -110,6 +108,10 @@ $$
 - The relation should be approximately linear
 - Exact CAPM implies $\alpha_i=0$ for all test assets
 - Nonzero alpha patterns indicate systematic model failure
+- Important: nothing else should be added to the right-hand side!
+
+## {.standout}
+Questions?
 
 ## Black (1972): Zero-Beta CAPM
 
