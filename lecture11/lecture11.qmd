@@ -363,7 +363,9 @@ Regress excess returns of portfolios on $R_m - R_f$ and a constant (reported):
 
 - @Banz1981 proposed no theoretical explanantion, just an empirical fact
 - A looming question: is it really size or is size correlated with some other fundamental factor?
-- Take a look on @Asness2018!
+- One possibility: small-cap stocks might look more like "around the money" call options
+- Another possibility: liquidity (or lack thereof!)
+- There are many others! Take a look on @Asness2018!
 
 ## IWM vs SPY (2000-2026)
 ![](IWM_vs_SPY.pdf){fig-align="center" width="95%"}
