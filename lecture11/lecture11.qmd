@@ -368,10 +368,60 @@ Regress excess returns of portfolios on $R_m - R_f$ and a constant (reported):
 - There are many others! Take a look on @Asness2018!
 
 ## IWM vs SPY (2000-2026)
-![](IWM_vs_SPY.pdf){fig-align="center" width="95%"}
+<!-- ![](IWM_vs_SPY.pdf){fig-align="center" width="95%"} -->
+
+```{python}
+import matplotlib.pyplot as plt
+import yfinance as yf
+import os
+import pandas as pd
+plt.rcParams["font.family"] = "Arial"
+
+tickers = ["SPY", "IWM"]
+csv_path = "IWM_vs_SPY_data.csv"
+
+if os.path.exists(csv_path):
+    data = pd.read_csv(csv_path, index_col=0, parse_dates=True)
+else:
+    try:
+        data = yf.download(
+            tickers,
+            start="2000-01-01",
+            auto_adjust=False,
+            progress=False,
+        )["Adj Close"]
+        data.to_csv(csv_path)
+    except Exception as e:
+        raise RuntimeError(
+            f"Could not download data and {csv_path} not found. Error: {e}"
+        )
+
+def plot(df):
+  plt.figure(figsize=(7.5, 3.5))
+  plt.plot(df.index, df["SPY"], label="SPY (Large Cap)")
+  plt.plot(df.index, df["IWM"], label="IWM (Small Cap)")
+  plt.legend()
+  plt.ylabel("Growth of $1")
+  plt.title("Small vs Large Caps: IWM vs SPY")
+  plt.grid(alpha=0.3)
+  plt.tight_layout()
+
+# Normalize both series to 1 at the first observation.
+data = data.dropna()
+norm = data / data.iloc[0]
+
+plot(norm)
+```
 
 ## It really depends on how you measure it... (2010-2026)
-![](IWM_vs_SPY_short.pdf){fig-align="center" width="95%"}
+<!-- ![](IWM_vs_SPY_short.pdf){fig-align="center" width="95%"} -->
+
+```{python}
+data_short = data[data.index.year > 2010]
+norm_short = data_short / data_short.iloc[0]
+
+plot(norm_short)
+```
 
 ## From Dimensional Advisors (2005-2026)
 ![](Dimensional.png){fig-align="center" width="60%"}
@@ -389,6 +439,9 @@ Regress excess returns of portfolios on $R_m - R_f$ and a constant (reported):
 
 ## DeBondt-Thaler (1985): Main Figure (1933-1980)
 ![](DeBondt_Thaler.png){fig-align="center" width="70%"}
+
+## {.standout}
+Questions?
 
 ## Taking Stock
 
