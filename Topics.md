@@ -61,10 +61,22 @@ This is a collection of recommended readings and references.
 - [Epstein and Zin, 1991](https://www.journals.uchicago.edu/doi/10.1086/261750)
 - [Weil, 1989](http://dx.doi.org/10.1016/0304-3932(89)90028-7)
 
-### Lecture 10: A Bit of Option Pricing and Black-Scholes
-- What are options?
-- The Black-Scholes-Merton model;
-- Implied volatilities and the volatility smile;
+### Lecture 10: Long-Run Risks
+- (Camp) - Chapter 6
+- [Bansal and Yaron, 2004](https://doi.org/10.1111/j.1540-6261.2004.00670.x)
+- [Hall, 1988](https://doi.org/10.1086/261539)
+
+### Lecture 11: Early CAPM Tests and First Cracks
+- [Sharpe, 1964](https://doi.org/10.1111/j.1540-6261.1964.tb02865.x)
+- [Lintner, 1965](https://doi.org/10.1111/j.1540-6261.1965.tb02930.x)
+- [Black, Jensen, and Scholes, 1972](https://www.sciencedirect.com/science/article/pii/B9780127808505500094)
+- [Fama and MacBeth, 1973](https://doi.org/10.1086/260061)
+- [Roll, 1977](https://doi.org/10.1016/0304-405X(77)90014-8)
+- [Basu, 1977](https://www.jstor.org/stable/2353651)
+- [Banz, 1981](https://doi.org/10.1016/0304-405X(81)90018-0)
+- [De Bondt and Thaler, 1985](https://doi.org/10.1111/j.1540-6261.1985.tb05004.x)
+- [Frazzini and Pedersen, 2014](https://doi.org/10.1016/j.jfineco.2013.10.005)
+- [Asness, Frazzini, Israel, Moskowitz, and Pedersen, 2018](https://doi.org/10.1111/jofi.12601)
 
 
 ## References
