@@ -20,7 +20,7 @@ bibliography: ../asset_pricing_references.bib
 - Step 1: why @FamaFrench1992 became the "death of CAPM" moment
 - Step 2: how @FamaFrench1993 turned characteristics into traded factors
 - Step 3: momentum and the next challenge [@JegadeeshTitman1993; @Carhart1997]
-- Step 4: the characteristics-versus-covariances debate [@DanielTitman1997]
+- Step 4: who is awake and trading to generate anomalies? [@Hendershott2020]
 
 # Part I: The CAPM Break
 
@@ -34,11 +34,11 @@ bibliography: ../asset_pricing_references.bib
 
 ## FF (1992): Portfolio-Sorting Design
 
-- Each June, they would compute $\beta$ for each with past data
+- Each June, they would compute $\beta$ for each stock using past data
 - Form 10 portfolios sorted on deciles of market-cap (size)
 - Inside each portfolio create 10 portfolios sorted on $\beta$: 100 portfolios in total
 - Keep track of returns of each portfolio and redo it next June
-- You get 100 time series of portfolios returns
+- You get 100 time series of portfolio returns
 - Compute the $\beta$ for each portfolio and let $\beta_{i,t} \equiv \beta_{p(i,t)}$
 - $p(i,t) \in \{1,2,3,\ldots, 100\}$: portfolio where stock $i$ belongs at time $t$
 
@@ -291,7 +291,7 @@ Questions?
 
 ## Jegadeesh-Titman (1993): Momentum Design
 
-- @DeBondtThaler1985: loosers will be winners, and winners will be losers
+- @DeBondtThaler1985: losers will be winners, and winners will be losers
 - Horizon matters: past performance over 3-5 years, future performance over 3-5 years
 - At odds with the evidence from @Grinblatt1989 who studies different mutual funds
 
@@ -495,7 +495,7 @@ for i,bar in enumerate(bars):
 plt.axhline(0,linewidth=1, color="k")
 plt.grid(alpha=0.3)
 plt.xticks(x,portfolios)
-plt.xlabel("Portfolio (Winner to Looser in 12-months)")
+plt.xlabel("Portfolio (Winner to Loser in 12 months)")
 plt.ylim(-0.8,0.4)
 plt.ylabel("CAPM Alpha (%)")
 plt.title("CAPM Alphas Across Portfolios (t-stats)")
@@ -525,7 +525,7 @@ for i,bar in enumerate(bars):
 plt.axhline(0,linewidth=1, color="k")
 plt.xticks(x,portfolios)
 plt.ylabel("4-Factor Alpha (%)")
-plt.xlabel("Portfolio (Winner to Looser in 12-months)")
+plt.xlabel("Portfolio (Winner to Loser in 12 months)")
 plt.ylim(-0.8,0)
 plt.title("4-Factor Model Alphas Across Portfolios (t-stats)")
 plt.tight_layout()
@@ -541,7 +541,7 @@ $$
 
 . . .
 
-For any charachteristic $x_{i,t}$, regress $\alpha_{i,t} = a + b x_{i,t} + \varepsilon_{i,t}$
+For any characteristic $x_{i,t}$, regress $\alpha_{i,t} = a + b x_{i,t} + \varepsilon_{i,t}$
 
 ```{=latex}
 \begin{table}[t]
@@ -566,14 +566,14 @@ Sell turnover ($t$)            & -1.26 & (-3.00) \\
 - It captures momentum that FF3 leaves behind
 - It is simple, tradable, and easy to implement in regressions
 - It improved performance evaluation for funds and strategies
-- Terrible fund stay terrible, great funds stay great, but everyone else is kind of random
+- Terrible funds stay terrible, great funds stay great, but everyone else is kind of random
 - It still leaves interpretation open: risk compensation or mispricing?
 
 ## Contingency Matrix
 ![](Contingency.png){fig-align="center" width="65%"}
 
-## Key Takeways from Carhart (1997)
-- Most mutual funds destroy value, in special the very expensive ones
+## Key Takeaways from Carhart (1997)
+- Most mutual funds destroy value, especially the very expensive ones
 - Avoid funds with poor track record
 - Measure performance against the 4-factor model, not CAPM
 - Fees and transaction costs matter a lot
@@ -586,7 +586,7 @@ Questions?
 
 ## Day vs Night Returns
 
-- CAPM tests and everything we did typically uses monthly returns
+- CAPM tests and everything we did typically use monthly returns
 - You can do everything at daily frequency too...
 - And even intraday! @Hendershott2020 is a fun paper to read!
 
