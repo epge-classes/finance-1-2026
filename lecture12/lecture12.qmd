@@ -595,13 +595,13 @@ Questions?
 ![](Tale_Night_Day.png){fig-align="center" width="80%"}
 
 ## This is not only in the US
-![](EU_Asia.png){fig-align="center" width="80%"}
+![](EU_Asia.png){fig-align="center" width="90%"}
 
 ## Different Timings
-![](Slices.png){fig-align="center" width="80%"}
+![](Slices.png){fig-align="center" width="90%"}
 
 ## Intraday
-![](Intraday.png){fig-align="center" width="80%"}
+![](Intraday.png){fig-align="center" width="90%"}
 
 ## Wrap-Up
 
