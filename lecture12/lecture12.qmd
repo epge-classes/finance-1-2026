@@ -9,7 +9,7 @@ bibliography: ../asset_pricing_references.bib
 
 ## Intro
 
-- Last lecture gave us the first cracks in single-beta CAPM
+- Last lecture gave us the first cracks in CAPM
 - Today we will kill the CAPM and replace it with something else...
 - Main theme: size and value move from "anomalies" to new factors
 - Momentum gets momentum!
