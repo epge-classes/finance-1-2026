@@ -1,0 +1,210 @@
+---
+title: "Lecture 13: Characteristics vs Covariances"
+date: "2026-03-16"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+## Intro
+
+- Last lecture gave us traded factors: market, SMB, HML, and momentum [@FamaFrench1993; @Carhart1997]
+- Today: what do those factors actually represent?
+- Risk exposures?
+- Or firm characteristics dressed up as factors?
+
+## Flight Plan
+
+- Part I: set up the characteristics-versus-covariances fight
+- Part II: the Daniel-Titman challenge and the rebuttal [@DanielTitman1997; @DavisFamaFrench2000]
+- Part III: why empirical design can flip the answer [@ChordiaGoyalShanken2017; @LewellenNagelShanken2010]
+- Part IV: a modern reconciliation [@KellyPruittSu2019]
+
+# Part I: What Is Being Priced?
+
+## Last Lecture Left a Gap
+
+- @FamaFrench1993 showed that SMB and HML help price test portfolios
+- But pricing success does not pin down economic interpretation
+- A factor can work in the data for more than one reason
+
+## Two Stories
+
+- Story 1: expected returns are driven by factor loadings
+- Story 2: expected returns are driven by characteristics directly
+- In the data, these two objects move together a lot
+
+## A Clean Risk-Based Prediction
+
+$$
+R_{i,t}-R_{f,t}=\alpha_i+\beta_i^\top f_t+\varepsilon_{i,t}
+$$
+
+- If risk loadings are primitive, higher $\beta_i$ should mean higher average returns
+- Once we hold characteristics fixed, beta differences should still matter
+- That is the Daniel-Titman test
+
+## Why Separation Is Hard
+
+- High book-to-market firms often have different factor exposures
+- Small firms often have different factor exposures
+- Portfolio sorts change characteristics and covariances at the same time
+- The empirical fight is really about identification
+
+# Part II: The Debate
+
+## Daniel-Titman: Question and Design
+
+- Core question: do returns follow characteristics or factor loadings? [@DanielTitman1997]
+- Hold size and book-to-market roughly fixed
+- Then compare portfolios with different loadings on the Fama-French factors
+
+## Characteristic-Matched Portfolios
+
+- Sort stocks on characteristics first
+- Inside those buckets, form portfolios with different factor exposures
+- This tries to break the usual link between characteristics and betas
+- If FF risk is the whole story, return spreads should track loadings
+
+## Placeholder: Daniel-Titman Design
+
+- Add schematic: same size / BE-ME, different factor loadings
+
+\vfill
+
+## Daniel-Titman: Main Finding
+
+- Return differences line up more with characteristics than with loadings [@DanielTitman1997]
+- High book-to-market still earns more, even when factor exposures are similar
+- That is a direct hit to the risk-based reading of SMB and HML
+
+## What Exactly Was Challenged?
+
+- Not that factors forecast returns
+- The challenged claim is deeper: are SMB and HML truly priced risks?
+- Maybe factor models work because they proxy for characteristics
+
+## Davis-Fama-French: The Reply
+
+- @DavisFamaFrench2000 push back on the characteristic story
+- Their point: the value premium is robust over a longer sample
+- They argue that covariance differences remain inside characteristic sorts
+- The same evidence can still be consistent with factor pricing
+
+## Why the Rebuttal Matters
+
+- Characteristics and covariances are empirically entangled
+- If sorts do not isolate one from the other, interpretation stays open
+- The debate is not settled by one successful portfolio experiment
+
+## Placeholder: Value Premium Comparison
+
+- Add table or figure: characteristics story vs covariance story
+
+\vfill
+
+## Chordia-Goyal-Shanken: Individual Stocks
+
+- Move from sorted portfolios to individual stocks [@ChordiaGoyalShanken2017]
+- Correct for errors-in-variables in estimated betas
+- Betas regain explanatory power once the design changes
+- Conclusion: the answer depends on the empirical protocol
+
+## What Changes When You Leave Portfolios?
+
+- Portfolios reduce noise, but they also engineer factor structure
+- Individual-stock tests are noisier, but closer to the raw cross-section
+- This tradeoff becomes central for the whole literature
+
+## {.standout}
+Questions?
+
+# Part III: Why Tests Break
+
+## Lewellen-Nagel-Shanken: The Deeper Problem
+
+- Many factor models appear to price the usual test assets [@LewellenNagelShanken2010]
+- Small alphas and high cross-sectional $R^2$ can be misleading
+- False models can still look successful
+
+## Why Many False Models Look Good
+
+- Test portfolios are highly correlated with each other
+- Average returns live in a low-dimensional space
+- Many different factor sets can span that space approximately
+- Good fit is weaker evidence than it looks
+
+## The Cross-Sectional Regression
+
+$$
+\bar R_i = \hat \lambda^\top \hat \beta_i + \hat \alpha_i
+$$
+
+- This second pass is fragile when $\hat \beta_i$ is noisy
+- It is also fragile when test assets are constructed from the same characteristics
+- The problem is power, not only specification
+
+## Placeholder: Low-Power Geometry
+
+- Add figure: many models span the same small return space
+
+\vfill
+
+## What This Means for the Literature
+
+- Apparent pricing success does not uniquely identify the right factors
+- Empirical asset pricing can easily overproduce "good" models
+- This is one reason the factor zoo arrives later
+
+## Bridge to the Next Lecture
+
+- Weak identification plus many candidate predictors is a dangerous combination
+- Once researchers search widely, successful factors proliferate
+- Next lecture: why the zoo got so large [@HarveyLiuZhu2016; @McLeanPontiff2016]
+
+## {.standout}
+Questions?
+
+# Part IV: Characteristics Are Covariances
+
+## Kelly-Pruitt-Su: The Main Idea
+
+- @KellyPruittSu2019 do not treat characteristics and covariances as rivals
+- Characteristics forecast returns because they forecast latent factor loadings
+- The debate becomes: how are betas measured?
+
+## A Unified Representation
+
+$$
+\mathbb{E}_t[R_{i,t+1}] = \beta_{i,t}^\top \lambda_t,
+\qquad
+\beta_{i,t} = b(z_{i,t})
+$$
+
+- $z_{i,t}$ denotes firm characteristics
+- Characteristics enter by shaping time-varying exposures
+- They look "direct" only because the true factors are latent
+
+## Characteristics as Beta Proxies
+
+- Daniel-Titman were right that characteristics predict returns
+- Risk-based models were right that covariances matter
+- Both can be true when characteristics proxy for loadings on latent factors
+
+## Placeholder: Characteristics to Covariances
+
+- Add diagram: characteristics $\rightarrow$ latent betas $\rightarrow$ expected returns
+
+\vfill
+
+## Taking Stock
+
+- Daniel-Titman challenged the risk interpretation
+- Davis-Fama-French and Chordia-Goyal-Shanken showed the answer depends on design
+- Lewellen-Nagel-Shanken explained why many models seem to work
+- Kelly-Pruitt-Su reconcile the debate
+- Next step: the factor zoo
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
