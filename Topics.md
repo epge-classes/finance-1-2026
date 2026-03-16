@@ -85,6 +85,14 @@ This is a collection of recommended readings and references.
 - [Carhart, 1997](https://doi.org/10.1111/j.1540-6261.1997.tb03808.x)
 - [Hendershott, Livdan, and Rösch, 2020](https://doi.org/10.1016/j.jfineco.2020.06.006)
 
+### Lecture 13: Characteristics vs Covariances
+- [Fama and French, 1993](https://doi.org/10.1016/0304-405X(93)90023-5)
+- [Daniel and Titman, 1997](https://doi.org/10.1111/j.1540-6261.1997.tb03806.x)
+- [Davis, Fama, and French, 2000](https://doi.org/10.1111/0022-1082.00209)
+- [Ferson and Harvey, 1999](http://dx.doi.org/10.1111/0022-1082.00148)
+- [Lewellen, Nagel, and Shanken, 2010](https://doi.org/10.1016/j.jfineco.2009.09.001)
+- [Kelly, Pruitt, and Su, 2019](https://doi.org/10.1016/j.jfineco.2019.05.001)
+
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
 
