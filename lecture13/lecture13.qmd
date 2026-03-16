@@ -49,7 +49,7 @@ $$
 $$
 where $\lambda$ is a vector of factor premia.
 
-- Important: the only "charachteristics" that matter are the betas!
+- Important: the only "characteristics" that matter are the betas!
 
 . . .
 
@@ -61,7 +61,7 @@ where $z_i$ is a vector of characteristics (size, leverage, profitability, book-
 
 . . .
 
-- What @Ross1976 would say about this discussion?
+- What would @Ross1976 say about this discussion?
 
 ## Let's Watch a Video {.center}
 
@@ -241,9 +241,9 @@ BM & SZ & $\hat{\alpha}$ & $\beta_{\text{Mkt}}$ & $\beta_{\text{SMB}}$ & $\beta_
 
 ## Davis-Fama-French: The Reply
 
-- @DavisFamaFrench2000 push back on the characteristic story
+- @DavisFamaFrench2000 push back against the characteristic story
 - Their point: the sample in DT97 (1963-1993) is short and anomalous
-- They perform the same analysis as DT97 but with different samples, getting different results
+- They perform the same analysis as DT97 but with different samples, and get different results
 
 ```{=latex}
 \begin{table}
@@ -278,12 +278,12 @@ Questions?
 
 ## What if Betas Are Not Constant?
 
-- Everything we talked so far was about **unconditional** betas and premia
+- Everything we've talked about so far was about **unconditional** betas and premia
 - But why should these things be constant over time?
 - Companies change over time, so their betas should change too
 - Different factors probably are born and die... no AI 15 years ago! Also, climate risk?
 - @Ferson1999 asks: what if we are mismeasuring betas by assuming they are constant?
-- Can CAPM be saved? Are Fama French betas moving around?
+- Can CAPM be saved? Are Fama-French betas moving around?
 
 ## Conditional vs Unconditional Models
 
@@ -321,7 +321,7 @@ where $r_{i,t}$ is the excess return of asset $i$ at time $t$.
 
 . . .
 
-- Let's generalize the expect return:
+- Let's generalize the expected return:
 ```{=latex}
 \begin{gather*}
 \mathbb{E}_t[r_{i,t+1}] = \alpha_{i,t} + \beta_{i,t}^\top \lambda_t \\
@@ -334,7 +334,7 @@ where $z_t$ is a vector of **instruments**
 ## How Does Fama-French Fit Here?
 
 - The instruments $z_t$ should ideally be things known to forecast returns
-- Question: do they help forecasting returns through betas? Or through $\alpha_{i,t}$?
+- Question: do they help forecast returns through betas? Or through $\alpha_{i,t}$?
 - If the Fama-French model is conditionally correct, $a_{0,i} = 0$ and $a_{1,i} = 0$
 
 . . .
@@ -453,12 +453,12 @@ S5/B5 & $-1.678$ & 0.196 & 0.079 & 0.092 \\
 ## Wait a minute...
 
 - If betas can move... what about Mr. CAPM?
-- Can a time varying $\beta_{CAPM}$ account for anomalies like size and value?
+- Can a time-varying $\beta_{CAPM}$ account for anomalies like size and value?
 - Maybe it's all a matter of finding the correct $z_t$...
 
 . . .
 
-Super important line of research during late 90s and early 2000s:
+Super important line of research during the late 90s and early 2000s:
    
 - @Jagannathan1996: betas conditional on past market return + labor income risk can price the CS 
 - @LettauLudvigson2001: conditioning betas on *cay* can price the CS
@@ -500,7 +500,7 @@ Questions?
 ## The Factor-Zoo Explosion
 During the 2000s and early 2010s:
 
-- Many strategies with large expected returns and with no relation to betas appeared
+- Many strategies with large expected returns and no relation to betas appeared
 - Examples: accruals, profitability, investment, asset growth, ...
 - See @Fama2008 for an extensive analysis
 
