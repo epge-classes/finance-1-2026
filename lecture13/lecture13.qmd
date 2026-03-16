@@ -128,7 +128,7 @@ $$
 
 But if DT97 is right...
 
-- We should find $\alpha_{s,b} > 0$ since $\alpha_{s,b} = $ (true premium) - (what FF93 implies)
+- We should find $\alpha_{s,b} > 0$ since $\alpha_{s,b}$ = (true premium) - (what FF93 implies)
 - We should also find $\mathbb{E}[C_{s,b}] \approx 0$
 
 ## Empirical Results - MKT Betas
@@ -545,7 +545,7 @@ They provide a few ways to improve the tests:
 5. Report conﬁdence intervals for the cross-sectional $R^2$
 
 ## One Example of Improvement
-![](LNS_2010_Ind.png){fig-align="center" width="100%"}
+![](LNS_2010_Ind.png){fig-align="center" width="80%"}
 
 ## {.standout}
 Questions?
