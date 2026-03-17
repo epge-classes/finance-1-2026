@@ -1,5 +1,5 @@
 ---
-title: "Lecture 13: Characteristics vs Covariances"
+title: "Lecture 13: Characteristics, Covariances, and Time-Varying Betas"
 date: "2026-03-16"
 bibliography: ../asset_pricing_references.bib
 
@@ -24,7 +24,7 @@ bibliography: ../asset_pricing_references.bib
 - Part I: what is being priced? [@FamaFrench1993; @DanielTitman1997]
 - Part II: the empire strikes back [@DavisFamaFrench2000]
 - Part III: what if betas are moving around? [@Ferson1999]
-- Part IV: pricing the 25 portfolios is easy like Sunday morning [@LewellenNagelShanken2010]
+- Part IV (next class): pricing the 25 portfolios is easy like Sunday morning [@LewellenNagelShanken2010]
 - Part V (next class): a modern reconciliation [@KellyPruittSu2019]
 
 # Part I: What Is Being Priced?
@@ -417,7 +417,6 @@ S1/B2 & $-1.924$ & 0.036 & 0.002 & 0.002 \\
 S1/B3 & $-0.880$ & 0.237 & 0.000 & 0.000 \\
 S1/B4 &  $0.585$ & 0.425 & 0.000 & 0.000 \\
 S1/B5 &  $0.170$ & 0.815 & 0.000 & 0.000 \\
-\addlinespace
 S2/B1 & $-0.917$ & 0.320 & 0.002 & 0.002 \\
 S2/B2 & $-0.465$ & 0.551 & 0.000 & 0.001 \\
 S2/B3 &  $0.893$ & 0.274 & 0.001 & 0.001 \\
@@ -495,62 +494,7 @@ Annual & –0.06 & 0.08 & –0.14 & –0.20 & 0.32 & \textbf{0.53} & \textbf{–
 ## {.standout}
 Questions?
 
-# Part IV: We Should Have Higher Standards...
-
-## The Factor-Zoo Explosion
-During the 2000s and early 2010s:
-
-- Many strategies with large expected returns and no relation to betas appeared
-- Examples: accruals, profitability, investment, asset growth, ...
-- See @Fama2008 for an extensive analysis
-
-. . .
-
-- Also: several papers proposing theories + factors that price the 25 portfolios
-
-. . .
-
-- @LewellenNagelShanken2010: this is too easy!
-
-## Lewellen-Nagel-Shanken: The Deeper Problem
-
-- The 25 portfolios have a very strong factor structure
-- We already know that MKT, SMB, and HML price them well
-- If you give me a factor that is correlated with them... it will price the 25 portfolios too!
-- We're judging models based on just a few assets!
-
-## A Killer Simulation
-
-::: {.columns}
-::: {.column width="50%"}
-![](LNS_2010.png){fig-align="center" width="80%"}
-:::
-::: {.column width="50%"}
-- Panel A: simulate random combinations of MKT, SMB, and HML
-- Estimate the time-series betas and then run the cross-sectional pass
-- Repeat many times and keep track of $R^2$
-- Panel B: do the same, but with combinations of the 25 portfolios
-- If you're not scared, look again
-:::
-:::
-
-## How To Improve Tests
-
-They provide a few ways to improve the tests:
-
-1. Expand the set of test portfolios beyond size-B/M portfolios
-2. Take the magnitude of the cross-sectional slopes seriously
-3. Report the GLS $R^2$ instead of OLS $R^2$
-4. If a factor is traded, it should price itself (i.e., have a significant risk premium)
-5. Report conﬁdence intervals for the cross-sectional $R^2$
-
-## One Example of Improvement
-![](LNS_2010_Ind.png){fig-align="center" width="80%"}
-
-## {.standout}
-Questions?
-
-# Part V: Characteristics Are Covariances
+# Part IV: Characteristics Are Covariances
 
 In construction
 
