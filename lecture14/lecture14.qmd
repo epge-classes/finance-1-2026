@@ -135,7 +135,7 @@ $$
 - They study many ways to construct RMW and CMA and results won't change
 - RMW and CMA are just zero-cost long-short portfolios, like SMB and HML
 
-## Mean Absolute Intercepts -- (MKT + SMB + ...)
+## FF (2015): Mean Absolute Intercepts
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -144,7 +144,7 @@ import numpy as np
 
 plt.rcParams["font.family"] = "Arial"
 
-panels = [
+ff2015_panels = [
     "Panel A\n25 Size-B/M",
     "Panel B\n25 Size-OP",
     "Panel C\n25 Size-Inv",
@@ -153,33 +153,35 @@ panels = [
     "Panel F\n32 Size-OP-Inv",
 ]
 
-rows = ["HML", "RMW CMA", "HML RMW CMA"]
+ff2015_rows = ["HML", "RMW CMA", "HML RMW CMA"]
 
-abs_alpha = np.array([
+ff2015_abs_alpha = np.array([
     [0.102, 0.108, 0.112, 0.152, 0.129, 0.182],
     [0.100, 0.075, 0.085, 0.137, 0.097, 0.103],
     [0.094, 0.073, 0.085, 0.134, 0.091, 0.103],
 ])
 
-ratio = np.array([
+ff2015_ratio = np.array([
     [0.54, 0.68, 0.64, 0.61, 0.64, 0.79],
     [0.53, 0.47, 0.49, 0.55, 0.48, 0.45],
     [0.50, 0.46, 0.49, 0.54, 0.45, 0.45],
 ])
 
-colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
-x = np.arange(len(panels))
-width = 0.25
-offsets = np.array([-1, 0, 1]) * width
+ff2015_colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
+ff2015_x = np.arange(len(ff2015_panels))
+ff2015_width = 0.25
+ff2015_offsets = np.array([-1, 0, 1]) * ff2015_width
 
-def make_figure(data, ylabel, ylim, ytick_fmt):
+def make_ff2015_figure(values, ylabel, ylim, ytick_fmt):
     fig, ax = plt.subplots(figsize=(10, 4.5))
 
-    for i, (row_label, color, offset) in enumerate(zip(rows, colors, offsets)):
+    for i, (row_label, color, offset) in enumerate(
+        zip(ff2015_rows, ff2015_colors, ff2015_offsets)
+    ):
         ax.bar(
-            x + offset,
-            data[i],
-            width=width * 0.92,
+            ff2015_x + offset,
+            values[i],
+            width=ff2015_width * 0.92,
             color=color,
             alpha=0.78,
             edgecolor=color,
@@ -187,8 +189,8 @@ def make_figure(data, ylabel, ylim, ytick_fmt):
             label=row_label,
         )
 
-    ax.set_xticks(x)
-    ax.set_xticklabels(panels, fontsize=10, color="#666")
+    ax.set_xticks(ff2015_x)
+    ax.set_xticklabels(ff2015_panels, fontsize=10, color="#666")
     ax.set_ylabel(ylabel, fontsize=11, color="#666")
     ax.set_ylim(*ylim)
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
@@ -199,7 +201,10 @@ def make_figure(data, ylabel, ylim, ytick_fmt):
     ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
     ax.set_axisbelow(True)
 
-    handles = [mpatches.Patch(color=c, alpha=0.78, label=r) for c, r in zip(colors, rows)]
+    handles = [
+        mpatches.Patch(color=c, alpha=0.78, label=r)
+        for c, r in zip(ff2015_colors, ff2015_rows)
+    ]
     ax.legend(
         handles=handles,
         fontsize=10,
@@ -212,19 +217,19 @@ def make_figure(data, ylabel, ylim, ytick_fmt):
     fig.tight_layout()
     plt.show()
 
-make_figure(
-    data=abs_alpha,
+make_ff2015_figure(
+    values=ff2015_abs_alpha,
     ylabel=r"$A|a_i|$",
     ylim=(0, 0.19),
     ytick_fmt="{:.2f}",
 )
 ```
 
-## Mean Absolute Intercepts/Mean Absolute Returns -- (MKT + SMB + ...)
+## FF (2015): Mean Absolute Intercepts / Mean Absolute Returns
 
 ```{python}
-make_figure(
-    data=ratio,
+make_ff2015_figure(
+    values=ff2015_ratio,
     ylabel=r"$A|a_i|\,/\,A|\bar{r}_i|$",
     ylim=(0, 0.85),
     ytick_fmt="{:.1f}",
@@ -245,15 +250,114 @@ make_figure(
 ## {.standout}
 Questions?
 
-## FF (2016): Dissecting Anomalies
+## Fama-French (2016): Dissecting Anomalies
 
-- Many anomalies explained
-- Some survive
-- Model performance depends on specification
+- @Fama2016 took @LewellenNagelShanken2010 more seriously
+- Unlike @FamaFrench2015, they try to fit returns of portfolios sorted on different characteristics
+- Examples: size-beta, size-net share issues, size-volatility, size-accruals, size-momentum
+- Same vibe: create several sorted portfolios, run regressions, check intercepts and fit
+
+## FF (2016): Mean Absolute Intercepts
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+plt.rcParams["font.family"] = "Arial"
+
+panels = [
+    "25 Size-β",
+    "35 Size-NI",
+    "25 Size-Var",
+    "25 Size-RVar",
+    "25 Size-AC",
+    "25 Size-Prior 2–12",
+]
+
+rows = ["Mkt SMB HML", "Mkt SMB RMW CMA", "Mkt SMB HML RMW CMA"]
+
+abs_alpha = np.array([
+    [0.106, 0.136, 0.217, 0.222, 0.113, 0.319],
+    [0.069, 0.100, 0.130, 0.118, 0.127, 0.280],
+    [0.072, 0.098, 0.131, 0.120, 0.126, 0.272],
+])
+
+ratio = np.array([
+    [0.45, 0.51, 0.72, 0.71, 0.48, 0.97],
+    [0.29, 0.37, 0.43, 0.37, 0.54, 0.85],
+    [0.31, 0.37, 0.44, 0.38, 0.54, 0.83],
+])
+
+colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
+x = np.arange(len(panels))
+width = 0.25
+offsets = np.array([-1, 0, 1]) * width
+
+def make_figure(values, ylabel, ylim, ytick_fmt):
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+
+    for i, (row_label, color, offset) in enumerate(zip(rows, colors, offsets)):
+        ax.bar(
+            x + offset,
+            values[i],
+            width=width * 0.92,
+            color=color,
+            alpha=0.78,
+            edgecolor=color,
+            linewidth=0.8,
+            label=row_label,
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(panels, fontsize=10, color="#666")
+    ax.set_ylabel(ylabel, fontsize=12, color="#666")
+    ax.set_ylim(*ylim)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
+    ax.tick_params(axis="y", labelsize=10, colors="#888")
+    ax.tick_params(axis="x", length=0)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.spines["bottom"].set_color("#ddd")
+    ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
+    ax.set_axisbelow(True)
+
+    handles = [
+        mpatches.Patch(color=c, alpha=0.78, label=r)
+        for c, r in zip(colors, rows)
+    ]
+    ax.legend(
+        handles=handles,
+        fontsize=10,
+        frameon=False,
+        loc="upper left",
+        handlelength=1.2,
+        handleheight=0.8,
+    )
+
+    fig.tight_layout()
+    plt.show()
+
+make_figure(
+    values=abs_alpha,
+    ylabel=r"$A|a_i|$",
+    ylim=(0, 0.36),
+    ytick_fmt="{:.2f}",
+)
+```
+
+## FF (2016): Mean Absolute Intercepts / Mean Absolute Returns
+
+```{python}
+make_figure(
+    values=ratio,
+    ylabel=r"$A|a_i|\,/\,A|\bar{r}_i|$",
+    ylim=(0, 1),
+    ytick_fmt="{:.1f}",
+)
+```
 
 ## {.standout}
-
-> “Even benchmark models are unstable”
+Questions?
 
 # Part IV: The Factor Zoo
 
