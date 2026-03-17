@@ -1,5 +1,5 @@
 ---
-title: "Lecture 14: We Should Have Higher Standards..."
+title: "Lecture 14: The Factor Zoo"
 date: "2026-03-18"
 bibliography: ../asset_pricing_references.bib
 
@@ -9,21 +9,23 @@ bibliography: ../asset_pricing_references.bib
 
 ## Intro
 
-- Last lecture: characteristics vs covariances, and whether time-varying betas can save factor models
-- Today: a different critique
-- What if the problem is not the factor, but the test assets?
+- Last lecture: factor models worked, but interpretation was messy
+- Today: maybe empirical success is the easy part
+- LNS attacks the tests
+- Harvey-Liu-Zhu attack the $t$-stats
+- Kelly-Pruitt-Su change the object
 
 . . .
 
-- @LewellenNagelShanken2010: pricing the 25 portfolios is easy like Sunday morning
-- This raises the bar for what should count as a successful asset-pricing test
+- Main theme: the data are high-dimensional, our tests are not
 
 ## Flight Plan
 
-- Part I: why the factor zoo exploded [@Fama2008]
-- Part II: why pricing the 25 portfolios is too easy [@LewellenNagelShanken2010]
-- Part III: how to raise the bar in empirical tests [@LewellenNagelShanken2010]
-- Part IV (next class): a modern reconciliation [@KellyPruittSu2019]
+- Part I: why @LewellenNagelShanken2010 changed the standards for factor tests
+- Part II: how @LewellenNagelShanken2010 tells us to raise the bar
+- Part III: how @FamaFrench2015 expands the benchmark
+- Part IV: why @HarveyLiuZhu2016 turns the factor zoo into an inference problem
+- Part V: how @KellyPruittSu2019 moves from factors to structure
 
 # Part I: We Should Have Higher Standards...
 
@@ -37,10 +39,11 @@ During the 2000s and early 2010s:
 . . .
 
 - Also: several papers proposing theories + factors that price the 25 portfolios
+- Example: @LettauLudvigson2001
 
 . . .
 
-- @LewellenNagelShanken2010: this is too easy!
+- @LewellenNagelShanken2010: pricing the 25 portfolios is too easy!
 
 ## Lewellen-Nagel-Shanken: The Deeper Problem
 
@@ -64,11 +67,6 @@ During the 2000s and early 2010s:
 :::
 :::
 
-## {.standout}
-Questions?
-
-# Part II: How To Improve Tests
-
 ## How To Improve Tests
 
 They provide a few ways to improve the tests:
@@ -77,10 +75,280 @@ They provide a few ways to improve the tests:
 2. Take the magnitude of the cross-sectional slopes seriously
 3. Report the GLS $R^2$ instead of OLS $R^2$
 4. If a factor is traded, it should price itself (i.e., have a significant risk premium)
-5. Report conﬁdence intervals for the cross-sectional $R^2$
+5. Report confidence intervals for the cross-sectional $R^2$
 
 ## One Example of Improvement
 ![](LNS_2010_Ind.png){fig-align="center" width="80%"}
+
+## {.standout}
+Questions?
+
+# Part III: Fama-French Reloaded
+
+## The Profitability and Investment Anomalies
+
+- @TitmanWeiXie2004: firms that invest more heavily have **lower** subsequent returns
+- This is true controlling for size, B/M, and momentum
+- @NovyMarx2013: firms with higher profitability have **higher** subsequent returns
+- The 3-factor model cannot explain these anomalies
+- @Fama2006 had already noticed these two anomalies, with different implementations
+
+## This Actually Has Some Interpretation
+
+Recall the basic pricing formula:
+
+$$
+P_t = \sum\limits_{i=1}^{\infty} \mathbb{E}_t\left[\frac{D_{t+i}}{(1+r)^{t+i}}\right]
+$$
+
+- A firm with earnings $Y_{t+j}$ that pays dividends $D_{t+j}$ has book equity $B_{t+j} = B_{t+j-1} + Y_{t+j} - D_{t+j}$
+- The valuation formula becomes:
+
+$$
+P_t = \sum\limits_{i=1}^{\infty} \mathbb{E}_t\left[\frac{Y_{t+i} - (B_{t+i} - B_{t+i-1})}{(1+r)^{t+i}}\right]
+$$
+
+- Retained earnings (changes in book equity) are typically used for investment
+- Equipment, R\&D, marketing, etc...
+
+## FF (2015): Extending the Benchmark
+
+- These two anomalies were well-known and hard to explain with the 3-factor model
+- @FamaFrench2015: add two more factors to capture profitability and investment
+- This is a direct extension of @FamaFrench1993... and a certain "concession"
+
+. . .
+
+- Two new factors created similarly to SMB and HML, but sorting on profitability and investment
+- Profitability: *robust minus weak* (RMW)
+- Investment: *conservative minus aggressive* (CMA)
+
+## The Five Factors
+
+- MKT, SMB, and HML are measured as in @FamaFrench1993
+- Operating profitability: think about EBITDA
+- Investment: asset growth
+
+. . .
+
+- Create 2x2 sorts of (size, other variable), where other variable = B/M, profitability, or investment 
+- They study many ways to construct RMW and CMA and results won't change
+- RMW and CMA are just zero-cost long-short portfolios, like SMB and HML
+
+## Mean Absolute Intercepts -- (MKT + SMB + ...)
+
+```{python}
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import numpy as np
+
+plt.rcParams["font.family"] = "Arial"
+
+panels = [
+    "Panel A\n25 Size-B/M",
+    "Panel B\n25 Size-OP",
+    "Panel C\n25 Size-Inv",
+    "Panel D\n32 Size-B/M-OP",
+    "Panel E\n32 Size-B/M-Inv",
+    "Panel F\n32 Size-OP-Inv",
+]
+
+rows = ["HML", "RMW CMA", "HML RMW CMA"]
+
+abs_alpha = np.array([
+    [0.102, 0.108, 0.112, 0.152, 0.129, 0.182],
+    [0.100, 0.075, 0.085, 0.137, 0.097, 0.103],
+    [0.094, 0.073, 0.085, 0.134, 0.091, 0.103],
+])
+
+ratio = np.array([
+    [0.54, 0.68, 0.64, 0.61, 0.64, 0.79],
+    [0.53, 0.47, 0.49, 0.55, 0.48, 0.45],
+    [0.50, 0.46, 0.49, 0.54, 0.45, 0.45],
+])
+
+colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
+x = np.arange(len(panels))
+width = 0.25
+offsets = np.array([-1, 0, 1]) * width
+
+def make_figure(data, ylabel, ylim, ytick_fmt):
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+
+    for i, (row_label, color, offset) in enumerate(zip(rows, colors, offsets)):
+        ax.bar(
+            x + offset,
+            data[i],
+            width=width * 0.92,
+            color=color,
+            alpha=0.78,
+            edgecolor=color,
+            linewidth=0.8,
+            label=row_label,
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(panels, fontsize=10, color="#666")
+    ax.set_ylabel(ylabel, fontsize=11, color="#666")
+    ax.set_ylim(*ylim)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
+    ax.tick_params(axis="y", labelsize=10, colors="#888")
+    ax.tick_params(axis="x", length=0)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.spines["bottom"].set_color("#ddd")
+    ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
+    ax.set_axisbelow(True)
+
+    handles = [mpatches.Patch(color=c, alpha=0.78, label=r) for c, r in zip(colors, rows)]
+    ax.legend(
+        handles=handles,
+        fontsize=10,
+        frameon=False,
+        loc="upper left",
+        handlelength=1.2,
+        handleheight=0.8,
+    )
+
+    fig.tight_layout()
+    plt.show()
+
+make_figure(
+    data=abs_alpha,
+    ylabel=r"$A|a_i|$",
+    ylim=(0, 0.19),
+    ytick_fmt="{:.2f}",
+)
+```
+
+## Mean Absolute Intercepts/Mean Absolute Returns -- (MKT + SMB + ...)
+
+```{python}
+make_figure(
+    data=ratio,
+    ylabel=r"$A|a_i|\,/\,A|\bar{r}_i|$",
+    ylim=(0, 0.85),
+    ytick_fmt="{:.1f}",
+)
+```
+
+## Fama-French (2015): Two Main Empirical Lessons
+
+- Adding these factors did decrease the average $\alpha$
+- HML becomes somewhat redundant
+- Vast majority of cases: the model fails the GRS test from @GibbonsRossShanken1989
+- What does that mean?
+
+. . .
+
+![](FF25_Quote.png){fig-align="center" width="80%"}
+
+## {.standout}
+Questions?
+
+## FF (2016): Dissecting Anomalies
+
+- Many anomalies explained
+- Some survive
+- Model performance depends on specification
+
+## {.standout}
+
+> “Even benchmark models are unstable”
+
+# Part IV: The Factor Zoo
+
+## The Factor Zoo
+
+- Hundreds of factors proposed
+- Empirical success became cheap
+
+## Harvey, Liu, Zhu (2016)
+
+- Multiple testing is the core problem
+- Standard $t$-statistics are not enough
+
+## [TABLE PLACEHOLDER]
+
+- List of factors (large table)
+
+## t-Statistics After Many Searches
+
+- Not reliable with many tests
+
+## [FIGURE PLACEHOLDER]
+
+- Distribution of t-stats / p-values
+
+## Harvey-Liu-Zhu: Adjustments
+
+- Bonferroni
+- Holm
+- BHY
+
+## Harvey-Liu-Zhu: Main Result
+
+- Many factors lose significance
+
+## Publication Bias
+
+- Unknown number of attempted factors
+- Publication bias
+
+## Where We Are
+
+- LNS: weak tests
+- FF: more factors
+- Harvey: too many factors
+
+## {.standout}
+
+> “What are we estimating?”
+
+# Part V: From Factors to Structure
+
+## KPS (2019): Goal
+
+- Unify characteristics and factor models
+
+## KPS (2019): Core Idea
+
+- Characteristics summarize covariances
+- Betas are functions of characteristics
+
+## The Core Problem
+
+- Low-dimensional models
+- High-dimensional data
+- High-dimensional beta representation
+
+## [FIGURE PLACEHOLDER]
+
+- Characteristics → betas → returns
+
+## Factors Are Projections
+
+- Factors are projections
+- Not primitive objects
+
+## Back to Daniel-Titman
+
+- Characteristics matter
+- But via covariances
+
+## Resolution
+
+> “The factor zoo reflects high-dimensional structure”
+
+## Taking Stock
+
+- Identification is central
+- Adding factors is not a solution
+- The problem is high-dimensional
+
+## The Next Step
+
+- Regularization
+- Machine learning
 
 ## {.standout}
 Questions?
