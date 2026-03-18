@@ -1,5 +1,5 @@
 ---
-title: "Lecture 14: The Factor Zoo"
+title: "Lecture 14: The Factor Zoo - Part 1"
 date: "2026-03-18"
 bibliography: ../asset_pricing_references.bib
 
@@ -911,14 +911,112 @@ fc2y   & 0.08   & & e2p    & 0.03    & & oa    & 0.00 \\
 \end{tabular}
 \end{table}
 ```
-
 - Only 10/36 characteristics have significant $\Gamma_\beta$ coefficients at 5\%
+
+## What Happens If You Take Out Insignificant Characteristics? - Total $R^2$
+
+```{python}
+# ── Data ──────────────────────────────────────────────────────────────────────
+# Table 1 — full model, individual stocks (r_t)
+t1_ga0_total   = [14.8, 16.4, 17.4, 18.0, 18.6, 18.9]
+t1_gaNot_total = [15.2, 16.8, 17.7, 18.4, 18.7, 19.0]
+t1_ga0_pred    = [0.35, 0.34, 0.41, 0.42, 0.69, 0.68]
+t1_gaNot_pred  = [0.76, 0.75, 0.75, 0.74, 0.74, 0.72]
+
+# Table 12 — significant instruments only
+t12_ga0_total   = [14.6, 16.1, 17.1, 17.7, 18.2, 18.4]
+t12_gaNot_total = [15.0, 16.4, 17.4, 18.0, 18.2, 18.4]
+t12_ga0_pred    = [0.34, 0.34, 0.41, 0.43, 0.61, 0.62]
+t12_gaNot_pred  = [0.67, 0.66, 0.66, 0.66, 0.65, 0.65]
+
+C = {
+    "ga0_full":  "#378ADD",
+    "ga0_sig":   "#85B7EB",
+    "gaN_full":  "#D85A30",
+    "gaN_sig":   "#F0997B",
+}
+
+# ── Shared factory ────────────────────────────────────────────────────────────
+def make_robustness_figure(series, ylabel, ymin, yfmt):
+    """
+    series : list of (data, color, label) tuples — 4 entries, one per bar group
+    """
+    x      = np.arange(len(K6))
+    n      = len(series)
+    w      = 0.18
+    gap    = 0.03
+    offsets = np.linspace(-(n - 1) / 2, (n - 1) / 2, n) * (w + gap)
+
+    fig, ax = plt.subplots(figsize=(8, 4.2))
+
+    for (vals, color, label), offset in zip(series, offsets):
+        ax.bar(x + offset, vals, width=w, color=color, label=label, zorder=3)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"$K={k}$" for k in K6], fontsize=11)
+    ax.set_ylabel(ylabel, fontsize=11)
+    ax.set_ylim(bottom=ymin)
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(yfmt))
+    ax.yaxis.grid(True, linestyle=":", linewidth=0.6, color="#cccccc", zorder=0)
+    ax.set_axisbelow(True)
+    ax.spines[["top", "right"]].set_visible(False)
+
+    from matplotlib.patches import Patch
+    legend_elements = [
+        Patch(facecolor=C["ga0_full"], label=r"$\Gamma_\alpha=0$, full model"),
+        Patch(facecolor=C["ga0_sig"],  label=r"$\Gamma_\alpha=0$, sig. instruments"),
+        Patch(facecolor=C["gaN_full"], label=r"$\Gamma_\alpha\neq 0$, full model"),
+        Patch(facecolor=C["gaN_sig"],  label=r"$\Gamma_\alpha\neq 0$, sig. instruments"),
+    ]
+    ax.legend(handles=legend_elements, fontsize=9, framealpha=0.85,
+              ncol=4, handlelength=1.2, columnspacing=1.0,
+              loc="upper center", bbox_to_anchor=(0.5, -0.075))
+
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    return fig
+
+
+# ── Figure 1: Total R² ────────────────────────────────────────────────────────
+fig_total = make_robustness_figure(
+    series=[
+        (t1_ga0_total,   C["ga0_full"], r"$\Gamma_\alpha=0$, full"),
+        (t12_ga0_total,  C["ga0_sig"],  r"$\Gamma_\alpha=0$, sig."),
+        (t1_gaNot_total, C["gaN_full"], r"$\Gamma_\alpha\neq0$, full"),
+        (t12_gaNot_total,C["gaN_sig"],  r"$\Gamma_\alpha\neq0$, sig."),
+    ],
+    ylabel="Total $R^2$ (%)",
+    ymin=14,
+    yfmt=lambda v, _: f"{v:.1f}",
+)
+
+# ── Figure 2: Predictive R² ───────────────────────────────────────────────────
+fig_pred = make_robustness_figure(
+    series=[
+        (t1_ga0_pred,    C["ga0_full"], r"$\Gamma_\alpha=0$, full"),
+        (t12_ga0_pred,   C["ga0_sig"],  r"$\Gamma_\alpha=0$, sig."),
+        (t1_gaNot_pred,  C["gaN_full"], r"$\Gamma_\alpha\neq0$, full"),
+        (t12_gaNot_pred, C["gaN_sig"],  r"$\Gamma_\alpha\neq0$, sig."),
+    ],
+    ylabel="Pred. $R^2$ (%)",
+    ymin=0,
+    yfmt=lambda v, _: f"{v:.2f}",
+)
+```
+
+```{python}
+fig_total
+```
+
+## What Happens If You Take Out Insignificant Characteristics? -- Predictive $R^2$
+
+```{python}
+fig_pred
+```
 
 ## Limitations and Impact
 
 - The factors are statistical objects; economic interpretation is still incomplete
 - Results depend on the chosen characteristic set and on the linear mapping $\beta_{i,t} = \Gamma_{\beta}^{\top} z_{i,t}$
-- The "no alpha" conclusion is stronger economically than statistically: at $K=5$, the Wald $p$-value is $2.06\%$, so the claim is cleaner at 1\% than at 5\%
 - Impact: it bridges Daniel-Titman, conditional beta models, and the modern anomaly literature
 - It changed the question from "which observable factor kills alpha?" to "does any common risk structure kill alpha?"
 
