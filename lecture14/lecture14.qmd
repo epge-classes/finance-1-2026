@@ -391,54 +391,536 @@ $$
 - Super influential paper: many factors are just a spark of luck!
 
 ## {.standout}
+Questions?
 
-> “What are we estimating?”
+# Part V: Characteristics Are Covariances
 
-# Part V: From Factors to Structure
+## Motivation for Kelly, Pruitt, and Su (2019)
 
-## KPS (2019): Goal
+- The true challenge in asset pricing: loadings and factors are latent
+- Potentially time-varying too!
 
-- Unify characteristics and factor models
+. . .
 
-## KPS (2019): Core Idea
+- PCA-based techniques [@Chamberlain1983] help, but loadings are constant
 
-- Characteristics summarize covariances
-- Betas are functions of characteristics
+. . .
 
-## The Core Problem
+- Factor zoo: we probably have redundant information...
+- Different combinations two factors should not be new factor
+- The linear span of factors is what really matters
 
-- Low-dimensional models
-- High-dimensional data
-- High-dimensional beta representation
+## What They Do
 
-## [FIGURE PLACEHOLDER]
+- Provide a flexible asset pricing model with many desirable features
+- Factors are latent, so the researcher does not specify them ex ante
+- Loadings are time-varying and are *functions* of characteristics [@Ferson1999]
+- Covariances (betas) *are* characteristics [@DanielTitman1997]
+- They can easily apply the model to stocks directly, not just portfolios [@LewellenNagelShanken2010]
+- The model is parsimonious: fewer parameters than, for example, FF5
 
-- Characteristics → betas → returns
+## Are Characteristics Generating Covariances? Or Just Mispricing?
 
-## Factors Are Projections
+- In a rational asset-pricing model, characteristics should not earn returns "by themselves"
+- They should matter because they forecast conditional exposures to common risks
 
-- Factors are projections
-- Not primitive objects
+$$
+\mathbb{E}_t[r_{i,t+1}] = \alpha_{i,t} + \beta_{i,t}^{\top}\lambda_t
+$$
 
-## Back to Daniel-Titman
+- The question is where characteristics belong: in $\beta_{i,t}$ or in $\alpha_{i,t}$
+- Their answer: use characteristics to instrument conditional betas on latent factors
+- Assumption/limitation: $\lambda_t$ is constant (and estimated)
 
-- Characteristics matter
-- But via covariances
+## (Instrumented)PCA
 
-## Resolution
+$$
+r_{i,t+1} = \alpha_{i,t} + \beta_{i,t}^{\top} f_{t+1} + \varepsilon_{i,t+1}
+,\qquad
+\alpha_{i,t} = z_{i,t}^\top \Gamma_\alpha + \nu_{i,\alpha, t}
+,\qquad
+\beta_{i,t} = z_{i,t}^\top \Gamma_{\beta} + \nu_{i,\beta, t}
+$$
 
-> “The factor zoo reflects high-dimensional structure”
+- $z_{i,t}$: lagged firm characteristics, including a constant
+- $f_{t+1}$: latent factors, to be estimated
+- $\Gamma_\alpha, \Gamma_\beta$: mapping from characteristics to expected returns and factor loadings
 
-## Taking Stock
+. . .
 
-- Identification is central
-- Adding factors is not a solution
-- The problem is high-dimensional
+- PCA uses only returns
+- Fama-French fixes factors ex ante
+- IPCA estimates latent factors, but disciplines their loadings with characteristics
 
-## The Next Step
+## Estimating Parameters
+Substitute the equation for $\beta_{i,t}$ and $\alpha_{it}$ and write in matrix form:
+$$
+r_{t+1} = Z_t\Gamma_{\alpha} + Z_t\Gamma_{\beta} f_{t+1} + \varepsilon_{t+1}^{*}
+$$
 
-- Regularization
-- Machine learning
+$$
+(\hat{\Gamma}_{\alpha}, \hat{\Gamma}_{\beta}, \hat{F})
+=
+\arg\min_{\Gamma_{\alpha}, \Gamma_{\beta}, F}
+\sum_{t=1}^{T-1}
+\left(r_{t+1} - Z_t\Gamma_{\alpha} - Z_t\Gamma_{\beta} f_{t+1}\right)^{\top}
+\left(r_{t+1} - Z_t\Gamma_{\alpha} - Z_t\Gamma_{\beta} f_{t+1}\right)
+$$
+
+- $\Gamma_{\alpha}$ collects characteristic-linked expected returns not absorbed by common factors
+- $\Gamma_{\beta}$ maps characteristics to factor loadings
+- So IPCA nests the risk story and the anomaly story in one system
+
+## Restricted Estimator
+- The "restricted" estimator sets $\Gamma_{\alpha} = 0$
+- This is the "risk-based" model: characteristics only matter through covariances
+
+. . .
+
+$$
+\left(\hat{\Gamma}_\beta, f_{1}, f_{2}, \ldots,f_{T}\right)
+=
+\arg\min_{\Gamma_\beta, \{f_{t+1}\}_{t=0}^{T-1}}
+\sum_{t=1}^{T-1}
+\left(r_{t+1} - Z_t \Gamma_\beta f_{t+1}\right)^\top
+\left(r_{t+1} - Z_t \Gamma_\beta f_{t+1}\right)
+$$
+
+## The FOC for the Restricted Problem
+$$
+\hat{f}_{t+1}
+=
+\left(\hat{\Gamma}_\beta' Z_t' Z_t \hat{\Gamma}_\beta\right)^{-1}
+\hat{\Gamma}_\beta' Z_t' r_{t+1},
+\qquad \forall t
+$$
+
+and
+
+$$
+\operatorname{vec}(\hat{\Gamma}_\beta)
+=
+\left(
+\sum_{t=1}^{T-1}
+Z_t' Z_t \otimes \hat{f}_{t+1}\hat{f}_{t+1}'
+\right)^{-1}
+\left(
+\sum_{t=1}^{T-1}
+\left[ Z_t \otimes \hat{f}_{t+1} \right]' r_{t+1}
+\right)
+$$
+
+- Factors resemble @FamaMacBeth1973!
+- (The vec of) $\Gamma_\beta$ is a the slope coefficient of a regression of returns on interactions
+- Key contribution of their companion paper: how to estimate this!
+- Similar math when $\Gamma_{\alpha}$ is included: see the paper!
+- Python implementation: ([Click here](https://www.dropbox.com/scl/fi/ecm4mlm1d27ka71gwrgsq/ipca_public.py?rlkey=40icghiic36vgns0n552zpzdh&e=1&dl=0))
+
+## Wald-Type Test for Alpha
+
+$$
+H_0:\Gamma_{\alpha}=0
+\qquad \text{vs.} \qquad
+H_1:\Gamma_{\alpha}\neq 0
+$$
+
+$$
+W_{\alpha} = \hat{\Gamma}_{\alpha}^{\top}\hat{\Gamma}_{\alpha}
+$$
+
+- (Wild parametric) Bootstrap under the null to get the $p$-value
+- Fail to reject: characteristics explain returns through common exposures
+- Reject: some systematic characteristic-linked alpha remains
+- Similar tests for $\Gamma_{\beta}$. Why is testing $\Gamma_\beta$ interesting?
+
+## Implementation Details
+
+- They need to choose the number $K$ of factors: they try $K=1,2,3,4,5,6$
+- They have 36 characteristics: size, assets, profitability, momentum, ...
+- Total of 12,813 firms, across 1964-2014
+- 1,403,544 stock-month observations
+- This is much higher scale than anything before them
+- Instead of asking "can a certain model price this anomaly?", they ask: "can any common factor structure price all of these anomalies?"
+
+## {.standout}
+Questions?
+
+## Performance Metrics
+
+$$
+\text{Total } R^2
+=
+1-
+\frac{\sum_{i,t}\left(r_{i,t+1}-z_{i,t}^{\top}\left(\hat{\Gamma}_{\alpha}+\hat{\Gamma}_{\beta}\hat{f}_{t+1}\right)\right)^2}
+{\sum_{i,t} r_{i,t+1}^2}
+$$
+
+$$
+\text{Predictive } R^2
+=
+1-
+\frac{\sum_{i,t}\left(r_{i,t+1}-z_{i,t}^{\top}\left(\hat{\Gamma}_{\alpha}+\hat{\Gamma}_{\beta}\hat{\lambda}\right)\right)^2}
+{\sum_{i,t} r_{i,t+1}^2}
+$$
+
+- Total $R^2$: how much realized return variation the model explains
+- This is the paper's measure of how well the model describes systematic risk in the panel
+- Predictive $R^2$: how much realized return variation is explained by model-implied expected returns
+- They hold risk prices fixed at $\hat{\lambda}$: predictive content comes from the instrumented loadings
+
+## Model Performance Across $K$
+
+```{=latex}
+\begin{table}
+\centering
+\begin{tabular}{@{}lrcccccc@{}}
+\hline
+& & \multicolumn{6}{c}{$K$} \\
+& & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Panel A: Individual stocks} ($r_t$)} \\
+\textit{Total} $R^2$ & $\Gamma_\alpha = 0$ & 14.8 & 16.4 & 17.4 & 18.0 & 18.6 & 18.9 \\
+& $\Gamma_\alpha \neq 0$ & 15.2 & 16.8 & 17.7 & 18.4 & 18.7 & 19.0 \\
+\textit{Pred.} $R^2$ & $\Gamma_\alpha = 0$ & 0.35 & 0.34 & 0.41 & 0.42 & 0.69 & 0.68 \\
+& $\Gamma_\alpha \neq 0$ & 0.76 & 0.75 & 0.75 & 0.74 & 0.74 & 0.72 \\
+\multicolumn{2}{@{}l}{\textit{Panel B: Managed portfolios} ($x_t$)} \\
+\textit{Total} $R^2$ & $\Gamma_\alpha = 0$ & 90.3 & 95.3 & 97.1 & 98.0 & 98.4 & 98.8 \\
+& $\Gamma_\alpha \neq 0$ & 90.8 & 95.7 & 97.3 & 98.2 & 98.6 & 98.9 \\
+\textit{Pred.} $R^2$ & $\Gamma_\alpha = 0$ & 2.01 & 2.00 & 2.10 & 2.13 & 2.41 & 2.39 \\
+& $\Gamma_\alpha \neq 0$ & 2.61 & 2.56 & 2.54 & 2.51 & 2.50 & 2.46 \\
+\multicolumn{2}{@{}l}{\textit{Panel C: Asset pricing test}} \\
+$W_\alpha$ \textit{p-value} & & 0.00 & 0.00 & 0.00 & 0.00 & 2.06 & 52.1 \\
+\hline
+\end{tabular}
+\end{table}
+```
+
+## Comparison With Observable-Factor Models (Individual Stocks)
+
+```{python}
+import matplotlib.ticker as mticker
+
+# ── Data ──────────────────────────────────────────────────────────────────────
+K = [1, 3, 4, 5, 6]
+
+data = {
+    "ipca": {
+        "r":  {"total": [14.9, 17.6, 18.2, 18.7, 19.0],
+               "pred":  [0.36, 0.43, 0.43, 0.70, 0.70],
+               "Np":    [636,  1908, 2544, 3180, 3816]},
+        "x":  {"total": [90.3, 97.1, 98.0, 98.4, 98.8],
+               "pred":  [2.01, 2.10, 2.13, 2.41, 2.39],
+               "Np":    [636,  1908, 2544, 3180, 3816]},
+    },
+    "obs": {
+        "r":  {"total": [11.9, 18.9, 20.9, 21.9, 23.7],
+               "pred":  [0.31, 0.29, 0.28, 0.29, 0.23],
+               "Np":    [11452, 34356, 45808, 57260, 68712]},
+        "x":  {"total": [65.6, 85.1, 87.5, 86.4, 88.6],
+               "pred":  [1.67, 2.07, 1.98, 2.06, 1.96],
+               "Np":    [37,  111,  148,  185,  222]},
+    },
+}
+
+# ── Colours ───────────────────────────────────────────────────────────────────
+C = {
+    "ipca_total": "#378ADD",
+    "ipca_pred":  "#85B7EB",
+    "obs_total":  "#D85A30",
+    "obs_pred":   "#F0997B",
+    "ipca_line":  "#185FA5",
+    "obs_line":   "#993C1D",
+}
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+def fmt_k(v, _):
+    return f"{v/1000:.0f}k" if v >= 1000 else str(int(v))
+
+
+def make_figure(key, ylabel_right="$N_p$ (parameters)"):
+    """
+    key : 'r'  → returns
+          'x'  → managed portfolios
+    """
+    ipca = data["ipca"][key]
+    obs  = data["obs"][key]
+
+    x    = np.arange(len(K))
+    w    = 0.18          # individual bar width
+    gap  = 0.02          # gap between IPCA and Obs groups
+
+    fig, ax1 = plt.subplots(figsize=(8, 4))
+    ax2 = ax1.twinx()
+
+    # ── Bars (drawn on ax1) ───────────────────────────────────────────────────
+    # IPCA group: total at x - 1.5w, pred at x - 0.5w
+    # Obs  group: total at x + 0.5w, pred at x + 1.5w  (with tiny gap)
+    offsets = {
+        "ipca_total": -1.5 * w - gap,
+        "ipca_pred":  -0.5 * w - gap,
+        "obs_total":  +0.5 * w + gap,
+        "obs_pred":   +1.5 * w + gap,
+    }
+
+    bars = {}
+    for label, series, color in [
+        ("ipca_total", ipca["total"], C["ipca_total"]),
+        ("ipca_pred",  ipca["pred"],  C["ipca_pred"]),
+        ("obs_total",  obs["total"],  C["obs_total"]),
+        ("obs_pred",   obs["pred"],   C["obs_pred"]),
+    ]:
+        bars[label] = ax1.bar(
+            x + offsets[label], series, width=w,
+            color=color, zorder=3, label=label,
+        )
+
+    # ── Lines (drawn on ax2) ──────────────────────────────────────────────────
+    ax2.plot(x, ipca["Np"], color=C["ipca_line"], linestyle="--",
+             marker="o", ms=5, lw=1.6, zorder=4, label="$N_p$ IPCA")
+    ax2.plot(x, obs["Np"],  color=C["obs_line"],  linestyle="--",
+             marker="o", ms=5, lw=1.6, zorder=4, label="$N_p$ Obs.")
+
+    # ── Axes formatting ───────────────────────────────────────────────────────
+    ax1.set_xticks(x)
+    ax1.set_xticklabels([f"$K={k}$" for k in K], fontsize=11)
+    ax1.set_ylabel("$R^2$ (%)", fontsize=11)
+    ax1.set_ylim(bottom=0)
+    ax1.yaxis.grid(True, linestyle=":", linewidth=0.6, color="#cccccc", zorder=0)
+    ax1.set_axisbelow(True)
+    ax1.spines[["top", "right"]].set_visible(False)
+
+    ax2.set_ylabel(ylabel_right, fontsize=11)
+    ax2.set_ylim(bottom=0)
+    ax2.yaxis.set_major_formatter(mticker.FuncFormatter(fmt_k))
+    ax2.spines[["top", "left"]].set_visible(False)
+
+    # ── Legend ────────────────────────────────────────────────────────────────
+    from matplotlib.patches import Patch
+    from matplotlib.lines  import Line2D
+
+    legend_elements = [
+        Patch(facecolor=C["ipca_total"], label="IPCA – Total $R^2$"),
+        Patch(facecolor=C["ipca_pred"],  label="IPCA – Pred. $R^2$"),
+        Patch(facecolor=C["obs_total"],  label="Obs. – Total $R^2$"),
+        Patch(facecolor=C["obs_pred"],   label="Obs. – Pred. $R^2$"),
+        Line2D([0], [0], color=C["ipca_line"], lw=1.6, ls="--",
+               marker="o", ms=5, label="$N_p$ IPCA"),
+        Line2D([0], [0], color=C["obs_line"],  lw=1.6, ls="--",
+               marker="o", ms=5, label="$N_p$ Obs."),
+    ]
+    ax1.legend(
+        handles=legend_elements,
+        fontsize=8.5,
+        ncol=6,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.09),
+        framealpha=0.85,
+        columnspacing=0.8,
+        handlelength=1.2,
+    )
+
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    return fig
+```
+
+```{python}
+fig = make_figure("r")
+plt.show()
+plt.close(fig)
+```
+
+## Comparison With Observable-Factor Models (Managed Portfolios)
+
+```{python}
+fig = make_figure("x")
+plt.show()
+plt.close(fig)
+```
+
+## Adding Standard Factors - Total $R^2$
+
+```{python}
+# ── New data ──────────────────────────────────────────────────────────────────
+models = {"CAPM": 1, "FF3+M": 4, "FF5+M": 6}
+
+total_r2_obs = {
+    "CAPM":  [15.8, 16.8, 17.5, 18.1, 18.6, 18.9],
+    "FF3+M": [17.3, 17.9, 18.3, 18.6, 18.8, 19.1],
+    "FF5+M": [17.5, 18.0, 18.4, 18.7, 18.9, 19.1],
+}
+pred_r2_obs = {
+    "CAPM":  [0.35, 0.40, 0.41, 0.50, 0.69, 0.68],
+    "FF3+M": [0.45, 0.66, 0.67, 0.66, 0.71, 0.69],
+    "FF5+M": [0.50, 0.66, 0.67, 0.66, 0.67, 0.69],
+}
+
+K6       = [1, 2, 3, 4, 5, 6]
+n_models = len(models)
+bar_colors = ["#B5D4F4", "#378ADD", "#042C53"]
+
+# ── Shared factory ────────────────────────────────────────────────────────────
+def make_obs_figure(series_dict, ylabel, title, ymin=None, yfmt=None):
+    x   = np.arange(len(K6))
+    w   = 0.22
+    gap = 0.03
+    offsets = np.linspace(-(n_models - 1) / 2, (n_models - 1) / 2, n_models) * (w + gap)
+
+    fig, ax = plt.subplots(figsize=(8, 4.2))
+
+    for i, (name, vals) in enumerate(series_dict.items()):
+        ax.bar(x + offsets[i], vals, width=w,
+               color=bar_colors[i], label=name, zorder=3)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"$K={k}$" for k in K6], fontsize=11)
+    ax.set_ylabel(ylabel, fontsize=11)
+    if ymin is not None:
+        ax.set_ylim(bottom=ymin)
+    if yfmt is not None:
+        ax.yaxis.set_major_formatter(mticker.FuncFormatter(yfmt))
+    ax.yaxis.grid(True, linestyle=":", linewidth=0.6, color="#cccccc", zorder=0)
+    ax.set_axisbelow(True)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend(fontsize=10, framealpha=0.85, handlelength=1.2)
+
+    fig.tight_layout()
+    return fig
+
+
+# ── Figure 1: Total R² ────────────────────────────────────────────────────────
+fig_total = make_obs_figure(
+    total_r2_obs,
+    ylabel="Total $R^2$ (%)",
+    title="Total $R^2$ by number of latent factors $K$",
+    ymin=15,
+)
+
+# ── Figure 2: Predictive R² ───────────────────────────────────────────────────
+fig_pred = make_obs_figure(
+    pred_r2_obs,
+    ylabel="Pred. $R^2$ (%)",
+    title="Predictive $R^2$ by number of latent factors $K$",
+    ymin=0,
+    yfmt=lambda v, _: f"{v:.2f}",
+)
+```
+
+```{python}
+fig_total
+```
+
+## Adding Standard Factors - Predictive $R^2$
+
+```{python}
+fig_pred
+```
+
+## Out of Sample
+
+```{python}
+# ── Data ──────────────────────────────────────────────────────────────────────
+r_total = [13.9, 15.3, 16.3, 16.9, 17.5, 17.8]
+x_total = [89.5, 94.8, 96.4, 97.4, 98.2, 98.6]
+r_pred  = [0.34, 0.33, 0.55, 0.61, 0.60, 0.60]
+x_pred  = [2.21, 2.15, 2.42, 2.44, 2.42, 2.42]
+
+C_blue_dark  = "#378ADD"
+C_blue_light = "#85B7EB"
+C_coral_dark = "#D85A30"
+C_coral_lite = "#F0997B"
+
+# ── Figure ────────────────────────────────────────────────────────────────────
+x     = np.arange(len(K6))
+w     = 0.35
+gap   = 0.04
+
+fig, ax1 = plt.subplots(figsize=(8, 4))
+ax2 = ax1.twinx()
+
+# Bars — Total R² (both series share the left axis)
+ax1.bar(x - w/2 - gap/2, r_total, width=w, color=C_blue_dark,
+        label="Total $R^2$ — $r_t$", zorder=3)
+ax1.bar(x + w/2 + gap/2, x_total, width=w, color=C_blue_light,
+        label="Total $R^2$ — $x_t$", zorder=3)
+
+# Lines — Pred. R² (right axis)
+ax2.plot(x, r_pred, color=C_coral_dark, lw=1.8, linestyle="-",
+         marker="o", ms=5, zorder=4, label="Pred. $R^2$ — $r_t$")
+ax2.plot(x, x_pred, color=C_coral_lite, lw=1.8, linestyle="--",
+         marker="s", ms=5, zorder=4, label="Pred. $R^2$ — $x_t$")
+
+# ── Left axis ─────────────────────────────────────────────────────────────────
+ax1.set_xticks(x)
+ax1.set_xticklabels([f"$K={k}$" for k in K6], fontsize=11)
+ax1.set_ylabel("Total $R^2$ (%)", fontsize=11, color="#185FA5")
+ax1.tick_params(axis="y", colors="#185FA5")
+ax1.spines["left"].set_color("#185FA5")
+ax1.set_ylim(0, 110)
+ax1.yaxis.grid(True, linestyle=":", linewidth=0.6, color="#cccccc", zorder=0)
+ax1.set_axisbelow(True)
+ax1.spines[["top", "right"]].set_visible(False)
+
+# ── Right axis ────────────────────────────────────────────────────────────────
+ax2.set_ylabel("Pred. $R^2$ (%)", fontsize=11, color="#993C1D")
+ax2.tick_params(axis="y", colors="#993C1D")
+ax2.spines["right"].set_color("#993C1D")
+ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda v, _: f"{v:.2f}"))
+ax2.set_ylim(0)
+ax2.spines[["top", "left"]].set_visible(False)
+
+# ── Legend ────────────────────────────────────────────────────────────────────
+from matplotlib.patches import Patch
+from matplotlib.lines   import Line2D
+
+legend_elements = [
+    Patch(facecolor=C_blue_dark,  label="Total $R^2$ — $r_t$ (left)"),
+    Patch(facecolor=C_blue_light, label="Total $R^2$ — $x_t$ (left)"),
+    Line2D([0], [0], color=C_coral_dark, lw=1.8, marker="o", ms=5,
+           label="Pred. $R^2$ — $r_t$ (right)"),
+    Line2D([0], [0], color=C_coral_lite, lw=1.8, marker="s", ms=5,
+           linestyle="--", label="Pred. $R^2$ — $x_t$ (right)"),
+]
+ax1.legend(handles=legend_elements, fontsize=9, framealpha=0.85,
+           ncol=4, handlelength=1.4, columnspacing=1.0,
+           loc="upper center", bbox_to_anchor=(0.5, -0.075))
+
+fig.tight_layout(rect=(0, 0.06, 1, 1))
+plt.show()
+```
+
+## Contribution of Total $R^2$ For Each Variable (with $K=5$)
+
+```{=latex}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{l c c l c c l c}
+\hline
+mktcap & 2.84** & & roa    & 0.07    & & c     & 0.03 \\
+assets & 1.64** & & suv    & 0.07**  & & noa   & 0.03 \\
+beta   & 0.56** & & pcm    & 0.06*   & & rna   & 0.02 \\
+strev  & 0.47** & & idiovol& 0.05**  & & invest& 0.02 \\
+mom    & 0.33** & & s2p    & 0.05    & & prof  & 0.02 \\
+turn   & 0.31** & & bm     & 0.04    & & pm    & 0.02 \\
+w52h   & 0.14** & & bidask & 0.04    & & d2a   & 0.01 \\
+a2me   & 0.14   & & intmom & 0.03*   & & dpi2a & 0.01 \\
+cto    & 0.13   & & roe    & 0.03    & & q     & 0.01 \\
+ol     & 0.11   & & sga2m  & 0.03    & & freecf& 0.01 \\
+ltrev  & 0.10** & & ato    & 0.03*   & & lev   & 0.01 \\
+fc2y   & 0.08   & & e2p    & 0.03    & & oa    & 0.00 \\
+\hline
+\end{tabular}
+\end{table}
+```
+
+- Only 10/36 characteristics have significant $\Gamma_\beta$ coefficients at 5\%
+
+## Limitations and Impact
+
+- The factors are statistical objects; economic interpretation is still incomplete
+- Results depend on the chosen characteristic set and on the linear mapping $\beta_{i,t} = \Gamma_{\beta}^{\top} z_{i,t}$
+- The "no alpha" conclusion is stronger economically than statistically: at $K=5$, the Wald $p$-value is $2.06\%$, so the claim is cleaner at 1\% than at 5\%
+- Impact: it bridges Daniel-Titman, conditional beta models, and the modern anomaly literature
+- It changed the question from "which observable factor kills alpha?" to "does any common risk structure kill alpha?"
 
 ## {.standout}
 Questions?
