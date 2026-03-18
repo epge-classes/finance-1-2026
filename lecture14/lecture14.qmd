@@ -143,6 +143,54 @@ import matplotlib.patches as mpatches
 import numpy as np
 
 plt.rcParams["font.family"] = "Arial"
+factor_colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
+
+
+def make_factor_figure(panels, rows, values, ylabel, ylim, ytick_fmt, ylabel_size=11):
+    x = np.arange(len(panels))
+    width = 0.25
+    offsets = np.array([-1, 0, 1]) * width
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+
+    for i, (row_label, color, offset) in enumerate(zip(rows, factor_colors, offsets)):
+        ax.bar(
+            x + offset,
+            values[i],
+            width=width * 0.92,
+            color=color,
+            alpha=0.78,
+            edgecolor=color,
+            linewidth=0.8,
+            label=row_label,
+        )
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(panels, fontsize=10, color="#666")
+    ax.set_ylabel(ylabel, fontsize=ylabel_size, color="#666")
+    ax.set_ylim(*ylim)
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
+    ax.tick_params(axis="y", labelsize=10, colors="#888")
+    ax.tick_params(axis="x", length=0)
+    ax.spines[["top", "right", "left"]].set_visible(False)
+    ax.spines["bottom"].set_color("#ddd")
+    ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
+    ax.set_axisbelow(True)
+
+    handles = [
+        mpatches.Patch(color=c, alpha=0.78, label=r)
+        for c, r in zip(factor_colors, rows)
+    ]
+    ax.legend(
+        handles=handles,
+        fontsize=10,
+        frameon=False,
+        loc="upper left",
+        handlelength=1.2,
+        handleheight=0.8,
+    )
+
+    fig.tight_layout()
+    plt.show()
 
 ff2015_panels = [
     "Panel A\n25 Size-B/M",
@@ -167,57 +215,9 @@ ff2015_ratio = np.array([
     [0.50, 0.46, 0.49, 0.54, 0.45, 0.45],
 ])
 
-ff2015_colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
-ff2015_x = np.arange(len(ff2015_panels))
-ff2015_width = 0.25
-ff2015_offsets = np.array([-1, 0, 1]) * ff2015_width
-
-def make_ff2015_figure(values, ylabel, ylim, ytick_fmt):
-    fig, ax = plt.subplots(figsize=(10, 4.5))
-
-    for i, (row_label, color, offset) in enumerate(
-        zip(ff2015_rows, ff2015_colors, ff2015_offsets)
-    ):
-        ax.bar(
-            ff2015_x + offset,
-            values[i],
-            width=ff2015_width * 0.92,
-            color=color,
-            alpha=0.78,
-            edgecolor=color,
-            linewidth=0.8,
-            label=row_label,
-        )
-
-    ax.set_xticks(ff2015_x)
-    ax.set_xticklabels(ff2015_panels, fontsize=10, color="#666")
-    ax.set_ylabel(ylabel, fontsize=11, color="#666")
-    ax.set_ylim(*ylim)
-    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
-    ax.tick_params(axis="y", labelsize=10, colors="#888")
-    ax.tick_params(axis="x", length=0)
-    ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.spines["bottom"].set_color("#ddd")
-    ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
-    ax.set_axisbelow(True)
-
-    handles = [
-        mpatches.Patch(color=c, alpha=0.78, label=r)
-        for c, r in zip(ff2015_colors, ff2015_rows)
-    ]
-    ax.legend(
-        handles=handles,
-        fontsize=10,
-        frameon=False,
-        loc="upper left",
-        handlelength=1.2,
-        handleheight=0.8,
-    )
-
-    fig.tight_layout()
-    plt.show()
-
-make_ff2015_figure(
+make_factor_figure(
+    panels=ff2015_panels,
+    rows=ff2015_rows,
     values=ff2015_abs_alpha,
     ylabel=r"$A|a_i|$",
     ylim=(0, 0.19),
@@ -228,7 +228,9 @@ make_ff2015_figure(
 ## FF (2015): Mean Absolute Intercepts / Mean Absolute Returns
 
 ```{python}
-make_ff2015_figure(
+make_factor_figure(
+    panels=ff2015_panels,
+    rows=ff2015_rows,
     values=ff2015_ratio,
     ylabel=r"$A|a_i|\,/\,A|\bar{r}_i|$",
     ylim=(0, 0.85),
@@ -260,13 +262,7 @@ Questions?
 ## FF (2016): Mean Absolute Intercepts
 
 ```{python}
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-
-plt.rcParams["font.family"] = "Arial"
-
-panels = [
+ff2016_panels = [
     "25 Size-β",
     "35 Size-NI",
     "25 Size-Var",
@@ -275,134 +271,124 @@ panels = [
     "25 Size-Prior 2–12",
 ]
 
-rows = ["Mkt SMB HML", "Mkt SMB RMW CMA", "Mkt SMB HML RMW CMA"]
+ff2016_rows = ["Mkt SMB HML", "Mkt SMB RMW CMA", "Mkt SMB HML RMW CMA"]
 
-abs_alpha = np.array([
+ff2016_abs_alpha = np.array([
     [0.106, 0.136, 0.217, 0.222, 0.113, 0.319],
     [0.069, 0.100, 0.130, 0.118, 0.127, 0.280],
     [0.072, 0.098, 0.131, 0.120, 0.126, 0.272],
 ])
 
-ratio = np.array([
+ff2016_ratio = np.array([
     [0.45, 0.51, 0.72, 0.71, 0.48, 0.97],
     [0.29, 0.37, 0.43, 0.37, 0.54, 0.85],
     [0.31, 0.37, 0.44, 0.38, 0.54, 0.83],
 ])
 
-colors = ["#3266ad", "#d05a2a", "#2a9d6f"]
-x = np.arange(len(panels))
-width = 0.25
-offsets = np.array([-1, 0, 1]) * width
-
-def make_figure(values, ylabel, ylim, ytick_fmt):
-    fig, ax = plt.subplots(figsize=(10, 4.5))
-
-    for i, (row_label, color, offset) in enumerate(zip(rows, colors, offsets)):
-        ax.bar(
-            x + offset,
-            values[i],
-            width=width * 0.92,
-            color=color,
-            alpha=0.78,
-            edgecolor=color,
-            linewidth=0.8,
-            label=row_label,
-        )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(panels, fontsize=10, color="#666")
-    ax.set_ylabel(ylabel, fontsize=12, color="#666")
-    ax.set_ylim(*ylim)
-    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: ytick_fmt.format(v)))
-    ax.tick_params(axis="y", labelsize=10, colors="#888")
-    ax.tick_params(axis="x", length=0)
-    ax.spines[["top", "right", "left"]].set_visible(False)
-    ax.spines["bottom"].set_color("#ddd")
-    ax.yaxis.grid(True, color="#e8e8e8", linewidth=0.8, zorder=0)
-    ax.set_axisbelow(True)
-
-    handles = [
-        mpatches.Patch(color=c, alpha=0.78, label=r)
-        for c, r in zip(colors, rows)
-    ]
-    ax.legend(
-        handles=handles,
-        fontsize=10,
-        frameon=False,
-        loc="upper left",
-        handlelength=1.2,
-        handleheight=0.8,
-    )
-
-    fig.tight_layout()
-    plt.show()
-
-make_figure(
-    values=abs_alpha,
+make_factor_figure(
+    panels=ff2016_panels,
+    rows=ff2016_rows,
+    values=ff2016_abs_alpha,
     ylabel=r"$A|a_i|$",
     ylim=(0, 0.36),
     ytick_fmt="{:.2f}",
+    ylabel_size=12,
 )
 ```
 
 ## FF (2016): Mean Absolute Intercepts / Mean Absolute Returns
 
 ```{python}
-make_figure(
-    values=ratio,
+make_factor_figure(
+    panels=ff2016_panels,
+    rows=ff2016_rows,
+    values=ff2016_ratio,
     ylabel=r"$A|a_i|\,/\,A|\bar{r}_i|$",
     ylim=(0, 1),
     ytick_fmt="{:.1f}",
+    ylabel_size=12,
 )
 ```
+
+## Empirical Lessons
+
+- The 5-factor model is useful in the sense it reduces intercepts
+- It essentially never passes the GRS test, though
+- Two main enemies: momentum and, to some extent, accruals
+- Another cool thing: they explain why the security market liner appeared flatter
+- Reason: stocks with low CAPM betas load heavily on HML, RMW, and CMA
+- Stocks with high CAPM betas also load heavily on factors, with a *negative* coefficient
 
 ## {.standout}
 Questions?
 
 # Part IV: The Factor Zoo
 
-## The Factor Zoo
+## Harvey, Liu, and Zhu (2016)
 
-- Hundreds of factors proposed
-- Empirical success became cheap
-
-## Harvey, Liu, Zhu (2016)
-
+- @HarveyLiuZhu2016 collect 316 factors, from 313 papers published since the 60s in top journals
+- The first paper I know of that tried to "catalog" the factor zoo
 - Multiple testing is the core problem
-- Standard $t$-statistics are not enough
+- Even if you generate random factors, some of them will the price the cross-section by chance
+- If you keep doing that forever, you'll find many "significant" factors
+- Their prescription: increase the hurdle for statistical significance
+- The "$t > 1.96$" rule-of-thumb is not enough
+- By the way: $t$ here might mean the $t$-stat of either the CS or the TS regression
 
-## [TABLE PLACEHOLDER]
+## Taxonomy of Factors
+![](Taxonomy.png){fig-align="center" width="90%"}
 
-- List of factors (large table)
+## Factors Over Time
+![](N_factors.png){fig-align="center" width="80%"}
 
-## t-Statistics After Many Searches
+## The Intuition From Bonferroni
 
-- Not reliable with many tests
+- If you test 20 factors, the probability of at least one false positive is $1 - (1 - 0.05)^{20} \approx 0.64$
+- With 100 factors, the probability of at least one false positive is $1 - (1 - 0.05)^{100} \approx 0.994$
 
-## [FIGURE PLACEHOLDER]
+. . .
 
-- Distribution of t-stats / p-values
+- Suppose you test $M$ hypotheses with tests of size $\alpha$
+- Let $A_i$ be the event that the $i$-th test is a rejection when the null is true
 
-## Harvey-Liu-Zhu: Adjustments
+$$
+\mathbb{P}\left(\cup_{i=1}^M A_i\right) \leq \sum_{i=1}^M \mathbb{P}(A_i) = M\alpha
+$$
 
-- Bonferroni
-- Holm
-- BHY
+- The "Bonferroni correction" says: reject if the $p$-value is less than $\alpha / M$
+- Lower $p$-values imply higher thresholds for $t$-statistics
 
-## Harvey-Liu-Zhu: Main Result
+## What They Do
 
-- Many factors lose significance
+- At each date, count the cumulative number of published factors, $M_t$
+- Take the available factor $t$-statistics and convert them into $p$-values
+- Bonferroni: use the cutoff $p_t^\star = \alpha / M_t$
+- Convert $p_t^\star$ back into an implied threshold $t_t^\star$
+- Trace this hurdle through time as the zoo grows
+- Same exercise for Holm and BHY, which are other corrections
 
-## Publication Bias
+## Empirical Result
+![](T_test.png){fig-align="center" width="85%"}
 
-- Unknown number of attempted factors
-- Publication bias
+## Why Should It Increase Over Time?
 
-## Where We Are
+- Their logic is about the search process, not the null
+- Low-hanging fruit gets picked first
+- The data set is still basically finite
+- Computing and data got much cheaper
+- For future dates, they linearly extrapolate factor production using 2003--2012
+- So a new factor today should clear a higher hurdle
 
-- LNS: weak tests
-- FF: more factors
-- Harvey: too many factors
+## Main Empirical Lessons
+
+- The usual $t > 1.96$ standard is too low in the factor zoo
+- Once multiple testing is accounted for, the cutoff is closer to $t \approx 3$
+- Many published factors no longer clear Bonferroni, Holm, or BHY
+- In their final count, about 27\%--53\% of published significant factors are likely false discoveries
+- If we also account for unpublished searches, the hurdle is even higher
+- Limitation: the true number of attempted factors is unobserved
+- Limitation: factor tests are correlated, so standard corrections may be too harsh
+- Super influential paper: many factors are just a spark of luck!
 
 ## {.standout}
 
