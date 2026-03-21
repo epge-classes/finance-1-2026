@@ -417,9 +417,11 @@ $$
 
 Standard cross-validation:
 
-- Divide into $K$ folds $\mathcal I_1, \ldots, \mathcal I_K$
+- Divide the data into $K$ *random* folds $\mathcal I_1, \ldots, \mathcal I_K$
 - Consider a grid $\Lambda = (\lambda_1, \ldots, \lambda_m)$
 - For each fold $k$, estimate $\hat\beta^{(-k)}(\lambda)$ on the data excluding fold $k$
+
+. . .
 
 Cross-validation picks
 
@@ -445,7 +447,13 @@ Questions?
 ## Preliminaries
 
 - Causality still comes from design, not from an algorithm
-- But nuisance objects like propensity scores or first stages are prediction problems
+- Machine Learning won't help if you have a crappy empirical design
+- If you have the perfect data, you probably only neeed simple averages
+- It's when data is imperfect that you call the firefighters!
+
+. . .
+
+- Important: ML methods were created for forecasting, not for inference
 - This is the Belloni-Chernozhukov move [@belloni_high-dimensional_2014; @belloni_inference_2014; @chernozhukov_doubledebiased_2018]
 
 ## Treatment Effects in High Dimensions
@@ -473,8 +481,8 @@ x_i^\top \beta_0 = x_{i,S}^\top \beta_{0,S} + r_i,
 r_i \text{ small}
 $$
 
-- A small subset gives a good approximation
-- We do not know that subset ex ante
+- A small subset of regressors gives a good approximation
+- We *do not* know that subset ex ante
 - Regularization is useful only if this approximation is meaningful
 
 ## Why Naive Lasso Fails
@@ -504,23 +512,9 @@ $$
 
 - Some controls matter because they predict outcomes
 - Some matter because they predict treatment
+- Think about the propensity score!
 - Omitted variable bias cares about both channels
 
-## Omitted Variable Bias, Written Down
-
-Suppose we control only for $\widetilde X$, and let $w$ denote the omitted component of $X\beta_0$.
-If $d_\perp$ and $w_\perp$ are residuals after projecting on $\widetilde X$, then
-
-$$
-\operatorname{plim}\hat\theta
-=
-\theta_0
-+
-\frac{\operatorname{Cov}(d_\perp, w_\perp)}{\operatorname{Var}(d_\perp)}
-$$
-
-- Bias survives whenever omitted controls both affect $y$ and line up with $d$
-- Selecting only from the outcome equation is not enough
 
 ## Post-Double-Selection
 
@@ -570,18 +564,7 @@ $$
 
 ## A Monte Carlo Reassurance
 
-<!-- TODO: insert Single_vs_Double_Selection figure -->
-
-```{=latex}
-\vspace{0.9cm}
-\begin{center}
-\fbox{\parbox{0.78\textwidth}{\centering
-Placeholder for the single-selection versus double-selection Monte Carlo figure}}
-\end{center}
-```
-
-- Future figure: single selection can generate substantial bias
-- Post-double-selection keeps coverage much closer to the target
+![](Single_vs_Double_Selection.png){fig-align="center"}
 
 ## DML Preview
 
@@ -608,29 +591,6 @@ $$
 
 ## {.standout}
 Questions?
-
-# Closing Bridge
-
-## Shrinking the Cross-Section
-
-- In @KozakNagelSantosh2020, the problem is not "find one magic factor"
-- It is closer to
-$$
-\mathbb E_t[r_{i,t+1}] \approx z_{i,t}^\top b
-$$
-with many weak, correlated characteristics
-- Shrinkage is the point, not a nuisance
-
-## Taming the Factor Zoo
-
-- In @FengGiglioXiu2020, candidate factors must be studied jointly
-- High-dimensional structure means one-factor-at-a-time logic is too weak
-- Regularization and joint testing are natural responses once the predictor space is large
-
-. . .
-
-- Lecture 14 said: the zoo is real
-- Lecture 15 says: high dimension needs disciplined statistics
 
 ## Taking Stock
 
