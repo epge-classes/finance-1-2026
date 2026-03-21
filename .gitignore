@@ -4,6 +4,7 @@
 Topics.pdf
 *_files/
 .vscode/
+*.quarto_ipynb*
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
