@@ -383,21 +383,36 @@ $$
 
 ## Why Elastic Net Helps with Correlation
 
-Suppose $x_1=x_2$ and only $\beta_1+\beta_2=c$ matters for fit. Then
+Suppose $x_1=x_2=x$ and let $c=\beta_1+\beta_2$. Then
+
+$$
+\hat y
+=
+x_1\beta_1+x_2\beta_2
+=
+xc
+$$
+
+$$
+|\beta_1| + |\beta_2|
+\geq
+|\beta_1+\beta_2|
+=
+|c|
+$$
 
 $$
 \beta_1^2 + \beta_2^2
-\geq
-\frac{(\beta_1+\beta_2)^2}{2}
 =
+\frac{(\beta_1+\beta_2)^2+(\beta_1-\beta_2)^2}{2}
+=
+\frac{c^2+(\beta_1-\beta_2)^2}{2}
+\geq
 \frac{c^2}{2}
 $$
 
-with equality if and only if $\beta_1=\beta_2=c/2$.
-
-- For fixed fit, the $\ell_2$ term prefers balanced coefficients
-- Elastic Net pulls strongly correlated regressors together
-- Pure Lasso can keep one and drop the other arbitrarily
+- Lasso: equality for any split with $\beta_1\beta_2 \geq 0$
+- Ridge: equality if, and only if, $\beta_1=\beta_2=c/2$
 
 ## Standardization Matters
 
