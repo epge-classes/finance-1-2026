@@ -594,7 +594,7 @@ $$
 - See the paper for details on how to estimate the variance!
 - This is much stronger than "it predicts well in simulations"
 
-## A Monte Carlo Reassurance
+## Some Monte Carlo Reassurance
 
 ![](Single_vs_Double_Selection.png){fig-align="center"}
 
