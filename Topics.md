@@ -91,6 +91,13 @@ This is a collection of recommended readings and references.
 - [Davis, Fama, and French, 2000](https://doi.org/10.1111/0022-1082.00209)
 - [Ferson and Harvey, 1999](http://dx.doi.org/10.1111/0022-1082.00148)
 
+### Lecture 15: Regularization and High-Dimensional Inference
+- A great reference: [Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
+- [Belloni, Chernozhukov, and Hansen, 2014, High-Dimensional Methods and Inference on Structural and Treatment Effects](https://pubs.aeaweb.org/doi/10.1257/jep.28.2.29)
+- [Belloni, Chernozhukov, and Hansen, 2014, Inference on Treatment Effects after Selection among High-Dimensional Controls](https://academic.oup.com/restud/article-lookup/doi/10.1093/restud/rdt044)
+- [Leeb and Pötscher, 2008](http://www.journals.cambridge.org/abstract_S0266466608080158)
+- [Chernozhukov et al., 2018](https://academic.oup.com/ectj/article/21/1/C1/5056401)
+
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
 
