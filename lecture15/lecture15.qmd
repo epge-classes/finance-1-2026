@@ -469,7 +469,7 @@ Questions?
 . . .
 
 - Important: ML methods were created for forecasting, not for inference
-- This is the Belloni-Chernozhukov move [@belloni_high-dimensional_2014; @belloni_inference_2014; @chernozhukov_doubledebiased_2018]
+- This is the Belloni-Chernozhukov-Hansen move [@belloni_high-dimensional_2014; @belloni_inference_2014; @chernozhukov_doubledebiased_2018]
 
 ## Treatment Effects in High Dimensions
 
@@ -500,7 +500,7 @@ $$
 - We *do not* know that subset ex ante
 - Regularization is useful only if this approximation is meaningful
 
-## Why Naive Lasso Fails
+## Approach 1: Simple Lasso
 
 A tempting idea is
 
@@ -513,11 +513,29 @@ $$
 \right\}
 $$
 
-- Even if $\theta$ is left unpenalized, missing controls can still bias $\hat\theta$
-- Selection mistakes matter when omitted controls are correlated with treatment
-- Prediction success is not enough for valid inference on $\theta_0$
+- If $\theta$ is penalized, shrinkage can push the treatment effect toward zero
+- Even if $\theta$ is left unpenalized, selection mistakes can still bias $\hat\theta$
+- Good prediction for $y_i$ is not the same thing as good inference on $\theta_0$
 
-## The Treatment Equation Matters Too
+## Approach 2: Post-Single-Selection
+
+$$
+\hat S_y = \{j : \hat\beta_j^{(y)} \neq 0\}
+$$
+
+Procedure:
+
+1. Run Lasso of $y_i$ on $x_i$
+2. Keep only the selected controls $x_{i,\hat S_y}$
+3. Run OLS of $y_i$ on $d_i$ and $x_{i,\hat S_y}$
+
+. . .
+
+- This removes the direct penalty bias on $\theta_0$
+- But it still uses only the controls selected from the outcome equation
+- This estimator has very bad properties for inference [@leeb_can_2008; @leeb_guest_2008]
+
+## Why Single Selection Still Fails
 
 $$
 d_i = x_i^\top \gamma_0 + u_i,
@@ -527,8 +545,8 @@ $$
 
 - Some controls matter because they predict outcomes
 - Some matter because they predict treatment
-- Think about the propensity score!
-- Omitted variable bias cares about both channels
+- A variable can have a small $\beta_j$ but a large $\gamma_j$
+- Omitting that variable still creates bias in the treatment regression
 
 
 ## Post-Double-Selection
@@ -555,8 +573,6 @@ Procedure:
 - The union $\hat S_y \cup \hat S_d$ protects both margins
 - If a variable is weak in one equation but strong in the other, the union still keeps it
 
-. . .
-
 $$
 \hat S = \hat S_y \cup \hat S_d
 \qquad
@@ -570,50 +586,39 @@ $$
 Under approximate sparsity and regularity conditions,
 
 $$
-\sqrt{n}\left(\hat\theta_{PDS} - \theta_0\right) \xrightarrow{d} \mathcal N(0,\sigma^2)
+\sqrt{n}\left(\hat\theta_{PDS} - \theta_0\right) \xrightarrow{d} \mathcal N(0,\sigma_\theta^2)
 $$
 
 - Inference is uniformly valid over a large class of data-generating processes [@belloni_inference_2014]
-- Confidence intervals are built in the usual way once $\sigma^2$ is estimated
+- Confidence intervals are built in the usual way once $\sigma_\theta^2$ is estimated
+- See the paper for details on how to estimate the variance!
 - This is much stronger than "it predicts well in simulations"
 
 ## A Monte Carlo Reassurance
 
 ![](Single_vs_Double_Selection.png){fig-align="center"}
 
-## DML Preview
 
-The generalized partially linear model is
+## Double Machine Learning
 
-$$
-y_i = d_i\theta_0 + g_0(x_i) + \varepsilon_i,
-\qquad
-d_i = m_0(x_i) + u_i
-$$
+- What if sparsity is not a good assumption?
+- What if linearity is not a good assumption?
+- What if you want to use more flexible ML methods, like random forests or neural nets?
+- Then: @chernozhukov_doubledebiased_2018
+- Secrete sauces: Neyman orthogonality and cross-fitting
+- The theory gets one order of magnitude more sophisticated, but the intuition remains
 
-A Neyman-orthogonal score is
-
-$$
-\psi(W_i;\theta,\eta)
-=
-\left(d_i - m(x_i)\right)
-\left(y_i - g(x_i) - \theta(d_i-m(x_i))\right)
-$$
-
-- Estimate $g_0$ and $m_0$ with ML on auxiliary folds
-- Plug them into the score on held-out data
-- Cross-fitting plus orthogonality is the bridge from Double Lasso to DML [@chernozhukov_doubledebiased_2018]
 
 ## {.standout}
 Questions?
 
 ## Taking Stock
 
-- Ridge stabilizes
-- Lasso stabilizes and selects
-- Elastic Net stabilizes and groups correlated signals
-- Post-selection inference is not automatic
-- Belloni-Chernozhukov show how to recover valid treatment-effect inference with many controls
+- Regularized linear models are useful for prediction when $p$ is large
+- They still leverage linearity, but they target prediction, not inference
+- We can still perform valid inference relatively easily
+- Many techniques already implemented by [DoubleML](https://docs.doubleml.org/stable/index.html)
+- Heterogenous effects: [EconML by ALICE Labs](https://github.com/py-why/econml)
 
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
