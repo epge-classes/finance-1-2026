@@ -139,7 +139,7 @@ where $d_j$ is the $j$-th eigenvalue of $\Sigma$
 $$
 \hat{b} = \left(\Sigma + \gamma I_H\right)^{-1}\bar\mu
 $$
-where $\gamma = \frac{\kappa^2}{T\cdot\tau}$
+where $\gamma = \frac{\tau}{T\cdot\kappa^2}$
 
 - This looks like something you saw last class, right?
 
