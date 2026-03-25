@@ -98,6 +98,10 @@ This is a collection of recommended readings and references.
 - [Leeb and Pötscher, 2008](http://www.journals.cambridge.org/abstract_S0266466608080158)
 - [Chernozhukov et al., 2018](https://academic.oup.com/ectj/article/21/1/C1/5056401)
 
+### Lecture 16: Asset Pricing in High Dimensions
+- [Kozak, Nagel, and Santosh, 2020](https://doi.org/10.1016/j.jfineco.2019.07.010)
+- [Feng, Giglio, and Xiu, 2020](https://doi.org/10.1111/jofi.12883)
+
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
 
