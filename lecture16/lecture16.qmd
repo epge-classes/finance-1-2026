@@ -262,44 +262,33 @@ $$
 \iota_n \gamma_0 + C_g \lambda_g + C_h \lambda_h
 $$
 
-- $g_t$: factor we want to test
-- $h_t$: potentially huge set of control factors
+- $\gamma_0$: zero-beta rate ($\iota_n$ is a vector of ones)
+- $g_t$: $d\times 1$ factors we want to test
+- $h_t$: $p\times 1$ potentially huge set of control factors
+- $C_g$ and $C_h$: $n\times d$ and $n\times p$ matrices of covariances
 - The goal is inference on $\lambda_g$
 - The problem: $h_t$ is large and we don't know which controls to include
-
-## SDF Loadings Are the Object
-
-$$
-\mathbb{E}[r_t]
-=
-\iota_n \gamma_0 + \beta_g \gamma_g + \beta_h \gamma_h
-$$
-
-- Risk premia and SDF loadings are not the same thing
-- A factor can earn a premium just because it is correlated with true pricing factors
-- Feng care about whether the factor enters the SDF
-- So the target is $\lambda_g$, not just average return
+- If $p$ was small, how would you estimate $\lambda_g$?
 
 ## Why Standard Two-Pass Breaks
 
 - If $p$ is small, ordinary two-pass methods are fine
-- But in the zoo, $p$ can be comparable to $n$ or $T$
+- But in the zoo, $p$ can be comparable to $n$ (number of assets) or $T$ (number of periods)
 - Using all factors is infeasible or very noisy
 - Using FF3 or FF5 alone creates omitted-variable bias
 
 ## Sparsity as a Working Assumption
 
 - They assume the relevant control set is approximately low-dimensional
+- This is the same as saying that $\lambda_h$ has many zeros
 - This is the same broad "bet on sparsity" logic as Lecture 15
-- But the benchmark is not fixed ex ante
+- This is the traditional Fama-MacBeth logic but with "endogenous" controls
 - The benchmark must be selected from a large set of candidates
 
-## Why Plain LASSO Is Not Enough
+. . .
 
-- LASSO is good for prediction
-- Inference fails if an omitted control is correlated with the factor of interest
-- So selection mistakes can create omitted-variable bias
-- This is exactly the Belloni-Chernozhukov-Hansen logic from last lecture [@belloni_inference_2014]
+- Key contribution: adapting the setup from @belloni_inference_2014 to the factor zoo
+- Highly non-trivial: panel data *and* we do not directly observe covariances
 
 ## Double Selection: Step 1
 
@@ -312,7 +301,7 @@ n^{-1}\left\lVert \bar r - \iota_n \gamma - \hat C_h \lambda \right\rVert_2^2
 \right\}
 $$
 
-- First LASSO selects controls that help explain the cross-section
+- First LASSO selects controls that help explain the cross-section of average returns
 - This is the "pricing ability" margin
 - It looks like the natural factor-selection step
 - But it is not enough for valid inference on $\lambda_g$
@@ -331,6 +320,7 @@ $$
 - Second LASSO searches for controls whose exposures line up with exposures to $g_t$
 - This is the omitted-variable-bias margin
 - It keeps factors that may look weak for pricing but are dangerous to omit
+- Notice that we have $d$ separate LASSO problems here, one for each factor we want to test
 
 ## Post-Selection Estimation
 
@@ -349,82 +339,135 @@ $$
 - This removes the regularization bias from LASSO
 - Same structure as post-double-selection in Lecture 15
 
-## Why This Delivers Valid Inference
+## Valid Inference on $\lambda_g$
+Under some conditions (see the paper...):
+$$
+\sqrt{T}\left(\hat\lambda_g - \lambda_g\right)
+\xrightarrow{d}
+\mathcal{N}_d(0,\Pi_1)
+$$
 
-- First stage protects pricing relevance
-- Second stage protects against omitted-variable bias
-- Post-selection OLS restores an interpretable slope estimate
-- So inference on $\lambda_g$ remains valid even with imperfect model selection
+$$
+\Pi_1
+=
+\lim_{T\to\infty}
+\frac{1}{T}
+\sum_{t=1}^T
+\sum_{s=1}^T
+\mathbb{E}\!\left[
+\left(1-\lambda^\top v_t\right)\left(1-\lambda^\top v_s\right)
+\Sigma_z^{-1} z_t z_s^\top \Sigma_z^{-1}
+\right],
+\qquad
+\Sigma_z \equiv \operatorname{Var}(z_t)
+$$
+
+- $z_t$: residual from projecting $g_t$ on the selected controls in $h_t$
+- The asymptotic variance is long-run because dependence over time matters
+- The paper also provides a Newey-West-type estimator for $\Pi_1$
+
+## {.standout}
+Questions?
 
 ## Data and Test Assets
 
+- Data ranges from 1976 to 2017
 - 150 monthly factors from 1976 to 2017
-- 15 standard public factors plus 135 long-short proxies
-- 750 characteristic-sorted test portfolios
+- 15 standard public factors plus 135 long-short portfolios of stocks sorted on characteristics
+- Test assets: 750 characteristic-sorted test portfolios
 - The large test set directly answers the LNS critique [@LewellenNagelShanken2010]
 
-## Recent Factors: Table I Placeholder
+## Factors Published in 2012-2016
 
 ```{=latex}
-\vspace{0.4cm}
-\begin{center}
-\fbox{
-\parbox[c][0.50\textheight][c]{0.88\textwidth}{
-\centering
-\Large Placeholder for Table I \\
-\large Testing factors introduced in 2012-2016
-}
-}
-\end{center}
+\begin{table}
+\footnotesize
+\begin{tabular}{lrr}
+\hline
+Factor & $\lambda_s$ (bp) & tstat (DS) \\
+\hline
+Cash holdings & $-34$ & $-0.42$ \\
+HML Devil & $54$ & $1.04$ \\
+Gross profitability & $20$ & $0.48$ \\
+Organizational Capital & $28$ & $0.92$ \\
+Betting Against Beta & $35$ & $1.45$ \\
+Quality Minus Junk & $73$ & $2.03^{**}$ \\
+Employee growth & $43$ & $1.36$ \\
+Growth in advertising & $-12$ & $-1.18$ \\
+Book Asset Liquidity & $40$ & $1.07$ \\
+RMW & $160$ & $4.45^{***}$ \\
+CMA & $38$ & $1.10$ \\
+HXZ IA & $51$ & $2.11^{**}$ \\
+HXZ ROE & $77$ & $3.37^{***}$ \\
+Intermediary Risk Factor & $112$ & $2.21^{**}$ \\
+Convertible debt & $-15$ & $-1.36$ \\
+\hline
+\end{tabular}
+\end{table}
 ```
 
-- The punchline: most new factors look redundant or useless relative to the old zoo
-- A few survive, especially profitability-style factors
+## Recursively Testing New Factors
 
-## Selection Rates: Figure 1 Placeholder
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+plt.rcParams['font.family'] = 'Arial'
 
-```{=latex}
-\vspace{0.4cm}
-\begin{center}
-\fbox{
-\parbox[c][0.52\textheight][c]{0.86\textwidth}{
-\centering
-\Large Placeholder for Figure 1 \\
-\large First-stage factor selection rates across subsamples
+# Data: discovered factors (underlined IDs) by year
+data = {
+    1994: 0,
+    1995: 0,
+    1996: 0,
+    1997: 1,   # 34
+    1998: 1,   # 44
+    1999: 0,
+    2000: 2,   # 50, 51
+    2001: 3,   # 56, 57, 58
+    2002: 0,
+    2003: 1,   # 66
+    2004: 3,   # 71, 72, 73, 74
+    2005: 8,   # 79, 80, 81, 82, 83, 84, 85, 86
+    2006: 8,   # 95, 96, 97, 98, 99, 100, 101, 102
+    2007: 1,   # 108
+    2008: 8,   # 113, 114, 115, 116, 117, 118, 119, 120
+    2009: 1,   # 124
+    2010: 1,   # 128, 129
+    2011: 3,   # 134, 135
+    2012: 0,
+    2013: 1,   # 139
+    2014: 2,   # 143, 144
+    2015: 2,   # 147, 148
+    2016: 1    # 150
 }
-}
-\end{center}
+
+years = np.array(list(data.keys()))
+counts = np.array(list(data.values()))
+
+# Create figure
+fig, ax = plt.subplots(figsize=(12.5, 6))
+
+# Create bar chart
+bars = ax.bar(years, counts, color='#378ADD', edgecolor='k', linewidth=1, width=0.8)
+
+# Customize axes
+ax.set_ylabel('Number of uncovered factors', fontsize=13)
+ax.set_xticks(years)
+ax.set_xticklabels(years, rotation=0, fontsize=13)
+ax.set_ylim(0, 8.5)
+ax.tick_params(axis='y', labelsize=13)
+
+# Customize spines and grid
+ax.grid(axis='y', alpha=0.5, linestyle='-', linewidth=0.5)
+ax.set_axisbelow(True)
+
+# Adjust layout to prevent label cutoff
+plt.title('Total of Discovered Factors Since 1994: 17', fontsize=16)
+plt.tight_layout()
+
+# Display
+plt.show()
 ```
 
-- Selected models can vary a lot
-- That is exactly why "oracle" intuition is dangerous
-- Model uncertainty is not a nuisance detail here
-
-## Tuning-Parameter Heatmaps: Figure 2 Placeholder
-
-```{=latex}
-\vspace{0.4cm}
-\begin{center}
-\fbox{
-\parbox[c][0.52\textheight][c]{0.86\textwidth}{
-\centering
-\Large Placeholder for Figure 2 \\
-\large Robustness of $t$-statistics to tuning parameters
-}
-}
-\end{center}
-```
-
-- The selected benchmark changes with the penalty
-- Yet some core conclusions are fairly stable
-- Important lesson: benchmark uncertainty and inference must be handled together
-
-## Screening the Zoo Over Time
-
-- They also test factors recursively as they arrive
-- In that exercise, many proposed factors would have been screened out at birth
-- This fits the broader worry that published anomalies often decay [@McLeanPontiff2016]
-- The procedure is meant to discipline discovery, not encourage more fishing
 
 ## Contribution to the Literature
 
@@ -436,18 +479,9 @@ $$
 ## {.standout}
 Questions?
 
-# Part III: Putting Them Together
-
-## Same Problem, Different Objects
-
-- Kozak: estimate a robust high-dimensional SDF
-- Feng: test one candidate factor conditional on many controls
-- Kozak ask which span matters for pricing
-- Feng ask whether one new direction still adds anything beyond the existing span
-
 ## Taking Stock
 
-- Lecture 12-13 built factor models
+- Lectures 12 and 13 built factor models
 - Lecture 14 showed the zoo and the weakness of old testing standards
 - Lecture 15 gave us shrinkage and valid post-selection inference
 - Lecture 16: modern empirical asset pricing means regularization plus tough benchmarks
