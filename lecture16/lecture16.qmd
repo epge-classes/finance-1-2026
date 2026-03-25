@@ -40,7 +40,7 @@ bibliography: ../asset_pricing_references.bib
 
 ## Why Sparse Characteristics Are a Strong Claim
 
-- Present-value identity connected observed prices with expected profitability and investment
+- The present-value identity connects observed prices with expected profitability and investment
 - Many characteristics can proxy for profitability, investment, distress, ...
 - We don't actually observe expectations
 - Sparsity in characteristics means extreme redundancy across anomalies
@@ -109,7 +109,7 @@ $$
 
 - PCs rank directions by variance
 - Low-eigenvalue PCs are statistically fragile
-- Directions of low variance generate huge coefficients unless the premia is estimated to be zero
+- Directions of low variance generate huge coefficients unless the premia are estimated to be zero
 - If we mis-handle them, the estimated SDF becomes wild
 
 ## The Economic Prior
@@ -127,14 +127,14 @@ where $d_j$ is the $j$-th eigenvalue of $\Sigma$
 . . .
 
 - Notice that $b \sim \mathcal{N}(0, \kappa^2 \frac{\Sigma^{\eta-2}}{\tau})$
-- The variance about $b$ is huge is $\eta$ is too small
+- The variance about $b$ is huge if $\eta$ is too small
 - They pick $\eta=2$
 
 ## The Shrinkage Estimator
 
 - We get a spherical prior on coefficients: $b \sim \mathcal{N}\left(0, \frac{\kappa^2}{\tau}I_H\right)$
-- Now they assume factors come from an i.i.d Gaussian distribution
-- This makes you able to derive the posterior distribution of $b$ given the *observed* mean of factors:
+- Now they assume factors come from an i.i.d. Gaussian distribution
+- This lets you derive the posterior distribution of $b$ given the *observed* mean of factors:
 
 $$
 \hat{b} = \left(\Sigma + \gamma I_H\right)^{-1}\bar\mu
@@ -209,7 +209,7 @@ $$
 R_{OOS}^2 = 1 - \frac{(\bar{\mu}_K - \bar{\Sigma}_K \hat{b})^\top (\bar{\mu}_K - \bar{\Sigma}_K \hat{b})}{\bar{\mu}_K^\top \bar{\mu}_K}
 $$
 
-- Keep rotating and average values
+- Keep rotating and average the values
 
 ## FF25 as a Sanity Check
 
@@ -219,7 +219,7 @@ $$
 
 ![](50_portfolios.png){fig-align="center"}
 
-## WRDS Fincial Ratios: 70 Portfolios
+## WRDS Financial Ratios: 70 Portfolios
 
 ![](WFR_Portfolios.png){fig-align="center"}
 
@@ -229,7 +229,7 @@ $$
 
 ## Contribution to the Literature
 
-- Not another factor paper: it is a paper about how to estimate the SDF in high dimension
+- Not another factor paper: it is a paper about how to estimate the SDF in high dimensions
 - It rejects the hope that a tiny set of characteristics is enough
 - It gives a formal role to shrinkage in empirical asset pricing
 - One line summary: the SDF is not sparse in characteristics, but it is still shrinkable
@@ -461,7 +461,7 @@ ax.grid(axis='y', alpha=0.5, linestyle='-', linewidth=0.5)
 ax.set_axisbelow(True)
 
 # Adjust layout to prevent label cutoff
-plt.title('Total of Discovered Factors Since 1994: 17', fontsize=16)
+plt.title('Total Number of Discovered Factors Since 1994: 17', fontsize=16)
 plt.tight_layout()
 
 # Display
