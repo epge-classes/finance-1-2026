@@ -91,6 +91,13 @@ This is a collection of recommended readings and references.
 - [Davis, Fama, and French, 2000](https://doi.org/10.1111/0022-1082.00209)
 - [Ferson and Harvey, 1999](http://dx.doi.org/10.1111/0022-1082.00148)
 
+### Lecture 14: The Factor Zoo - Part 1
+- [Lewellen, Nagel, and Shanken, 2010](https://doi.org/10.1016/j.jfineco.2009.09.001)
+- [Fama and French, 2015](https://doi.org/10.1016/j.jfineco.2014.10.010)
+- [Fama and French, 2016](https://doi.org/10.1093/rfs/hhv043)
+- [Harvey, Liu, and Zhu, 2016](https://doi.org/10.1093/rfs/hhv059)
+- [Kelly, Pruitt, and Su, 2019](https://doi.org/10.1016/j.jfineco.2019.05.001)
+
 ### Lecture 15: Regularization and High-Dimensional Inference
 - A great reference: [Elements of Statistical Learning](https://hastie.su.domains/ElemStatLearn/)
 - [Belloni, Chernozhukov, and Hansen, 2014, High-Dimensional Methods and Inference on Structural and Treatment Effects](https://pubs.aeaweb.org/doi/10.1257/jep.28.2.29)
