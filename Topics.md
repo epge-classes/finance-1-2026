@@ -96,8 +96,6 @@ This is a collection of recommended readings and references.
 - [Fama and French, 2015](https://doi.org/10.1016/j.jfineco.2014.10.010)
 - [Fama and French, 2016](https://doi.org/10.1093/rfs/hhv043)
 - [Harvey, Liu, and Zhu, 2016](https://doi.org/10.1093/rfs/hhv059)
-- [Titman, Wei, and Xie, 2004](http://www.jstor.org/stable/30031881)
-- [Novy-Marx, 2013](https://doi.org/10.1016/j.jfineco.2013.01.003)
 - [Kelly, Pruitt, and Su, 2019](https://doi.org/10.1016/j.jfineco.2019.05.001)
 
 ### Lecture 15: Regularization and High-Dimensional Inference
