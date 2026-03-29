@@ -1,0 +1,489 @@
+---
+title: "Lecture 17: Intro to the Term Structure"
+date: "2026-03-29"
+bibliography: ../asset_pricing_references.bib
+
+---
+
+# Intro
+
+## Intro
+
+- Last lecture: modern asset pricing in high dimensions
+- Today: move to the term structure of interest rates
+- Goal: build the bond math, the EH benchmark, the classic evidence, and the Diebold-Li forecasting view
+- This is an intro lecture, but not a shy one
+
+## Why This Lecture?
+
+- Bond markets give us a laboratory for expected returns, discount rates, and macro expectations
+- The yield curve is a cross section of prices every month
+- So we need notation for both the cross section and the dynamics
+- Main question: when the curve moves, is it expected short rates or term premia?
+
+## Flight Plan
+
+- Part I: bond yields, forward rates, and holding returns
+- Part II: the expectations hypothesis as a benchmark
+- Part III: what @FamaBliss1987 and @CampbellShiller1991 found
+- Part IV: Nelson-Siegel and why @DieboldLi2006 made it useful for forecasting
+
+# Part I: Building Blocks
+
+## Zero-Coupon Bonds and Yields
+
+- $P_t^{(n)}$ be the time-$t$ price of an $n$-period zero-coupon bond [@GurkaynakWright2012]
+- It pays \$1 at time $t+n$(we are abstracting away from defaults)
+
+$$
+P_t^{(n)} = e^{-n y_t^{(n)}},
+\qquad
+y_t^{(n)} = -\frac{1}{n}\log P_t^{(n)}
+$$
+
+- $y_t^{(n)}$ is the annualized continuously compounded yield
+- Think about zero-coupon bonds are Arrow securities -- they are our building block
+- In most cases these yields are *not* observed directly. Why?
+
+## The Yield Curve
+
+- The yield curve is the mapping $n \mapsto y_t^{(n)}$
+- Same date, many maturities
+- Long and short yields need not move one-for-one
+- The curve can be upward sloping, downward sloping, flat, humped, ...
+- There is a huge literature of how yields move over time and across $n$
+
+## US Treasury Yields Over Time
+
+```{python}
+#| echo: false
+#| include: false
+#| warning: false
+#| message: false
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+
+plt.rcParams.update({
+    "font.family": "Arial",
+    "font.sans-serif": ["Arial"],
+    "axes.titlesize": 18,
+    "axes.labelsize": 14,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 14,
+})
+
+lw = pd.read_csv("LW_monthly.csv", skiprows=8)
+lw = lw.rename(columns=lambda c: c.strip())
+lw = lw.rename(columns={"Unnamed: 0": "date"})
+lw["date"] = pd.to_datetime(lw["date"].astype(int).astype(str), format="%Y%m")
+
+time_series_cols = {
+    "3 m": "3M",
+    "6 m": "6M",
+    "12 m": "1Y",
+    "36 m": "3Y",
+    "60 m": "5Y",
+    "120 m": "10Y",
+}
+
+shape_cols = ["3 m", "6 m", "12 m", "24 m", "36 m", "60 m", "84 m", "120 m"]
+curve_cols = [f"{m} m" for m in range(1, 121)]
+
+curve_sample = lw.dropna(subset=["3 m", "120 m"]).copy()
+curve_sample["slope_10y_3m"] = curve_sample["120 m"] - curve_sample["3 m"]
+
+shape_sample = lw.dropna(subset=shape_cols).copy()
+shape_sample["curve_range"] = shape_sample[shape_cols].max(axis=1) - shape_sample[shape_cols].min(axis=1)
+
+upward_idx = curve_sample["slope_10y_3m"].idxmax()
+downward_idx = curve_sample["slope_10y_3m"].idxmin()
+
+used_idx = {upward_idx, downward_idx}
+flat_idx = next(idx for idx in shape_sample["curve_range"].sort_values().index if idx not in used_idx)
+
+selected_curve_dates = [
+    ("Upward sloping", upward_idx, "#1b4965"),
+    ("Downward sloping", downward_idx, "#c1121f"),
+    ("Flat", flat_idx, "#6c757d"),
+]
+```
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+fig, ax = plt.subplots(figsize=(12.5, 6))
+
+colors = plt.get_cmap("Blues")(np.linspace(0.45, 0.9, len(time_series_cols)))
+for color, (col, label) in zip(colors, time_series_cols.items()):
+    ax.plot(lw["date"], lw[col], lw=2, color=color, label=label)
+
+ax.set_ylabel("Yield (%)")
+ax.xaxis.set_major_locator(mdates.YearLocator(base=5))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+ax.grid(alpha=0.25, linewidth=0.6)
+ax.legend(ncol=3, loc="upper left", frameon=False)
+
+for spine in ["top", "right"]:
+    ax.spines[spine].set_visible(False)
+
+plt.tight_layout()
+plt.show()
+```
+
+## Yield Curve on Different Days
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+ymin = min(lw.loc[idx, curve_cols].dropna().min() for _, idx, _ in selected_curve_dates)
+ymax = max(lw.loc[idx, curve_cols].dropna().max() for _, idx, _ in selected_curve_dates)
+padding = 0.08 * (ymax - ymin)
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+
+for ax, (label, idx, color) in zip(axes, selected_curve_dates):
+    curve = lw.loc[idx, curve_cols].dropna()
+    maturities = [int(col.split()[0]) for col in curve.index]
+
+    ax.plot(maturities, curve.values, color=color, lw=2.4)
+    ax.scatter(maturities, curve.values, color=color, s=12, zorder=3)
+    ax.set_title(f"{label}\n{lw.loc[idx, 'date']:%Y-%m}")
+    ax.set_xlabel("Maturity (Months)")
+    ax.set_ylabel("Yield (%)")
+    ax.set_xlim(1, 120)
+    ax.set_ylim(ymin - padding, ymax + padding)
+    ax.grid(alpha=0.25, linewidth=0.6)
+
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+fig.tight_layout(w_pad=2.2)
+plt.show()
+```
+
+- The yield curve can look very different on different days
+- Most frequently: upward sloping, and concave
+
+## Forward Rates
+
+- Suppose you want to invest money for 2 years
+- Option 1: buy a 2-year bond and get $y_t^{(2)}$ for the whole period
+- Option 2: buy a 1-year bond, then reinvest the proceeds for another year
+
+. . .
+
+- Return with option 1: $2\cdot y_t^{(2)}$
+- Return with option 2: $y_t^{(1)} + y_{t+1}^{(1)}$
+- The return for option 2 is *random*, of course
+
+. . .
+
+- The 1-year forward rate between $t+1$ and $t+2$ is the rate that makes the two options have the same expected return
+
+$$
+f_t^{(1,1)} = 2y_t^{(2)} - y_t^{(1)}
+$$
+
+## Forward Rates:
+
+- In general, the forward rate for an $m$-period investment starting $n$ periods ahead is
+$$
+f_t^{(n,m)} = \frac{1}{m}\left[(n+m)y_t^{(n+m)} - ny_t^{(n)}\right]
+$$
+
+- When $n=0$ and $m=1$, this reduces to the short rate $y_t^{(1)}$
+- Forward rates carry the same information as yields. Why?
+- When $m \to 0$, we call it the instantaneous forward rate, $f_t^{(n)}$
+- This is the "slope" of the yield curve at date $t$ around maturity $n$
+
+## Yield = Average Forward Rates
+
+For discrete one-year forwards,
+$$
+y_t^{(n)} = \frac{1}{n}\sum_{i=1}^n f_t^{(i-1,1)}
+$$
+
+. . .
+
+- A long yield is an average of future forward rates
+- So the yield curve is already a summary of expected future financing conditions
+- But it may also embed risk premia
+- Notice that the equation above is a *tautology*
+
+## Holding-Period Returns
+
+- Buy an $n$-period bond at $t$
+- Sell it one period later as an $(n-1)$-period bond
+
+$$
+r_{t+1}^{(n)}
+=
+\log P_{t+1}^{(n-1)} - \log P_t^{(n)} = n y_t^{(n)} - (n-1) y_{t+1}^{(n-1)}
+$$
+
+- This is the realized one-period log return [@GurkaynakWright2012]
+- Of course, we are abstracting away from taxes, transaction costs, and other frictions
+- This return is random because $y_{t+1}^{(n-1)}$ is random
+
+## Excess Holding Returns
+
+$$
+xr_{t+1}^{(n)} = r_{t+1}^{(n)} - y_t^{(1)} = n y_t^{(n)} - (n-1) y_{t+1}^{(n-1)} - y_t^{(1)}
+$$
+
+- Compare the long bond with the risk-free one-period investment
+- If $xr_{t+1}^{(n)}>0$, the long bond beat the short rate over that period
+- Empirical work often studies these excess returns directly
+- Whenever people talk about "bond risk premia", they usually mean expected excess returns
+
+# Part II: The Expectations Hypothesis
+
+## Notation Convention
+
+- We will keep the same notation throughout the rest of the lecture
+- $y_t^{(n)}$: yield at time $t$ with $n$ periods to maturity
+- $r_{t+1}^{(n)}$: realized one-period return from buying an $n$-period bond at $t$
+- $xr_{t+1}^{(n)} = r_{t+1}^{(n)} - y_t^{(1)}$
+- $f_t^{(n,m)}$: forward rate for an $m$-period investment beginning $n$ periods ahead
+
+## EH as a Benchmark
+
+- The expectations hypothesis says long yields reflect expected future short yields plus a maturity-specific constant
+
+$$
+y_t^{(n)}
+=
+\frac{1}{n}\sum_{i=0}^{n-1} E_t\!\left(y_{t+i}^{(1)}\right) + c_n
+$$
+
+- If $c_n$ is constant, time variation in yield spreads should mainly reflect changing expectations of future short rates
+
+## Log EH: One-Period Holding Return
+
+In log form, EH can be written as
+$$
+E_t\!\left[xr_{t+1}^{(n)}\right] = \mu_n
+$$
+
+- Expected excess log return on an $n$-period bond is constant
+- EH rules out time-varying expected bond premia
+- This is why return predictability is so central
+
+## Log EH: $n$-Period Holding Return
+
+The same idea can be written as
+$$
+E_t\!\left[
+y_t^{(n)}
+-
+\frac{1}{n}\sum_{i=0}^{n-1} y_{t+i}^{(1)}
+\right]
+=
+\theta_n
+$$
+
+- Current long yields should line up with average future short yields, up to a constant
+- Same restriction, different object
+
+## Spreads and Forward Rates Under EH
+
+Under EH, spreads and forwards should forecast future short-rate movements:
+$$
+y_t^{(2m)}-y_t^{(m)}
+\approx
+E_t\!\left[y_{t+m}^{(m)}-y_t^{(m)}\right]
++
+c_{2m,m}
+$$
+
+- High forward rates should mean high future short rates
+- Not high expected excess returns
+
+## If EH Fails
+
+Once expected excess returns move over time,
+$$
+E_t\!\left[xr_{t+1}^{(n)}\right] \neq \mu_n
+$$
+
+- Then spreads and forward rates may forecast returns, not just rates
+- That is why the empirical literature tests returns and spreads rather than average yields alone
+- EH is a clean benchmark because it gives coefficients and signs to test
+
+## {.standout}
+Questions?
+
+# Part III: Early Empirical Tests
+
+## Why These Regressions?
+
+- EH is a conditional statement, so we test conditional forecasts
+- Project future yield changes or excess returns on today's spreads
+- Benchmark under EH: slope coefficients should be close to $1$
+
+$$
+y_{t+m}^{(m)} - y_t^{(m)} = a + b\,(y_t^{(n)}-y_t^{(m)}) + u_{t+m},
+\qquad
+xr_{t+1}^{(n)} = a + b\,[f_t^{(n-1,1)}-y_t^{(1)}] + u_{t+1}
+$$
+
+- If $b$ is far from $1$, the EH benchmark is in trouble
+
+## Fama-Bliss: Forward-Spot Decomposition
+
+@FamaBliss1987 focus on the forward-spot spread:
+$$
+f_t^{(n-1,1)}-y_t^{(1)}
+=
+E_t\!\left[y_{t+n-1}^{(1)}-y_t^{(1)}\right]
++
+E_t\!\left[xr_{t+1}^{(n)}\right]
+$$
+
+. . .
+
+- It can be decomposed into expected future short-rate changes
+- And expected excess returns on longer bonds
+- Their regressions ask: which margin actually moves?
+
+## Fama-Bliss: Main Result
+
+- Forward rates forecast excess holding-period returns much better than future short-rate changes [@FamaBliss1987]
+- In their complementary regressions, slopes are close to $1$ for term-premium variation
+- And close to $0$ for yield-change forecasts
+- Translation: forwards mostly move with expected bond returns, not just expected short rates
+
+## Fama-Bliss: Updated Figure/Table Goes Here
+
+- Leave space for an updated replication
+- Leave space for a figure on forward-spot spreads and excess returns
+
+\vspace{3cm}
+
+## Campbell-Shiller: Spread Restrictions
+
+@CampbellShiller1991 study yield spreads directly
+
+$$
+s_t^{(n,m)} \equiv y_t^{(n)} - y_t^{(m)}
+$$
+
+- Under EH, the spread should forecast either future short-rate increases
+- Or the capital loss on the long bond
+- Those are just two sides of the same restriction
+
+## Campbell-Shiller: Main Result
+
+- The slope coefficients are far from the EH benchmark of $1$ [@CampbellShiller1991]
+- Often they are too small, and sometimes even have the wrong sign
+- Yield spreads do forecast something
+- But much of that variation looks like predictable excess returns, not clean short-rate expectations
+
+## Campbell-Shiller: Updated Figure/Table Goes Here
+
+- Leave space for updated coefficients
+- Leave space for a table or a "perfect-foresight spread" figure
+
+\vspace{3cm}
+
+## One Message from Both Papers
+
+- Forward rates and yield spreads move too much to be pure forecasts of future short rates
+- They forecast bond returns and time-varying term premia
+- EH remains the right benchmark
+- But it is a bad literal description of the data
+
+# Part IV: Nelson-Siegel and Diebold-Li
+
+## Forecasting the Whole Curve
+
+- We do not just want one regression per maturity
+- We want a parsimonious model for the whole cross section of yields
+- And then a simple model for its dynamics
+- This is the problem @DieboldLi2006 tackles directly
+
+## Nelson-Siegel Forward Curve
+
+Start from a smooth forward-rate curve [@NelsonSiegel1987; @DieboldLi2006]:
+$$
+f_t^{(\tau)}
+=
+\beta_{1t}
++
+\beta_{2t}e^{-\lambda \tau}
++
+\beta_{3t}\lambda\tau e^{-\lambda \tau}
+$$
+
+- Three components
+- One decay parameter $\lambda$
+
+## The Implied Yield Curve
+
+Averaging forward rates gives
+$$
+y_t^{(\tau)}
+=
+\beta_{1t}
++
+\beta_{2t}\left(\frac{1-e^{-\lambda\tau}}{\lambda\tau}\right)
++
+\beta_{3t}\left(\frac{1-e^{-\lambda\tau}}{\lambda\tau}-e^{-\lambda\tau}\right)
+$$
+
+- Same factors at every maturity
+- Different maturities load differently on them
+
+## Why Level, Slope, Curvature?
+
+- Loading on $\beta_{1t}$ is $1$ at all maturities
+- Loading on $\beta_{2t}$ starts at $1$ and decays to $0$
+- Loading on $\beta_{3t}$ starts at $0$, rises, then decays
+- These are exactly the shapes we call level, slope, and curvature
+
+## What Each Factor Does
+
+- $\beta_{1t}$ shifts the whole curve
+- $\beta_{2t}$ moves the short end more than the long end
+- $\beta_{3t}$ bends the middle of the curve
+- A small number of factors captures the main co-movements in yields
+
+## Diebold-Li: From Curve Fit to Factors
+
+- Fix $\lambda$ to a convenient value
+- @DieboldLi2006 use $\lambda=0.0609$
+- Each month, estimate $\beta_{1t}$, $\beta_{2t}$, $\beta_{3t}$ from the cross section of yields
+- Then treat those estimated coefficients as factor time series
+- Much easier to interpret than an unrestricted factor model
+
+## Forecast the Factors, Forecast the Curve
+
+Let the factors follow simple dynamics:
+$$
+\beta_t = c + A\beta_{t-1} + u_t
+$$
+
+- Forecast the factors with AR or VAR models
+- Plug factor forecasts into the Nelson-Siegel loadings
+- Result: a forecasting model for the entire curve [@DieboldLi2006]
+- Key move: turn a cross-sectional decomposition into a dynamic forecasting system
+
+## {.standout}
+Questions?
+
+## Taking Stock
+
+- Part I gave us the language: yields, forwards, and holding returns
+- Part II gave us the benchmark: EH says spreads should reflect expected short rates, not time-varying premia
+- Part III showed the classic failure: forwards and spreads forecast returns too well
+- Part IV gave a practical alternative: summarize the whole curve with level, slope, and curvature, then forecast those factors
+- The term structure is about both prices today and expected returns tomorrow
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
