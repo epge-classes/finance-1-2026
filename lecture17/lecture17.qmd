@@ -2,7 +2,7 @@
 title: "Lecture 17: Intro to the Term Structure"
 date: "2026-03-29"
 bibliography: ../asset_pricing_references.bib
-
+callout-appearance: minimal
 ---
 
 # Intro
@@ -244,77 +244,32 @@ $$
 
 # Part II: The Expectations Hypothesis
 
-## Notation Convention
+## Definition of EH
 
-- We will keep the same notation throughout the rest of the lecture
-- $y_t^{(n)}$: yield at time $t$ with $n$ periods to maturity
-- $r_{t+1}^{(n)}$: realized one-period return from buying an $n$-period bond at $t$
-- $xr_{t+1}^{(n)} = r_{t+1}^{(n)} - y_t^{(1)}$
-- $f_t^{(n,m)}$: forward rate for an $m$-period investment beginning $n$ periods ahead
-
-## EH as a Benchmark
-
-- The expectations hypothesis says long yields reflect expected future short yields plus a maturity-specific constant
-
+\begin{mydef}[Expectations Hypothesis]
+Long yields equal expected future short yields plus a maturity-specific constant:
 $$
 y_t^{(n)}
 =
-\frac{1}{n}\sum_{i=0}^{n-1} E_t\!\left(y_{t+i}^{(1)}\right) + c_n
+\frac{1}{n}\sum_{i=0}^{n-1} \mathbb{E}_t\!\left(y_{t+i}^{(1)}\right) + c_n
 $$
+\end{mydef}
 
-- If $c_n$ is constant, time variation in yield spreads should mainly reflect changing expectations of future short rates
+- $c_n$ can change with $n$ but not with $t$
+- Time variation in yields should mainly reflect changing expectations of future short rates
+- We call $y_t^{(n)} - \frac{1}{n}\sum\limits_{i=0}^{n-1} \mathbb{E}_t\!\left(y_{t+i}^{(1)}\right)$ the "term premium"
+- The EH implies that this term premium is constant over time
 
-## Log EH: One-Period Holding Return
+## One-Period Holding Return
 
-In log form, EH can be written as
+EH can be written as (you should prove this at home)
 $$
-E_t\!\left[xr_{t+1}^{(n)}\right] = \mu_n
+\mathbb{E}_t\!\left[xr_{t+1}^{(n)}\right] = \mu_n
 $$
 
 - Expected excess log return on an $n$-period bond is constant
 - EH rules out time-varying expected bond premia
-- This is why return predictability is so central
-
-## Log EH: $n$-Period Holding Return
-
-The same idea can be written as
-$$
-E_t\!\left[
-y_t^{(n)}
--
-\frac{1}{n}\sum_{i=0}^{n-1} y_{t+i}^{(1)}
-\right]
-=
-\theta_n
-$$
-
-- Current long yields should line up with average future short yields, up to a constant
-- Same restriction, different object
-
-## Spreads and Forward Rates Under EH
-
-Under EH, spreads and forwards should forecast future short-rate movements:
-$$
-y_t^{(2m)}-y_t^{(m)}
-\approx
-E_t\!\left[y_{t+m}^{(m)}-y_t^{(m)}\right]
-+
-c_{2m,m}
-$$
-
-- High forward rates should mean high future short rates
-- Not high expected excess returns
-
-## If EH Fails
-
-Once expected excess returns move over time,
-$$
-E_t\!\left[xr_{t+1}^{(n)}\right] \neq \mu_n
-$$
-
-- Then spreads and forward rates may forecast returns, not just rates
-- That is why the empirical literature tests returns and spreads rather than average yields alone
-- EH is a clean benchmark because it gives coefficients and signs to test
+- Under EH, there is no reason for *any* time-$t$ variable forecast returns
 
 ## {.standout}
 Questions?
@@ -341,9 +296,9 @@ $$
 $$
 f_t^{(n-1,1)}-y_t^{(1)}
 =
-E_t\!\left[y_{t+n-1}^{(1)}-y_t^{(1)}\right]
+\mathbb{E}_t\!\left[y_{t+n-1}^{(1)}-y_t^{(1)}\right]
 +
-E_t\!\left[xr_{t+1}^{(n)}\right]
+\mathbb{E}_t\!\left[xr_{t+1}^{(n)}\right]
 $$
 
 . . .
@@ -352,59 +307,339 @@ $$
 - And expected excess returns on longer bonds
 - Their regressions ask: which margin actually moves?
 
-## Fama-Bliss: Main Result
+## Fama and Bliss 1987: Main Result
 
-- Forward rates forecast excess holding-period returns much better than future short-rate changes [@FamaBliss1987]
-- In their complementary regressions, slopes are close to $1$ for term-premium variation
-- And close to $0$ for yield-change forecasts
-- Translation: forwards mostly move with expected bond returns, not just expected short rates
+$$
+xr_{t+1}^{(n)} = a + b\,\left[f_t^{(n-1,1)}-y_t^{(1)}\right] + u_{t+1}
+$$
 
-## Fama-Bliss: Updated Figure/Table Goes Here
+```{=latex}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Dependent Variable & $a$ & $s(a)$ & $b$ & $s(b)$ & $R^2$ \\
+\midrule
+$xr_{t+1}^{(2)}$ & $-0.21$ & $0.41$ & $0.91$ & $0.28$ & $0.14$ \\
+$xr_{t+1}^{(3)}$ & $-0.51$ & $0.68$ & $1.13$ & $0.37$ & $0.11$ \\
+$xr_{t+1}^{(4)}$ & $-0.91$ & $0.92$ & $1.42$ & $0.45$ & $0.11$ \\
+$xr_{t+1}^{(5)}$ & $-1.06$ & $1.31$ & $0.93$ & $0.53$ & $0.05$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
 
-- Leave space for an updated replication
-- Leave space for a figure on forward-spot spreads and excess returns
+- They found that forward rates forecast excess returns
+- Forward rates are known at time $t$... so it's bad news for EH
+- Data is from 1964 to 1984
 
-\vspace{3cm}
+## Fama-Bliss: Updated Regression
 
-## Campbell-Shiller: Spread Restrictions
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| output: asis
+
+import pandas as pd
+import statsmodels.api as sm
+
+fb_maturities = [2, 3, 4, 5, 7, 10]
+fb_needed_months = sorted(
+    {12, *[12 * n for n in fb_maturities], *[12 * (n - 1) for n in fb_maturities]}
+)
+fb_needed_cols = ["date"] + [f"{m} m" for m in fb_needed_months]
+fb = lw[fb_needed_cols].copy()
+
+def annual_forward_rate(data, start_months, end_months):
+    start_years = start_months / 12
+    end_years = end_months / 12
+    return (
+        end_years * data[f"{end_months} m"] - start_years * data[f"{start_months} m"]
+    ) / (end_years - start_years)
+
+def annual_excess_return(data, maturity_months, horizon_months=12):
+    maturity_years = maturity_months / 12
+    next_years = (maturity_months - horizon_months) / 12
+    return (
+        maturity_years * data[f"{maturity_months} m"]
+        - next_years * data[f"{maturity_months - horizon_months} m"].shift(-horizon_months)
+        - data["12 m"]
+    )
+
+fb_summary = {}
+fb_panel = {}
+
+for maturity_years in fb_maturities:
+    maturity_months = 12 * maturity_years
+    forward_spread = annual_forward_rate(fb, maturity_months - 12, maturity_months) - fb["12 m"]
+    realized_xr = annual_excess_return(fb, maturity_months)
+
+    sample = pd.DataFrame({
+        "date": fb["date"],
+        "xr": realized_xr,
+        "spread": forward_spread,
+    }).dropna()
+
+    X = sm.add_constant(sample["spread"])
+    model = sm.OLS(sample["xr"], X).fit(cov_type="HAC", cov_kwds={"maxlags": 11})
+
+    sample["fitted"] = model.predict(X)
+    fb_panel[maturity_years] = sample
+
+    fb_summary[maturity_years] = {
+        "depvar": fr"$xr_{{t+1}}^{{({maturity_years})}}$",
+        "a": fr"${model.params['const']:.2f}$",
+        "sa": fr"${model.bse['const']:.2f}$",
+        "b": fr"${model.params['spread']:.2f}$",
+        "sb": fr"${model.bse['spread']:.2f}$",
+        "r2": fr"${model.rsquared:.2f}$",
+    }
+
+sample_start = min(panel["date"].min() for panel in fb_panel.values())
+sample_end = max(panel["date"].max() for panel in fb_panel.values())
+
+print(r"\begin{table}[htbp]")
+print(r"\centering")
+print(r"\small")
+print(r"\begin{tabular}{lccccc}")
+print(r"\toprule")
+print(r"Dependent Variable & $a$ & $s(a)$ & $b$ & $s(b)$ & $R^2$ \\")
+print(r"\midrule")
+for maturity_years in fb_maturities:
+    row = fb_summary[maturity_years]
+    print(
+        f"{row['depvar']} & {row['a']} & {row['sa']} & {row['b']} & {row['sb']} & {row['r2']} \\\\"
+    )
+print(r"\bottomrule")
+print(r"\end{tabular}")
+print(r"\end{table}")
+```
+
+
+- We redo the Fama-Bliss regression on newer monthly zero-coupon data
+- The signal is still the forward-spot spread, $f_t^{(n-1,1)} - y_t^{(1)}$
+- Same results 40 years later (1962-2024 sample)! 
+
+## Realized vs Fitted Excess Returns
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+fig, axes = plt.subplots(2, 3, figsize=(14.5, 6.5), sharex=False)
+plot_order = [2, 3, 4, 5, 7, 10]
+
+for ax, maturity_years in zip(axes.flat, plot_order):
+    sample = fb_panel[maturity_years]
+    ax.plot(sample["date"], sample["xr"], color="#6c757d", lw=1.2, alpha=0.9, label="Realized")
+    ax.plot(sample["date"], sample["fitted"], color="#067aa0", lw=2.0, label="Fitted")
+    ax.set_title(fr"$xr_{{t+1}}^{{({maturity_years})}}$")
+    ax.xaxis.set_major_locator(mdates.YearLocator(base=10))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.grid(alpha=0.2, linewidth=0.6)
+
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+axes[0, 0].legend(loc="upper right", frameon=False)
+fig.supylabel("1-year excess return (pp)")
+fig.tight_layout()
+plt.show()
+```
+
+## {.standout}
+Questions?
+
+## Campbell and Shiller 1991: Spread Restrictions
 
 @CampbellShiller1991 study yield spreads directly
 
 $$
-s_t^{(n,m)} \equiv y_t^{(n)} - y_t^{(m)}
+s_t^{(n)} \equiv y_t^{(n)} - y_t^{(1)}
 $$
 
-- Under EH, the spread should forecast either future short-rate increases
-- Or the capital loss on the long bond
-- Those are just two sides of the same restriction
+- Expected excess returns must satisfy, by definition:
 
-## Campbell-Shiller: Main Result
+$$
+xr_{t+1}^{(n)} = n\,s_t^{(n)} - (n-1)\left[y_{t+1}^{(n-1)} - y_{t}^{(1)}\right]
+$$
 
-- The slope coefficients are far from the EH benchmark of $1$ [@CampbellShiller1991]
-- Often they are too small, and sometimes even have the wrong sign
-- Yield spreads do forecast something
-- But much of that variation looks like predictable excess returns, not clean short-rate expectations
+- Under EH, it should hold that
 
-## Campbell-Shiller: Updated Figure/Table Goes Here
+$$
+s_t^{(n)} = \mu_n + (n-1)\mathbb{E}_t\left[y_{t+1}^{(n-1)} - y_{t}^{(n)}\right]
+$$
 
-- Leave space for updated coefficients
-- Leave space for a table or a "perfect-foresight spread" figure
+## Some Possible Tests
 
-\vspace{3cm}
+- Suppose you run the following regression (call it *Long Rate Regression*):
+
+$$
+(n-1)\left(y_{t+1}^{(n-1)} - y_{t}^{(n)}\right) = \alpha + \beta s_t^{(n)} + u_{t+1}
+$$
+
+- Under EH, the slope $\beta$ should be close to $1$!
+
+. . .
+
+- Another restriction is given if you apply the definition of $s_t^{(n)}$ to the EH equation:
+$$
+s_t^{(n)} = \theta_n + \frac{1}{n}\sum\limits_{i=0}^{n-1}\mathbb{E}_t\left[y_{t+i}^{(1)} - y_{t}^{(1)}\right] = \theta_n + \sum\limits_{i=1}^{n-1}\left(1 - \frac{i}{n}\right)\mathbb{E}_t\Delta y_{t+i}^{(1)}
+$$
+
+. . .
+
+- Now you run the following (call it *Short Rate Regression*):
+$$
+\sum\limits_{i=1}^{n-1}\left(1 - \frac{i}{n}\right)\Delta y_{t+i}^{(1)} = \alpha + \beta s_t^{(n)} + u_{t+n-1}
+$$
+
+- Again, EH says $\beta$ should be close to $1$
+
+## Campbell and Shiller 1991: Main Result
+
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{6}{c}{Long bond maturity ($n$), quarterly intervals} \\
+\cmidrule(lr){2-7}
+Variable & 2 & 3 & 4 & 8 & 20 & 40 \\
+\midrule
+Long-yield changes 
+& -1.277 & -1.082 & -1.170 & -1.505 & -2.283 & -3.133 \\
+& (0.319) & (0.432) & (0.489) & (0.619) & (0.736) & (0.895) \\
+\addlinespace
+Short-rate changes 
+& 0.252 & 0.232 & 0.253 & 0.427 & 0.835 & 0.554 \\
+& (0.137) & (0.143) & (0.132) & (0.142) & (0.117) & (0.126) \\
+\bottomrule
+\end{tabular}
+\end{table}
+```
+\vspace{0.3cm}
+- This is using quarterly data from 1961 to 2013
+- This is not from the original paper, but from Campbell's book (Chap 8)
+- Bottom-line: all coefficients are *very* far from $1$
+
+## Campbell and Shiller 1991: Updated LW Table
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| output: asis
+
+import statsmodels.api as sm
+
+cs_maturities = [
+    (6, "6m"),
+    (12, "1y"),
+    (24, "2y"),
+    (60, "5y"),
+    (120, "10y"),
+]
+
+def cs_short_rate_change(data, maturity_months):
+    return sum(
+        (1 - i / maturity_months)
+        * (data["1 m"].shift(-i) - data["1 m"].shift(-(i - 1)))
+        for i in range(1, maturity_months)
+    )
+
+def cs_fit(dependent, spread, maxlags):
+    sample = pd.DataFrame({
+        "y": dependent,
+        "spread": spread,
+    }).dropna()
+    X = sm.add_constant(sample["spread"])
+    model = sm.OLS(sample["y"], X).fit(cov_type="HAC", cov_kwds={"maxlags": maxlags})
+    return model, sample
+
+cs_summary = {}
+for maturity_months, label in cs_maturities:
+    spread = lw[f"{maturity_months} m"] - lw["1 m"]
+    long_dep = (maturity_months - 1) * (
+        lw[f"{maturity_months - 1} m"].shift(-1) - lw[f"{maturity_months} m"]
+    )
+    short_dep = cs_short_rate_change(lw, maturity_months)
+
+    long_model, long_sample = cs_fit(
+        dependent=long_dep,
+        spread=spread,
+        maxlags=min(12, maturity_months - 1),
+    )
+    short_model, short_sample = cs_fit(
+        dependent=short_dep,
+        spread=spread,
+        maxlags=max(1, maturity_months - 2),
+    )
+
+    cs_summary[label] = {
+        "long_beta": long_model.params["spread"],
+        "long_se": long_model.bse["spread"],
+        "short_beta": short_model.params["spread"],
+        "short_se": short_model.bse["spread"],
+    }
+
+print(r"\begin{table}[!htbp]")
+print(r"\centering")
+print(r"\begin{tabular}{lccccc}")
+print(r"\toprule")
+print(r" & \multicolumn{5}{c}{Long bond maturity ($n$), monthly intervals} \\")
+print(r"\cmidrule(lr){2-6}")
+print(r"Variable & 6m & 1y & 2y & 5y & 10y \\")
+print(r"\midrule")
+print(
+    "Long-yield changes "
+    + " & "
+    + " & ".join(f"{cs_summary[label]['long_beta']:.3f}" for _, label in cs_maturities)
+    + r" \\"
+)
+print(
+    " & "
+    + " & ".join(f"({cs_summary[label]['long_se']:.3f})" for _, label in cs_maturities)
+    + r" \\"
+)
+print(r"\addlinespace")
+print(
+    "Short-rate changes "
+    + " & "
+    + " & ".join(f"{cs_summary[label]['short_beta']:.3f}" for _, label in cs_maturities)
+    + r" \\"
+)
+print(
+    " & "
+    + " & ".join(f"({cs_summary[label]['short_se']:.3f})" for _, label in cs_maturities)
+    + r" \\"
+)
+print(r"\bottomrule")
+print(r"\end{tabular}")
+print(r"\end{table}")
+```
+\vspace{0.3cm}
+- Monthly LW zero-coupon yields; 6m-5y columns start in 1961:06, the 10y column in 1971:08
+- Same message as Campbell-Shiller 35 years later
+- Any intuition regarding the sign of these effects?
 
 ## One Message from Both Papers
 
-- Forward rates and yield spreads move too much to be pure forecasts of future short rates
-- They forecast bond returns and time-varying term premia
-- EH remains the right benchmark
-- But it is a bad literal description of the data
+- The EH is a bad model for yield-curve dynamics
+- It generates restrictions that are violated in the data (then, and now)
+- The natural implication here is that there are *time-varying term premia*
+- But now the problem is harder...
+- We need theories for *both* expected short rates and term premia
 
 # Part IV: Nelson-Siegel and Diebold-Li
 
 ## Forecasting the Whole Curve
 
+- The EH is not a reasonable model for yield-curve dynamics
 - We do not just want one regression per maturity
-- We want a parsimonious model for the whole cross section of yields
+- We want a parsimonious model for the whole cross-section of yields
 - And then a simple model for its dynamics
 - This is the problem @DieboldLi2006 tackles directly
 
@@ -423,6 +658,11 @@ $$
 
 - Three components
 - One decay parameter $\lambda$
+- It can actually be time-varying too
+
+. . .
+
+- How would you construct a yield curve from this forward curve?
 
 ## The Implied Yield Curve
 
