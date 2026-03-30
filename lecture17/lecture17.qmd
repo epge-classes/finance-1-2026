@@ -641,6 +641,7 @@ print(r"\end{table}")
 - We do not just want one regression per maturity
 - We want a parsimonious model for the whole cross-section of yields
 - And then a simple model for its dynamics
+- Sometimes we need to forecast things, not just explain them in-sample...
 - This is the problem @DieboldLi2006 tackles directly
 
 ## Nelson-Siegel Forward Curve
@@ -656,13 +657,14 @@ f_t^{(\tau)}
 \beta_{3t}\lambda\tau e^{-\lambda \tau}
 $$
 
-- Three components
-- One decay parameter $\lambda$
-- It can actually be time-varying too
+- Three components, one decay parameter $\lambda$
+- This is the solution to a 2nd-order constant-coefficient ODE for $f(\tau)$
+- Simplest smooth specification that can generate level, monotone, and humped shapes
+- Only 4 parameters, but nests flat ($\beta_2=\beta_3=0$), exponential ($\beta_3=0$), and humped curves
 
 . . .
 
-- How would you construct a yield curve from this forward curve?
+- How would you construct $y_t^{\tau}$ from this forward curve?
 
 ## The Implied Yield Curve
 
@@ -677,30 +679,145 @@ y_t^{(\tau)}
 \beta_{3t}\left(\frac{1-e^{-\lambda\tau}}{\lambda\tau}-e^{-\lambda\tau}\right)
 $$
 
-- Same factors at every maturity
+- Same time-varying factors at every maturity
 - Different maturities load differently on them
+- Proper factor model for yields
 
-## Why Level, Slope, Curvature?
+## How This Basis Looks Like
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+lam = 0.1
+tau = np.linspace(0.01, 120, 100)
+
+loading_level = np.ones_like(tau)
+loading_slope = (1 - np.exp(-lam * tau)) / (lam * tau)
+loading_curvature = loading_slope - np.exp(-lam * tau)
+
+panels = [
+    (r"Level: $1$", loading_level, "#1b4965"),
+    (r"Slope: $\frac{1-e^{-\lambda\tau}}{\lambda\tau}$", loading_slope, "#067aa0"),
+    (r"Curvature: $\frac{1-e^{-\lambda\tau}}{\lambda\tau} - e^{-\lambda\tau}$", loading_curvature, "#c1121f"),
+]
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4))
+
+for ax, (label, loading, color) in zip(axes, panels):
+    ax.plot(tau, loading, lw=2.4, color=color)
+    ax.fill_between(tau, loading, alpha=0.10, color=color)
+    ax.set_title(label, fontsize=13)
+    ax.set_xlabel("Maturity (Months)")
+    ax.set_xlim(0, 120)
+    ax.grid(alpha=0.25, linewidth=0.6)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+axes[0].set_ylabel("Loading")
+fig.tight_layout(w_pad=2.2)
+plt.show()
+```
 
 - Loading on $\beta_{1t}$ is $1$ at all maturities
 - Loading on $\beta_{2t}$ starts at $1$ and decays to $0$
 - Loading on $\beta_{3t}$ starts at $0$, rises, then decays
-- These are exactly the shapes we call level, slope, and curvature
 
 ## What Each Factor Does
 
-- $\beta_{1t}$ shifts the whole curve
+- $\beta_{1t}$ shifts the whole curve, but also notice that $\lim\limits_{\tau \to \infty} y_t^{(\tau)} = \beta_{1t}$ for any $\lambda >0$
 - $\beta_{2t}$ moves the short end more than the long end
 - $\beta_{3t}$ bends the middle of the curve
 - A small number of factors captures the main co-movements in yields
 
 ## Diebold-Li: From Curve Fit to Factors
 
-- Fix $\lambda$ to a convenient value
+- Fix $\lambda$ to an empirically motivated value
 - @DieboldLi2006 use $\lambda=0.0609$
 - Each month, estimate $\beta_{1t}$, $\beta_{2t}$, $\beta_{3t}$ from the cross section of yields
 - Then treat those estimated coefficients as factor time series
 - Much easier to interpret than an unrestricted factor model
+- No rotation indeterminacy
+
+## Quality of Fit
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+from scipy.optimize import least_squares
+
+def ns_loadings(tau, lam):
+    decay = np.exp(-lam * tau)
+    sl = (1 - decay) / (lam * tau)
+    return np.column_stack([np.ones_like(tau), sl, sl - decay])
+
+# Maturities 1–120 months (up to 10 years)
+ns_mats = np.arange(1, 121, dtype=float)
+ns_cols_fit = [f"{m} m" for m in range(1, 121)]
+ns_data = lw[["date"] + ns_cols_fit].dropna(subset=ns_cols_fit).copy()
+Y = ns_data[ns_cols_fit].values
+dates_ns = ns_data["date"].values
+
+# --- Fixed lambda (Diebold-Li: lambda = 0.0609) ---
+lam_dl = 0.0609
+L_dl = ns_loadings(ns_mats, lam_dl)
+betas_dl = np.linalg.lstsq(L_dl, Y.T, rcond=None)[0].T
+fitted_dl = betas_dl @ L_dl.T
+
+# --- NLS: free lambda per month ---
+def ns_resid(params, tau, y):
+    b1, b2, b3, lam = params
+    decay = np.exp(-lam * tau)
+    sl = (1 - decay) / (lam * tau)
+    return y - (b1 + b2 * sl + b3 * (sl - decay))
+
+fitted_nls = np.empty_like(Y)
+for i in range(Y.shape[0]):
+    x0 = [betas_dl[i, 0], betas_dl[i, 1], betas_dl[i, 2], lam_dl]
+    res = least_squares(ns_resid, x0, args=(ns_mats, Y[i]),
+                        bounds=([-np.inf, -np.inf, -np.inf, 0.001],
+                                [np.inf, np.inf, np.inf, 2.0]))
+    fitted_nls[i] = Y[i] - res.fun
+```
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+plot_spec = {"6-Month": 5, "1-Year": 11, "5-Year": 59, "10-Year": 119}
+
+def plot_yield_2x2(series_list, year_base=10, ylim=None, sharex=False):
+    """Plot a 2x2 grid of yield time series.
+
+    series_list: list of (dates, values_matrix, label, color, lw, extra_kw) tuples
+    """
+    fig, axes = plt.subplots(2, 2, figsize=(14, 7), sharex=sharex)
+    for ax, (panel_label, ci) in zip(axes.flat, plot_spec.items()):
+        for dates, vals, lab, col, lw, kw in series_list:
+            ax.plot(dates, vals[:, ci], color=col, lw=lw, label=lab, **kw)
+        ax.set_title(panel_label)
+        ax.xaxis.set_major_locator(mdates.YearLocator(base=year_base))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+        if ylim is not None:
+            ax.set_ylim(*ylim)
+        ax.grid(alpha=0.25, linewidth=0.6)
+        for spine in ["top", "right"]:
+            ax.spines[spine].set_visible(False)
+    axes[0, 0].legend(loc="upper right", frameon=False)
+    fig.supylabel("Yield (%)")
+    fig.tight_layout()
+    return fig
+
+fig = plot_yield_2x2([
+    (dates_ns, Y, "Actual", "#6c757d", 2.0, {"alpha": 0.85}),
+    (dates_ns, fitted_dl, r"Fixed $\lambda$", "#067aa0", 1.8, {}),
+    (dates_ns, fitted_nls, r"NLS $\lambda_t$", "#c1121f", 1.4, {"ls": "--", "alpha": 0.75}),
+], year_base=10, ylim=(-0.5, 16))
+plt.show()
+```
 
 ## Forecast the Factors, Forecast the Curve
 
@@ -713,7 +830,115 @@ $$
 - Plug factor forecasts into the Nelson-Siegel loadings
 - Result: a forecasting model for the entire curve [@DieboldLi2006]
 - Key move: turn a cross-sectional decomposition into a dynamic forecasting system
+- Common practice in the literature: FAVAR models with NS factors
 
+## Empirical Results
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+import warnings
+from statsmodels.tsa.api import VAR
+
+factors = betas_dl  # (T, 3) from fixed-lambda estimation
+T_ns = factors.shape[0]
+
+oos_start_idx = int(np.searchsorted(dates_ns, np.datetime64("2000-01-01")))
+
+def oos_forecasts(horizon, var_lags=1):
+    fc_dates, fc_actual, fc_var, fc_rw = [], [], [], []
+    for t in range(oos_start_idx, T_ns - horizon):
+        train = factors[: t + 1]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            var_model = VAR(train).fit(var_lags)
+        fc = var_model.forecast(train[-var_lags:], horizon)
+        var_factors_h = fc[-1]
+        rw_factors_h = factors[t]
+
+        fc_dates.append(dates_ns[t + horizon])
+        fc_var.append(L_dl @ var_factors_h)
+        fc_rw.append(L_dl @ rw_factors_h)
+        fc_actual.append(Y[t + horizon])
+    return (np.array(fc_dates), np.array(fc_actual),
+            np.array(fc_var), np.array(fc_rw))
+
+dates_1m, actual_1m, var_1m, rw_1m = oos_forecasts(1, var_lags=1)
+dates_12m, actual_12m, var_12m, rw_12m = oos_forecasts(12, var_lags=1)
+_, _, var6_12m, _ = oos_forecasts(12, var_lags=6)
+```
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+oos_series = [
+    (dates_1m, actual_1m, "Actual", "#6c757d", 1.8, {"alpha": 0.85}),
+    (dates_1m, var_1m, "VAR(1)", "#067aa0", 1.6, {}),
+    (dates_1m, rw_1m, "Random Walk", "#c1121f", 1.4, {"ls": "--", "alpha": 0.75}),
+]
+fig = plot_yield_2x2(oos_series, year_base=5)
+plt.show()
+```
+
+## Empirical Results: 12-Month Horizon
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+oos_series_12 = [
+    (dates_12m, actual_12m, "Actual", "#6c757d", 1.8, {"alpha": 0.85}),
+    (dates_12m, var_12m, "VAR(1)", "#067aa0", 1.6, {}),
+    (dates_12m, rw_12m, "Random Walk", "#c1121f", 1.4, {"ls": "--", "alpha": 0.75}),
+]
+fig = plot_yield_2x2(oos_series_12, year_base=5)
+plt.show()
+```
+
+## Out-of-Sample MSE
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| output: asis
+
+print(r"\begin{table}[htbp]")
+print(r"\centering")
+#print(r"\small")
+print(r"\begin{tabular}{lccc|cccc}")
+print(r"\toprule")
+print(r" & \multicolumn{3}{c}{1-Month Horizon} & \multicolumn{4}{c}{12-Month Horizon} \\")
+print(r"\cmidrule(lr){2-4} \cmidrule(lr){5-8}")
+print(r"Maturity & VAR(1) & RW & Ratio & VAR(1) & VAR(6) & RW & Ratio$_{1}$ \\")
+print(r"\midrule")
+for label, ci in plot_spec.items():
+    mse_var_1 = np.mean((actual_1m[:, ci] - var_1m[:, ci]) ** 2)
+    mse_rw_1 = np.mean((actual_1m[:, ci] - rw_1m[:, ci]) ** 2)
+    mse_var1_12 = np.mean((actual_12m[:, ci] - var_12m[:, ci]) ** 2)
+    mse_var6_12 = np.mean((actual_12m[:, ci] - var6_12m[:, ci]) ** 2)
+    mse_rw_12 = np.mean((actual_12m[:, ci] - rw_12m[:, ci]) ** 2)
+    print(
+        f"{label} & {mse_var_1:.4f} & {mse_rw_1:.4f} & {mse_var_1/mse_rw_1:.3f}"
+        f" & {mse_var1_12:.4f} & {mse_var6_12:.4f} & {mse_rw_12:.4f}"
+        f" & {mse_var1_12/mse_rw_12:.3f} \\\\"
+    )
+print(r"\bottomrule")
+print(r"\end{tabular}")
+print(r"\end{table}")
+```
+
+\vspace{0.3cm}
+- It's super tough to beat a RW
+- In the paper they could do it for shorter horizons sometimes
+- But it's always very hard!
+- HUGE literature about macro forecasting!
+  
 ## {.standout}
 Questions?
 
@@ -723,7 +948,7 @@ Questions?
 - Part II gave us the benchmark: EH says spreads should reflect expected short rates, not time-varying premia
 - Part III showed the classic failure: forwards and spreads forecast returns too well
 - Part IV gave a practical alternative: summarize the whole curve with level, slope, and curvature, then forecast those factors
-- The term structure is about both prices today and expected returns tomorrow
+- Next class: the dance between expected rates and term premia
 
 ## Readings and References {.noframenumbering .allowframebreaks}
 \footnotesize
