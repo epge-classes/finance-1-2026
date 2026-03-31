@@ -116,6 +116,13 @@ This is a collection of recommended readings and references.
 - [Nelson and Siegel, 1987](https://doi.org/10.1086/296409)
 - [Diebold and Li, 2006](https://doi.org/10.1016/j.jeconom.2005.03.005)
 
+### Lecture 18: Exponentially Affine Models in Discrete Time
+- [Duffie and Kan, 1996](https://doi.org/10.1111/j.1467-9965.1996.tb00123.x)
+- [Ang and Piazzesi, 2003](https://doi.org/10.1016/S0304-3932(03)00032-1)
+- [Duffee, 2002](https://doi.org/10.1111/1540-6261.00426)
+- [Joslin, Singleton, and Zhu, 2011](https://doi.org/10.1093/rfs/hhq128)
+- [Adrian, Crump, and Moench, 2013](https://doi.org/10.1016/j.jfineco.2013.04.009)
+
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
 
