@@ -109,6 +109,13 @@ This is a collection of recommended readings and references.
 - [Kozak, Nagel, and Santosh, 2020](https://doi.org/10.1016/j.jfineco.2019.07.010)
 - [Feng, Giglio, and Xiu, 2020](https://doi.org/10.1111/jofi.12883)
 
+### Lecture 17: Intro to the Term Structure
+- [Gürkaynak and Wright, 2012](https://www.aeaweb.org/articles?id=10.1257/jel.50.2.331)
+- [Fama and Bliss, 1987](https://ideas.repec.org/a/aea/aecrev/v77y1987i4p680-92.html)
+- [Campbell and Shiller, 1991](https://academic.oup.com/restud/article-abstract/58/3/495/1593062)
+- [Nelson and Siegel, 1987](https://doi.org/10.1086/296409)
+- [Diebold and Li, 2006](https://doi.org/10.1016/j.jeconom.2005.03.005)
+
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
 
