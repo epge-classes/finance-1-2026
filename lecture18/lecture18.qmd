@@ -1,0 +1,582 @@
+---
+title: "Lecture 18: Exponentially Affine Models in Discrete Time"
+date: "2026-04-01"
+bibliography: ../asset_pricing_references.bib
+callout-appearance: minimal
+---
+
+# Intro
+
+## Intro
+
+- Last lecture: EH failed, forwards forecast returns, Diebold-Li summarized the curve
+- Today: build a no-arbitrage model that separates expected rates from term premia
+- Goal: move from reduced-form curve dynamics to a structural pricing system
+- This is where $\mathbb{P}$, $\mathbb{Q}$, and $\lambda_t$ start doing real work
+
+## Why EH Is Not Enough
+
+- EH was a useful benchmark, but too restrictive
+- It ruled out time-varying expected bond returns
+- The data did not cooperate [@FamaBliss1987; @CampbellShiller1991]
+- We need a model where the whole curve is priced jointly
+- And where expected short rates and term premia are different objects
+
+## What This Model Will Deliver
+
+- A state vector $X_t$
+- Dynamics under the physical measure $\mathbb{P}$
+- An explicit market price of risk $\lambda_t$
+- Risk-neutral dynamics under $\mathbb{Q}$
+- Bond prices, yields, risk-neutral yields, and term premia
+
+## Flight Plan
+
+- Part I: affine setup under $\mathbb{P}$
+- Part II: change of measure and why pricing uses $\mathbb{Q}$
+- Part III: exponential-affine bond pricing
+- Part IV: risk-neutral yields and term premia
+- Part V: implementation and estimation with observed factors only
+
+# Part I: Setup Under $\mathbb{P}$
+
+## State Vector and VAR Under $\mathbb{P}$
+
+- Let $X_t \in \mathbb{R}^K$ collect the term-structure factors
+- In this lecture, $X_t$ is *observed*
+- Think: first few PCs of yields, or a small set of yields
+
+$$
+X_{t+1} = \mu + \Phi X_t + \Sigma \varepsilon_{t+1},
+\qquad
+\varepsilon_{t+1}\sim N(0,I_K)
+$$
+
+- $\mathbb{P}$ is the actual law of motion in the data
+
+## Affine Short Rate
+
+$$
+y_t^{(1)} = \delta_0 + \delta_1^\top X_t
+$$
+
+- Same notation as last lecture
+- The one-period yield is the short rate
+- The short end of the curve moves with the state
+- Once $X_t$ is given, the short rate is pinned down
+
+## SDF and Market Price of Risk
+
+$$
+m_{t+1}
+=
+- y_t^{(1)}
+-\frac12 \lambda_t^\top\lambda_t
+-\lambda_t^\top \varepsilon_{t+1}
+$$
+
+$$
+\lambda_t = \lambda_0 + \lambda_1 X_t
+$$
+
+- The SDF comes first: it is the pricing object
+- $\lambda_t$ is the market price of risk embedded inside it
+- If $\lambda_t$ changes with $X_t$, bond premia change with the state
+- No $\Lambda_1$: we use $\lambda_1$
+
+## Economic Interpretation
+
+- $\mathbb{P}$: how the state actually evolves
+- $m_{t+1}$: how payoffs are discounted
+- $\lambda_t$: how much compensation investors require for bond risk
+- If $\lambda_t$ varies with $X_t$, term premia vary with $X_t$
+- That is already something EH could not do
+
+# Part II: Change of Measure
+
+## One-Step Density Ratio
+
+Define
+$$
+\frac{d\mathbb{Q}}{d\mathbb{P}}\Big|_{t+1}
+=
+\exp\left(
+-\frac12 \lambda_t^\top \lambda_t
+-\lambda_t^\top \varepsilon_{t+1}
+\right)
+$$
+
+- This is the one-step Radon-Nikodym derivative
+- It tilts probabilities state by state
+- We now need to check that this is a valid density
+
+## Recall: Gaussian MGF
+
+If $\varepsilon_{t+1}\sim N(0,I_K)$ under $\mathbb{P}$, then for any $a_t$ known at time $t$,
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[e^{a_t^\top \varepsilon_{t+1}}\right]
+=
+\exp\left(\frac12 a_t^\top a_t\right)
+$$
+
+- We will use this twice
+- First to show the density integrates to one
+- Then to prove the shifted shock is standard normal under $\mathbb{Q}$
+
+## It Integrates to One
+
+Conditioning on time $t$,
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[\frac{d\mathbb{Q}}{d\mathbb{P}}\Big|_{t+1}\right]
+=
+e^{-\frac12 \lambda_t^\top\lambda_t}
+\mathbb E_t^{\mathbb{P}}\!\left[e^{-\lambda_t^\top \varepsilon_{t+1}}\right]
+$$
+
+Applying the Gaussian mgf with $a_t=-\lambda_t$,
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[e^{-\lambda_t^\top \varepsilon_{t+1}}\right]
+=
+\exp\left(\frac12 \lambda_t^\top \lambda_t\right)
+$$
+
+so
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[\frac{d\mathbb{Q}}{d\mathbb{P}}\Big|_{t+1}\right] = 1
+$$
+
+## The Shifted Shock
+
+Define
+$$
+\varepsilon_{t+1}^{\mathbb{Q}} = \varepsilon_{t+1} + \lambda_t
+$$
+
+- Under $\mathbb{Q}$, this will become the convenient innovation
+- Same state variables, different conditional law
+- We now prove explicitly that $\varepsilon_{t+1}^{\mathbb{Q}} \sim N(0,I_K)$ under $\mathbb{Q}$
+
+## Mgf Proof Under $\mathbb{Q}$
+
+For any $u\in \mathbb R^K$,
+$$
+\begin{aligned}
+\mathbb E_t^{\mathbb{Q}}\left[e^{u^\top \varepsilon_{t+1}^{\mathbb{Q}}}\right]
+&=
+\mathbb E_t^{\mathbb{P}}\left[
+\frac{d\mathbb{Q}}{d\mathbb{P}}\Big|_{t+1}
+e^{u^\top(\varepsilon_{t+1}+\lambda_t)}
+\right] \\
+&=
+\exp\left(
+u^\top\lambda_t-\frac12 \lambda_t^\top\lambda_t
+\right)
+\mathbb E_t^{\mathbb{P}}\left[
+e^{(u-\lambda_t)^\top \varepsilon_{t+1}}
+\right] \\
+&=
+\exp\left(
+u^\top\lambda_t-\frac12 \lambda_t^\top\lambda_t
++\frac12 (u-\lambda_t)^\top (u-\lambda_t)
+\right) \\
+&=
+\exp\left(\frac12 u^\top u\right)
+\end{aligned}
+$$
+
+- This is the mgf of $N(0,I_K)$
+- So $\varepsilon_{t+1}^{\mathbb{Q}} \sim N(0,I_K)$ under $\mathbb{Q}$
+
+## $\mathbb{Q}$-Dynamics of the State
+
+Start from the $\mathbb{P}$-VAR and replace $\varepsilon_{t+1}=\varepsilon_{t+1}^{\mathbb{Q}}-\lambda_t$:
+$$
+X_{t+1}
+=
+\mu + \Phi X_t + \Sigma(\varepsilon_{t+1}^{\mathbb{Q}}-\lambda_t)
+$$
+
+Using $\lambda_t=\lambda_0+\lambda_1 X_t$,
+$$
+X_{t+1}
+=
+\underbrace{(\mu-\Sigma\lambda_0)}_{\mu^{\mathbb{Q}}}
++
+\underbrace{(\Phi-\Sigma\lambda_1)}_{\Phi^{\mathbb{Q}}}X_t
++
+\Sigma \varepsilon_{t+1}^{\mathbb{Q}}
+$$
+
+## Pricing Uses $\mathbb{Q}$, Not $\mathbb{P}$
+
+$$
+P_t^{(n+1)} = \mathbb E_t^{\mathbb{P}}[M_{t+1}P_{t+1}^{(n)}]
+=
+e^{-y_t^{(1)}} \mathbb E_t^{\mathbb{Q}}[P_{t+1}^{(n)}]
+$$
+
+- There is a state evolution under both $\mathbb{P}$ and $\mathbb{Q}$
+- But the bond pricing recursion uses $\mathbb{Q}$
+- $\mathbb{P}$ matters for forecasts and expected excess returns
+- $\mathbb{Q}$ matters for prices
+- This is not "just different initial conditions": the dynamics themselves change
+
+## {.standout}
+Questions?
+
+# Part III: Bond Pricing
+
+## Pricing Equation
+
+For a zero-coupon bond,
+$$
+P_t^{(n+1)} = \mathbb E_t^{\mathbb{P}}[M_{t+1}P_{t+1}^{(n)}]
+=
+e^{-y_t^{(1)}} \mathbb E_t^{\mathbb{Q}}[P_{t+1}^{(n)}]
+$$
+
+- Last lecture gave the bond math
+- Now we impose no arbitrage
+- Once we know the short rate and the $\mathbb{Q}$-dynamics, all bond prices are pinned down
+
+## Exponential-Affine Guess
+
+Guess [@DuffieKan1996]
+$$
+P_t^{(n)} = \exp(A_n + B_n^\top X_t)
+$$
+
+with
+$$
+A_0 = 0,
+\qquad
+B_0 = 0
+$$
+
+- $P_t^{(0)}=1$ is the base case
+- The question is whether this functional form closes under the recursion
+
+## Plug the Guess Into the Pricing Equation
+
+Use
+$$
+y_t^{(1)}=\delta_0+\delta_1^\top X_t
+$$
+and
+$$
+X_{t+1}=\mu^{\mathbb{Q}}+\Phi^{\mathbb{Q}} X_t+\Sigma \varepsilon_{t+1}^{\mathbb{Q}}
+$$
+
+Then
+$$
+P_t^{(n+1)}
+=
+e^{-\delta_0-\delta_1^\top X_t}
+\mathbb E_t^{\mathbb{Q}}\left[
+\exp\left(
+A_n + B_n^\top X_{t+1}
+\right)
+\right]
+$$
+
+## Compute the Gaussian Expectation
+
+Substitute for $X_{t+1}$ and collect what is known at time $t$:
+$$
+P_t^{(n+1)}
+=
+e^{-\delta_0-\delta_1^\top X_t}
+\mathbb E_t^{\mathbb{Q}}\left[
+\exp\left(
+A_n + B_n^\top(\mu^{\mathbb{Q}}+\Phi^{\mathbb{Q}}X_t+\Sigma \varepsilon_{t+1}^{\mathbb{Q}})
+\right)
+\right]
+$$
+
+$$
+P_t^{(n+1)}
+=
+\exp\left(
+A_n-\delta_0
++B_n^\top \mu^{\mathbb{Q}}
++[(\Phi^{\mathbb{Q}})^\top B_n-\delta_1]^\top X_t
+\right)
+\mathbb E_t^{\mathbb{Q}}\left[
+e^{B_n^\top\Sigma\varepsilon_{t+1}^{\mathbb{Q}}}
+\right]
+$$
+
+Because $\varepsilon_{t+1}^{\mathbb{Q}}\sim N(0,I_K)$,
+$$
+\mathbb E_t^{\mathbb{Q}}\left[
+e^{B_n^\top\Sigma\varepsilon_{t+1}^{\mathbb{Q}}}
+\right]
+=
+\exp\left(
+\frac12 B_n^\top\Sigma\Sigma^\top B_n
+\right)
+$$
+
+## Affine Recursions
+
+Matching coefficients gives
+$$
+A_{n+1}
+=
+A_n + B_n^\top \mu^{\mathbb{Q}}
++ \frac12 B_n^\top \Sigma\Sigma^\top B_n
+- \delta_0
+$$
+
+$$
+B_{n+1}
+=
+(\Phi^{\mathbb{Q}})^\top B_n - \delta_1
+$$
+
+- The recursion closes
+- This is why the model is called exponentially affine
+
+## Yields Are Affine Too
+
+Using
+$$
+y_t^{(n)} = -\frac{1}{n}\log P_t^{(n)}
+$$
+we get
+$$
+y_t^{(n)}
+=
+-\frac{1}{n}(A_n + B_n^\top X_t)
+$$
+
+- Each maturity loads linearly on the same state vector
+- The loadings vary with $n$ through $A_n$ and $B_n$
+- The whole curve is one joint pricing object
+
+## Connection Back to Lecture 17
+
+- Diebold-Li also used a small number of factors to describe the curve [@DieboldLi2006]
+- But there the loadings were chosen for fit and forecasting
+- Here the loadings come from no-arbitrage restrictions [@Duffee2002; @AngPiazzesi2003]
+- Most important: the model gives a disciplined $\mathbb{P}/\mathbb{Q}$ split
+
+# Part IV: EH Component and Term Premia
+
+## The EH Component Inside the Model
+
+Lecture 17 defined the expectations-hypothesis piece as
+$$
+EH_t^{(n)}
+\equiv
+\frac1n \sum_{j=0}^{n-1}\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+$$
+
+- This is the average expected future short rate
+- It is a $\mathbb{P}$-expectations object
+- It is *not* computed from the bond-pricing recursion
+- Here we show how to compute it once the affine model is estimated
+
+## Forecast the State Under $\mathbb{P}$
+
+Start from
+$$
+X_{t+1} = \mu + \Phi X_t + \Sigma \varepsilon_{t+1},
+\qquad
+\mathbb E_t^{\mathbb{P}}[\varepsilon_{t+1}] = 0
+$$
+
+Then
+$$
+\mathbb E_t^{\mathbb{P}}[X_{t+1}] = \mu + \Phi X_t
+$$
+
+and, recursively,
+$$
+\mathbb E_t^{\mathbb{P}}[X_{t+j}]
+=
+\sum_{i=0}^{j-1}\Phi^i \mu + \Phi^j X_t
+$$
+
+## Forecast Future Short Rates
+
+Using
+$$
+y_t^{(1)} = \delta_0 + \delta_1^\top X_t
+$$
+
+we get
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+=
+\delta_0 + \delta_1^\top \mathbb E_t^{\mathbb{P}}[X_{t+j}]
+$$
+
+So once $(\mu,\Phi,\delta_0,\delta_1)$ and $X_t$ are known,
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+=
+\delta_0 + \delta_1^\top\left(\sum_{i=0}^{j-1}\Phi^i \mu + \Phi^j X_t\right)
+$$
+
+## Compute the EH Component
+
+Now average those expected short rates:
+$$
+EH_t^{(n)}
+=
+\frac1n \sum_{j=0}^{n-1}\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+$$
+
+Algorithm:
+
+1. Start from the estimated state $X_t$
+2. Forecast $X_{t+1},\ldots,X_{t+n-1}$ under $\mathbb{P}$
+3. Map each state forecast into an expected short rate
+4. Average across the $n$ horizons
+
+## Observed, Fitted, and EH Component
+
+- Observed yield: $y_t^{(n)}$
+- Fitted/model-implied yield: $\hat y_t^{(n)}$
+- EH component: $EH_t^{(n)}$
+- Term premium: $TP_t^{(n)}$
+
+. . .
+
+- In an exact-fit model, $y_t^{(n)}$ and $\hat y_t^{(n)}$ are the same
+- In an estimated model with measurement error, they need not be
+- But $EH_t^{(n)}$ is different from both: it uses only $\mathbb{P}$-expected short rates
+
+## Term Premia Relative to the EH Component
+
+In the spirit of Lecture 17, define
+$$
+TP_t^{(n)} = y_t^{(n)} - EH_t^{(n)}
+$$
+
+or, in an inexact-fit model,
+$$
+TP_t^{(n)} = \hat y_t^{(n)} - EH_t^{(n)}
+$$
+
+- This is the part of the yield not attributed to expected future short rates
+- If $TP_t^{(n)}$ rises, yields rise relative to the EH component
+- If $TP_t^{(n)}$ falls, yields move closer to the EH component
+
+## Why $\lambda_t$ Still Matters
+
+- The EH component uses $\mathbb{P}$ forecasts of future short rates
+- The fitted yield comes from the no-arbitrage pricing recursion
+- The wedge between $\mathbb{P}$ and $\mathbb{Q}$ is driven by $\lambda_t=\lambda_0+\lambda_1 X_t$
+- So $\lambda_t$ is still the key force behind time-varying term premia
+
+## {.standout}
+Questions?
+
+# Part V: Implementation and Estimation
+
+## Inputs After Estimation
+
+Suppose we have estimated
+$$
+\mu,\ \Phi,\ \Sigma,\ \delta_0,\ \delta_1,\ \lambda_0,\ \lambda_1
+$$
+
+Then compute
+$$
+\mu^{\mathbb{Q}} = \mu - \Sigma\lambda_0,
+\qquad
+\Phi^{\mathbb{Q}} = \Phi - \Sigma\lambda_1
+$$
+
+- The fitted yield curve still uses the pricing recursion with $\mu^{\mathbb{Q}},\Phi^{\mathbb{Q}}$
+- The EH component uses the $\mathbb{P}$-dynamics $(\mu,\Phi)$
+- After estimation, both objects are available
+
+## EH Component Algorithm
+
+For each horizon $j$,
+$$
+\mathbb E_t^{\mathbb{P}}[X_{t+j}]
+=
+\sum_{i=0}^{j-1}\Phi^i \mu + \Phi^j X_t
+$$
+
+Then compute the expected future short rate:
+$$
+\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+=
+\delta_0 + \delta_1^\top \mathbb E_t^{\mathbb{P}}[X_{t+j}]
+$$
+
+Finally,
+$$
+EH_t^{(n)}
+=
+\frac1n \sum_{j=0}^{n-1}\mathbb E_t^{\mathbb{P}}\!\left[y_{t+j}^{(1)}\right]
+$$
+
+## From Fitted Yields to Term Premia
+
+1. Use the no-arbitrage recursion to compute fitted yields $\hat y_t^{(n)}$
+2. Use the $\mathbb{P}$-VAR and the short-rate equation to compute $EH_t^{(n)}$
+3. Define term premia as
+$$
+TP_t^{(n)} = \hat y_t^{(n)} - EH_t^{(n)}
+$$
+
+In an exact-fit model, this is the same as
+$$
+TP_t^{(n)} = y_t^{(n)} - EH_t^{(n)}
+$$
+
+## Estimation Route: Observed Factors Only
+
+1. Choose observed factors $X_t$
+2. Estimate the VAR under $\mathbb{P}$ by OLS
+3. Estimate the short-rate equation
+4. Choose $\lambda_0,\lambda_1$ to match the yield curve
+5. Recover fitted yields, the EH component, and term premia
+
+See also @JoslinSingletonZhu2011 and @AdrianCrumpMoench2013.
+
+## Matching the Yield Curve
+
+A simple objective is
+$$
+\min_{\lambda_0,\lambda_1}
+\sum_t \sum_{n\in\mathcal M}
+\left(
+y_t^{(n)}-\hat y_t^{(n)}
+\right)^2
+$$
+
+- $\mathcal M$: maturities used in estimation
+- The $\mathbb{P}$-VAR alone is not enough
+- The cross section disciplines the pricing wedge
+
+## What the Estimated Model Delivers
+
+- Fitted yield curves
+- Risk-neutral yield curves
+- Term-premium estimates by maturity and over time
+- A clean separation between expected-rate news and premium news
+- A bridge from term-structure data to macro and finance questions
+
+## Taking Stock
+
+- Lecture 17 told us the curve reflects both expected rates and premia
+- Lecture 18 gave a no-arbitrage model that makes that separation explicit
+- $\mathbb{P}$ describes the data; $\mathbb{Q}$ prices bonds
+- $\lambda_t$ is the wedge between the two
+- Exponential-affine recursions turn that wedge into bond prices, yields, and term premia
+
+## Readings and References {.noframenumbering .allowframebreaks}
+\footnotesize
+
+- Term-structure overview: @GurkaynakWright2012
+- Evidence against EH: @FamaBliss1987; @CampbellShiller1991
+- Reduced-form benchmark: @DieboldLi2006
+- Affine term-structure foundations: @DuffieKan1996; @Duffee2002; @AngPiazzesi2003
+- Observable-factor estimation: @JoslinSingletonZhu2011; @AdrianCrumpMoench2013
