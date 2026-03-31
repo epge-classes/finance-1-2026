@@ -2,7 +2,6 @@
 title: "Lecture 18: Exponentially Affine Models in Discrete Time"
 date: "2026-04-01"
 bibliography: ../asset_pricing_references.bib
-callout-appearance: minimal
 ---
 
 # Intro
@@ -92,6 +91,9 @@ $$
 - If $\lambda_t$ varies with $X_t$, term premia vary with $X_t$
 - That is already something EH could not do
 
+## {.standout}
+Questions?
+
 # Part II: Change of Measure
 
 ## One-Step Density Ratio
@@ -109,8 +111,9 @@ $$
 - This is the one-step Radon-Nikodym derivative
 - It tilts probabilities state by state
 - We now need to check that this is a valid density
+- Notice that it is a positive random variable
 
-## Recall: Gaussian MGF
+## Quick Recall: Gaussian MGF
 
 If $\varepsilon_{t+1}\sim N(0,I_K)$ under $\mathbb{P}$, then for any $a_t$ known at time $t$,
 $$
@@ -149,7 +152,7 @@ $$
 
 Define
 $$
-\varepsilon_{t+1}^{\mathbb{Q}} = \varepsilon_{t+1} + \lambda_t
+\varepsilon_{t+1}^{\mathbb{Q}} \equiv \varepsilon_{t+1} + \lambda_t
 $$
 
 - Under $\mathbb{Q}$, this will become the convenient innovation
@@ -200,9 +203,9 @@ Using $\lambda_t=\lambda_0+\lambda_1 X_t$,
 $$
 X_{t+1}
 =
-\underbrace{(\mu-\Sigma\lambda_0)}_{\mu^{\mathbb{Q}}}
+\underbrace{(\mu-\Sigma\lambda_0)}_{\equiv \mu^{\mathbb{Q}}}
 +
-\underbrace{(\Phi-\Sigma\lambda_1)}_{\Phi^{\mathbb{Q}}}X_t
+\underbrace{(\Phi-\Sigma\lambda_1)}_{\equiv \Phi^{\mathbb{Q}}}X_t
 +
 \Sigma \varepsilon_{t+1}^{\mathbb{Q}}
 $$
@@ -361,6 +364,9 @@ $$
 - Here the loadings come from no-arbitrage restrictions [@Duffee2002; @AngPiazzesi2003]
 - Most important: the model gives a disciplined $\mathbb{P}/\mathbb{Q}$ split
 
+## {.standout}
+Questions?
+
 # Part IV: EH Component and Term Premia
 
 ## The EH Component Inside the Model
@@ -431,7 +437,7 @@ $$
 Algorithm:
 
 1. Start from the estimated state $X_t$
-2. Forecast $X_{t+1},\ldots,X_{t+n-1}$ under $\mathbb{P}$
+2. Forecast $X_{t+1},\ldots,X_{t+n-1}$ under the (model-implied) $\mathbb{P}$
 3. Map each state forecast into an expected short rate
 4. Average across the $n$ horizons
 
@@ -463,6 +469,7 @@ $$
 - This is the part of the yield not attributed to expected future short rates
 - If $TP_t^{(n)}$ rises, yields rise relative to the EH component
 - If $TP_t^{(n)}$ falls, yields move closer to the EH component
+- This creates a gap between *observed* yields and *expected* short rates
 
 ## Why $\lambda_t$ Still Matters
 
@@ -531,6 +538,9 @@ $$
 TP_t^{(n)} = y_t^{(n)} - EH_t^{(n)}
 $$
 
+## {.standout}
+Questions?
+
 ## Estimation Route: Observed Factors Only
 
 1. Choose observed factors $X_t$
@@ -563,6 +573,9 @@ $$
 - Term-premium estimates by maturity and over time
 - A clean separation between expected-rate news and premium news
 - A bridge from term-structure data to macro and finance questions
+
+## {.standout}
+Questions?
 
 ## Taking Stock
 
