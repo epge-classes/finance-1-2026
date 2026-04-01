@@ -371,7 +371,7 @@ Questions?
 
 ## The EH Component Inside the Model
 
-Lecture 17 defined the expectations-hypothesis piece as
+Lecture 17 defined the expectations hypothesis piece as
 $$
 EH_t^{(n)}
 \equiv

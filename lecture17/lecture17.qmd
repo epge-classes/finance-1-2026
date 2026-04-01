@@ -32,8 +32,8 @@ callout-appearance: minimal
 
 ## Zero-Coupon Bonds and Yields
 
-- $P_t^{(n)}$ be the time-$t$ price of an $n$-period zero-coupon bond [@GurkaynakWright2012]
-- It pays \$1 at time $t+n$(we are abstracting away from defaults)
+- Let $P_t^{(n)}$ be the time-$t$ price of an $n$-period zero-coupon bond [@GurkaynakWright2012]
+- It pays \$1 at time $t+n$ (we are abstracting away from defaults)
 
 $$
 P_t^{(n)} = e^{-n y_t^{(n)}},
@@ -42,7 +42,7 @@ y_t^{(n)} = -\frac{1}{n}\log P_t^{(n)}
 $$
 
 - $y_t^{(n)}$ is the annualized continuously compounded yield
-- Think about zero-coupon bonds are Arrow securities -- they are our building block
+- Think of zero-coupon bonds as Arrow securities -- they are our building blocks
 - In most cases these yields are *not* observed directly. Why?
 
 ## The Yield Curve
@@ -168,7 +168,7 @@ plt.show()
 ```
 
 - The yield curve can look very different on different days
-- Most frequently: upward sloping, and concave
+- Most frequently: upward sloping and concave
 
 ## Forward Rates
 
@@ -292,7 +292,7 @@ $$
 
 ## Fama-Bliss: Forward-Spot Decomposition
 
-@FamaBliss1987 focus on the forward-spot spread:
+@FamaBliss1987 focuses on the forward-spot spread:
 $$
 f_t^{(n-1,1)}-y_t^{(1)}
 =
@@ -419,7 +419,7 @@ print(r"\end{table}")
 
 - We redo the Fama-Bliss regression on newer monthly zero-coupon data
 - The signal is still the forward-spot spread, $f_t^{(n-1,1)} - y_t^{(1)}$
-- Same results 40 years later (1962-2024 sample)! 
+- Same result 40 years later (1962-2024 sample)!
 
 ## Realized vs Fitted Excess Returns
 
@@ -523,7 +523,7 @@ Short-rate changes
 \vspace{0.3cm}
 - This is using quarterly data from 1961 to 2013
 - This is not from the original paper, but from Campbell's book (Chap 8)
-- Bottom-line: all coefficients are *very* far from $1$
+- Bottom line: all coefficients are *very* far from $1$
 
 ## Campbell and Shiller 1991: Updated LW Table
 
@@ -664,7 +664,7 @@ $$
 
 . . .
 
-- How would you construct $y_t^{\tau}$ from this forward curve?
+- How would you construct $y_t^{(\tau)}$ from this forward curve?
 
 ## The Implied Yield Curve
 
@@ -683,7 +683,7 @@ $$
 - Different maturities load differently on them
 - Proper factor model for yields
 
-## How This Basis Looks Like
+## What This Basis Looks Like
 ```{python}
 #| echo: false
 #| warning: false
@@ -935,7 +935,7 @@ print(r"\end{table}")
 
 \vspace{0.3cm}
 - It's super tough to beat a RW
-- In the paper they could do it for shorter horizons sometimes
+- In the paper, they could do it for shorter horizons sometimes
 - But it's always very hard!
 - HUGE literature about macro forecasting!
   
