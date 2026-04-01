@@ -577,6 +577,276 @@ $$
 ## {.standout}
 Questions?
 
+# Part VI: A Simple Estimated DTSM
+
+## A Simple DTSM with NS Factors
+
+- Build $X_t=(\beta_{1t},\beta_{2t},\beta_{3t})^\top$ from a fixed-$\lambda$ Nelson-Siegel fit to the LW curve
+- Monthly step; annualized continuously compounded yields
+- Estimate under $\mathbb{P}$:
+$$
+X_{t+1} = \mu + \Phi X_t + \Sigma \varepsilon_{t+1}
+$$
+- Short rate and pricing wedge:
+$$
+y_t^{(1m)} = \delta_0 + \delta_1^\top X_t,
+\qquad
+\lambda_t = \lambda_0 + \lambda_1 X_t
+$$
+- Choose $(\lambda_0,\lambda_1)$ to fit annual maturities from 1 to 10 years
+
+```{python}
+#| echo: false
+#| include: false
+#| warning: false
+#| message: false
+
+import time
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from scipy.optimize import minimize
+
+plt.rcParams.update({
+    "font.family": "Arial",
+    "font.sans-serif": ["Arial"],
+    "axes.titlesize": 15,
+    "axes.labelsize": 13,
+    "xtick.labelsize": 11,
+    "ytick.labelsize": 11,
+    "legend.fontsize": 11,
+})
+
+MATLAB_BLUE = "#0072BD"
+MATLAB_ORANGE = "#D95319"
+MATLAB_YELLOW = "#EDB120"
+
+fit_start = time.perf_counter()
+
+def ns_loadings(tau, lam):
+    decay = np.exp(-lam * tau)
+    slope = (1 - decay) / (lam * tau)
+    curvature = slope - decay
+    return np.column_stack([np.ones_like(tau), slope, curvature])
+
+def affine_recursions(mu_q, Phi_q, Sigma, delta0, delta1, max_months):
+    sigma2 = Sigma @ Sigma.T
+    A = np.zeros(max_months + 1)
+    B = np.zeros((max_months + 1, len(delta1)))
+    for n in range(max_months):
+        bn = B[n]
+        A[n + 1] = A[n] + bn @ mu_q + 0.5 * bn @ sigma2 @ bn - delta0 / 12.0
+        B[n + 1] = Phi_q.T @ bn - delta1 / 12.0
+    return A, B
+
+def fitted_yields(X, A, B):
+    max_months = B.shape[0] - 1
+    scales = -(12.0 / np.arange(1, max_months + 1))
+    return (A[1:] + X @ B[1:].T) * scales
+
+def eh_component(X, mu, Phi, delta0, delta1, n_months):
+    out = np.empty(X.shape[0])
+    for t in range(X.shape[0]):
+        x_fore = X[t].copy()
+        total = delta0 + delta1 @ x_fore
+        for _ in range(1, n_months):
+            x_fore = mu + Phi @ x_fore
+            total += delta0 + delta1 @ x_fore
+        out[t] = total / n_months
+    return out
+
+lw = pd.read_csv("../lecture17/LW_monthly.csv", skiprows=8)
+lw = lw.rename(columns=lambda c: c.strip()).rename(columns={"Unnamed: 0": "date"})
+lw["date"] = pd.to_datetime(lw["date"].astype(int).astype(str), format="%Y%m")
+
+max_months = 120
+curve_mats = np.arange(1, max_months + 1, dtype=float)
+curve_cols = [f"{m} m" for m in range(1, max_months + 1)]
+curve_sample = lw[["date"] + curve_cols].dropna(subset=curve_cols).copy()
+dates_dtsm = curve_sample["date"].to_numpy()
+Y = curve_sample[curve_cols].to_numpy() / 100.0
+
+lambda_ns = 0.0609
+L_ns = ns_loadings(curve_mats, lambda_ns)
+X = np.linalg.lstsq(L_ns, Y.T, rcond=None)[0].T
+
+X_t = X[:-1]
+X_tp1 = X[1:]
+Z = np.column_stack([np.ones(len(X_t)), X_t])
+var_coef = np.linalg.lstsq(Z, X_tp1, rcond=None)[0]
+mu = var_coef[0]
+Phi = var_coef[1:].T
+var_resid = X_tp1 - Z @ var_coef
+Sigma = np.linalg.cholesky(np.cov(var_resid, rowvar=False, bias=False))
+
+short_rate = Y[:, 0]
+short_coef = np.linalg.lstsq(np.column_stack([np.ones(len(X)), X]), short_rate, rcond=None)[0]
+delta0 = short_coef[0]
+delta1 = short_coef[1:]
+
+fit_mats = np.arange(12, max_months + 1, 12)
+fit_idx = fit_mats - 1
+Y_fit = Y[:, fit_idx]
+
+def objective(params):
+    lambda0 = params[:3]
+    lambda1 = params[3:].reshape(3, 3)
+    mu_q = mu - Sigma @ lambda0
+    Phi_q = Phi - Sigma @ lambda1
+    A, B = affine_recursions(mu_q, Phi_q, Sigma, delta0, delta1, max_months)
+    yhat = fitted_yields(X, A, B)[:, fit_idx]
+    return np.mean((yhat - Y_fit) ** 2)
+
+opt = minimize(
+    objective,
+    np.zeros(12),
+    method="L-BFGS-B",
+    options={"maxiter": 200},
+)
+
+lambda0_hat = opt.x[:3]
+lambda1_hat = opt.x[3:].reshape(3, 3)
+mu_q = mu - Sigma @ lambda0_hat
+Phi_q = Phi - Sigma @ lambda1_hat
+A_hat, B_hat = affine_recursions(mu_q, Phi_q, Sigma, delta0, delta1, max_months)
+fitted_curve = fitted_yields(X, A_hat, B_hat)
+
+report_mats = {
+    "1-Year": 12,
+    "3-Year": 36,
+    "5-Year": 60,
+    "10-Year": 120,
+}
+eh_report = {label: eh_component(X, mu, Phi, delta0, delta1, n) for label, n in report_mats.items()}
+tp_report = {label: fitted_curve[:, n - 1] - eh_report[label] for label, n in report_mats.items()}
+lambda_t = (lambda0_hat[:, None] + lambda1_hat @ X.T).T
+
+sample_start_str = curve_sample["date"].iloc[0].strftime("%Y:%m")
+sample_end_str = curve_sample["date"].iloc[-1].strftime("%Y:%m")
+fit_time_str = f"{time.perf_counter() - fit_start:.2f}"
+```
+
+## What We Estimate
+
+- Data: LW monthly zero-coupon yields, balanced sample `{python} sample_start_str`--`{python} sample_end_str`
+- State vector: Nelson-Siegel level, slope, and curvature with fixed $\lambda=0.0609$ [@DieboldLi2006]
+- $\mathbb{P}$-dynamics: VAR(1) for the three factors
+- Cross-section fit: annual maturities from 1 to 10 years
+- Reported objects: observed yield, EH component, and term premium at 1y, 3y, 5y, and 10y
+- Full estimation time: `{python} fit_time_str` seconds
+
+## Actual and Fitted Yields
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 5))
+
+for ax, (label, maturity) in zip(axes.flat, report_mats.items()):
+    idx = maturity - 1
+    ax.plot(
+        dates_dtsm,
+        100 * Y[:, idx],
+        color=MATLAB_BLUE,
+        lw=2.0,
+        label="Observed yield",
+    )
+    ax.plot(
+        dates_dtsm,
+        100 * fitted_curve[:, idx],
+        color=MATLAB_ORANGE,
+        lw=1.8,
+        ls="--",
+        label="Fitted yield",
+    )
+    ax.set_title(label)
+    ax.xaxis.set_major_locator(mdates.YearLocator(base=10))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.grid(alpha=0.25, linewidth=0.6)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+axes[0, 0].legend(loc="upper right", frameon=False)
+fig.supylabel("Percent")
+fig.tight_layout()
+plt.show()
+```
+
+## Market Prices of Risk
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+fig, axes = plt.subplots(1, 3, figsize=(10, 5))
+component_colors = [MATLAB_BLUE, MATLAB_ORANGE, MATLAB_YELLOW]
+
+for i, ax in enumerate(axes):
+    ax.plot(dates_dtsm, lambda_t[:, i], color=component_colors[i], lw=2.0)
+    ax.set_title(rf"$\lambda_{{t,{i+1}}}$")
+    ax.xaxis.set_major_locator(mdates.YearLocator(base=10))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.grid(alpha=0.25, linewidth=0.6)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+fig.supylabel("Price of risk")
+fig.tight_layout()
+plt.show()
+```
+
+## Yields, EH Component, and Term Premia
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 5))
+
+for ax, (label, maturity) in zip(axes.flat, report_mats.items()):
+    idx = maturity - 1
+    ax.plot(
+        dates_dtsm,
+        100 * Y[:, idx],
+        color=MATLAB_BLUE,
+        lw=2.0,
+        label="Observed yield",
+    )
+    ax.plot(
+        dates_dtsm,
+        100 * eh_report[label],
+        color=MATLAB_ORANGE,
+        lw=1.8,
+        label="EH component",
+    )
+    ax.plot(
+        dates_dtsm,
+        100 * tp_report[label],
+        color=MATLAB_YELLOW,
+        lw=1.8,
+        label="Term premium",
+    )
+    ax.set_title(label)
+    ax.xaxis.set_major_locator(mdates.YearLocator(base=10))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.grid(alpha=0.25, linewidth=0.6)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+
+fig.supylabel("Percent")
+axes[0, 0].legend(loc="upper right", frameon=False)
+fig.tight_layout()
+plt.show()
+```
+
+## {.standout}
+Questions?
+
 ## Taking Stock
 
 - Lecture 17 told us the curve reflects both expected rates and premia

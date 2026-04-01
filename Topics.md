@@ -122,6 +122,7 @@ This is a collection of recommended readings and references.
 - [Duffee, 2002](https://doi.org/10.1111/1540-6261.00426)
 - [Joslin, Singleton, and Zhu, 2011](https://doi.org/10.1093/rfs/hhq128)
 - [Adrian, Crump, and Moench, 2013](https://doi.org/10.1016/j.jfineco.2013.04.009)
+- Uses the LW zero-coupon yield data to estimate a simple observable-factor DTSM and decompose yields into EH and term-premium components
 
 ## References
 There are a few books I plan on using. Additionally, several topics are better covered in review articles or original papers. I will try to point to those as we progress.
