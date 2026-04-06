@@ -20,7 +20,7 @@ See [Topics.md](./Topics.md) for a tentative detailed list of topics to be cover
 ## Evaluation
 No, we will have no exams. Student evaluation will be based on performance related to three activities:
   
-  1. One research proposal (50%). See [`Instructions_Research_Proposal.md`](./Instructions_Research_Proposal.md) for details.
+  1. One research proposal (50%). See [`Instructions_Research_Proposal.md`](./Instructions_Research_Proposal.md) for details. The submission details can be found [here](https://github.com/epge-classes/finance-1-2026/discussions/4).
   2. One peer-review of a classmate's research proposal (15%). See [`Instructions_Research_Proposal.md`](./Instructions_Research_Proposal.md) for details.
   3. One in-class presentation (35%). See [`Instructions_Paper_Presentation.md`](./Instructions_Paper_Presentation.md) for details.
 
