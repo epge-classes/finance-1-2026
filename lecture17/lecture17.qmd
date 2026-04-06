@@ -276,37 +276,6 @@ Questions?
 
 # Part III: Early Empirical Tests
 
-## Why These Regressions?
-
-- EH is a conditional statement, so we test conditional forecasts
-- Project future yield changes or excess returns on today's spreads
-- Benchmark under EH: slope coefficients should be close to $1$
-
-$$
-y_{t+m}^{(m)} - y_t^{(m)} = a + b\,(y_t^{(n)}-y_t^{(m)}) + u_{t+m},
-\qquad
-xr_{t+1}^{(n)} = a + b\,[f_t^{(n-1,1)}-y_t^{(1)}] + u_{t+1}
-$$
-
-- If $b$ is far from $1$, the EH benchmark is in trouble
-
-## Fama-Bliss: Forward-Spot Decomposition
-
-@FamaBliss1987 focuses on the forward-spot spread:
-$$
-f_t^{(n-1,1)}-y_t^{(1)}
-=
-\mathbb{E}_t\!\left[y_{t+n-1}^{(1)}-y_t^{(1)}\right]
-+
-\mathbb{E}_t\!\left[xr_{t+1}^{(n)}\right]
-$$
-
-. . .
-
-- It can be decomposed into expected future short-rate changes
-- And expected excess returns on longer bonds
-- Their regressions ask: which margin actually moves?
-
 ## Fama and Bliss 1987: Main Result
 
 $$
@@ -340,8 +309,6 @@ $xr_{t+1}^{(5)}$ & $-1.06$ & $1.31$ & $0.93$ & $0.53$ & $0.05$ \\
 #| warning: false
 #| message: false
 #| output: asis
-
-import pandas as pd
 import statsmodels.api as sm
 
 fb_maturities = [2, 3, 4, 5, 7, 10]
@@ -532,8 +499,6 @@ Short-rate changes
 #| warning: false
 #| message: false
 #| output: asis
-
-import statsmodels.api as sm
 
 cs_maturities = [
     (6, "6m"),
